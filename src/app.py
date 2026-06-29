@@ -105,7 +105,7 @@ UI_TRANSLATIONS = {
         "focus_many_profiles": "så många profiler som möjligt",
         "focus_larger_profiles": "så stora profiler som möjligt",
         "run_optimizer_title": "4. Kör kalkyl",
-        "run_optimizer_description": "Du kommer få tre förslag att välja mellan",
+        "run_optimizer_description": "Du kommer få 2-3 förslag att välja mellan",
         "run_optimizer_button": "Kör kalkyl",
     },
     "en": {
@@ -980,7 +980,18 @@ def _build_pitch_profile_lines(fill_instructions: list[dict], channel: str) -> s
         for tier in VALID_PROFILE_TIERS
         if counts.get(tier, 0) > 0 and tier in descriptions
     ]
-    return " | ".join(lines) if lines else "-"
+    return "\n".join(lines) if lines else "-"
+
+
+def _format_pitch_total_impressions(value) -> str:
+    if value is None:
+        return format_display_number(value)
+    try:
+        total_impressions = Decimal(str(value)) * Decimal("1000")
+        rounded = total_impressions.quantize(Decimal("1"), rounding=ROUND_HALF_UP)
+    except Exception:
+        return str(value)
+    return format_display_number(int(rounded))
 
 
 def _build_pitch_table_rows(result: dict, selected_option: dict) -> list[dict[str, str]]:
@@ -1007,7 +1018,7 @@ def _build_pitch_table_rows(result: dict, selected_option: dict) -> list[dict[st
         {"Post": "Paid", "Värde": f"{format_display_number(paid_media)} SEK"},
         {
             "Post": "Antal exponeringar",
-            "Värde": f"{_format_zero_decimal_number(selected_option.get('total_project_impressions'))}K",
+            "Värde": _format_pitch_total_impressions(selected_option.get("total_project_impressions")),
         },
         {"Post": "Total", "Värde": f"{format_display_number(budget)} SEK"},
         {"Post": "CPM", "Värde": f"{_format_zero_decimal_number(selected_option.get('project_cpm'))} SEK"},
@@ -1125,7 +1136,8 @@ def render_result(
             "Rekommenderade profilval för kalkylen.",
             "soft-yellow",
         )
-        st.dataframe(_format_table_rows(fill_view["simple_fill_rows"]), use_container_width=True)
+        with st.expander("Visa fullständiga kalkyldetaljer", expanded=False):
+            st.dataframe(_format_table_rows(fill_view["simple_fill_rows"]), use_container_width=True)
         summary_items = _build_selected_option_impression_summary(fill_view["selected_option"])
         summary_cols = st.columns(len(summary_items))
         for col, item in zip(summary_cols, summary_items):

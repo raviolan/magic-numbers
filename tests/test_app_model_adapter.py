@@ -283,6 +283,24 @@ class ManualCampaignAdapterTests(unittest.TestCase):
 
         self.assertEqual(lines, "2x Profil á 10-20K följare / 10K snittvisningar")
 
+    def test_pitch_profile_lines_join_multiple_tiers_with_line_breaks(self) -> None:
+        import app
+
+        lines = app._build_pitch_profile_lines(
+            [
+                {"channel": "Instagram", "recommended_profile_size": 15000},
+                {"channel": "Instagram", "recommended_profile_size": 35000},
+                {"channel": "Instagram", "recommended_profile_size": 35000},
+            ],
+            "Instagram",
+        )
+
+        self.assertEqual(
+            lines,
+            "1x Profil á 10-20K följare / 10K snittvisningar\n"
+            "2x Profil á 20-50K följare / 25K snittvisningar",
+        )
+
     def test_pitch_profile_lines_group_tiktok_tiers(self) -> None:
         import app
 
@@ -332,9 +350,15 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         by_post = {row["Post"]: row["Värde"] for row in rows}
 
         self.assertEqual(by_post["Paid"], "15 000 SEK")
-        self.assertEqual(by_post["Antal exponeringar"], "1 880K")
+        self.assertEqual(by_post["Antal exponeringar"], "1 880 000")
         self.assertEqual(by_post["Total"], "100 000 SEK")
         self.assertEqual(by_post["CPM"], "53 SEK")
+
+    def test_pitch_total_impressions_formats_k_units_as_full_impressions(self) -> None:
+        import app
+
+        self.assertEqual(app._format_pitch_total_impressions(1880), "1 880 000")
+        self.assertEqual(app._format_pitch_total_impressions(1880.4), "1 880 400")
 
     def test_ui_language_defaults_to_swedish_and_supports_en_path(self) -> None:
         import app
