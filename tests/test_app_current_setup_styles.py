@@ -47,6 +47,8 @@ class CurrentSetupRowStyleTests(unittest.TestCase):
         self.assertIn("font-family: 'Nine Gyst Kursiv'", css)
         self.assertIn("font-family: 'Nine Upgrade'", css)
         self.assertIn("font-family: 'Nine Upgrade Caption'", css)
+        self.assertIn(".app-title", css)
+        self.assertIn("color: #f0fc03 !important;", css)
         self.assertIn(".section-caption", css)
         self.assertIn("font-family: 'Nine Upgrade Caption', 'Nine Upgrade', Arial, sans-serif !important;", css)
         self.assertIn(".app-caption", css)
@@ -54,6 +56,10 @@ class CurrentSetupRowStyleTests(unittest.TestCase):
         self.assertNotIn(".stApp .app-caption", css)
         self.assertNotIn(
             '.stApp div:not([data-testid*="stIcon"]),\n        .stMarkdown',
+            css,
+        )
+        self.assertNotIn(
+            '.stApp div:not([data-testid*="stIcon"]),\n        .stApp label',
             css,
         )
         self.assertIn("data:font/otf;base64,", css)

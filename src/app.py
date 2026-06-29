@@ -210,7 +210,6 @@ def inject_app_css() -> None:
         .stApp,
         .stApp p,
         .stApp span:not([class*="material"]):not([data-testid*="stIcon"]),
-        .stApp div:not([data-testid*="stIcon"]),
         .stApp label,
         .stApp li,
         .stApp th,
@@ -250,11 +249,13 @@ def inject_app_css() -> None:
         div[data-baseweb="textarea"] textarea {{
             color: #3b3821 !important;
         }}
-        .stApp h1 {{
+        .app-title {{
             font-family: 'Nine Gyst Kursiv', 'Nine Upgrade', Arial, sans-serif !important;
             color: #f0fc03 !important;
             font-style: italic;
             font-weight: 400;
+            margin: 0 0 0.35rem 0;
+            line-height: 1.05;
         }}
         .app-caption {{
             color: #f9e9d4;
@@ -1466,7 +1467,7 @@ def main() -> None:
     language = _ui_language_from_url(getattr(st.context, "url", None))
     st.set_page_config(page_title=_ui_text(language, "page_title"), layout="wide")
     inject_app_css()
-    st.title(_ui_text(language, "page_title"))
+    st.markdown(f'<h1 class="app-title">{_ui_text(language, "page_title")}</h1>', unsafe_allow_html=True)
     app_caption = _ui_text(language, "app_caption")
     if app_caption:
         st.markdown(f'<div class="app-caption">{app_caption}</div>', unsafe_allow_html=True)
