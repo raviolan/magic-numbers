@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import csv
+import html
 import io
 import json
 import math
@@ -1025,6 +1026,52 @@ def _build_pitch_table_rows(result: dict, selected_option: dict) -> list[dict[st
     ]
 
 
+def _pitch_table_html(rows: list[dict[str, str]]) -> str:
+    body_rows: list[str] = []
+    for row in rows:
+        post = html.escape(str(row.get("Post", "")))
+        value = html.escape(str(row.get("Värde", ""))).replace("\n", "<br>")
+        body_rows.append(f"<tr><td>{post}</td><td>{value}</td></tr>")
+    body = "".join(body_rows)
+    return f"""
+    <table class="pitch-output-table">
+      <thead>
+        <tr><th>Post</th><th>Värde</th></tr>
+      </thead>
+      <tbody>{body}</tbody>
+    </table>
+    """
+
+
+def _render_pitch_table(rows: list[dict[str, str]]) -> None:
+    st.markdown(
+        """
+        <style>
+        .pitch-output-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+        }
+        .pitch-output-table th,
+        .pitch-output-table td {
+            border-bottom: 1px solid rgba(59, 56, 33, 0.18);
+            padding: 0.55rem 0.65rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        .pitch-output-table th {
+            font-weight: 700;
+        }
+        .pitch-output-table td:nth-child(2) {
+            font-weight: 400;
+        }
+        </style>
+        """
+        + _pitch_table_html(rows),
+        unsafe_allow_html=True,
+    )
+
+
 def _render_downloads(payload: dict, result: dict) -> None:
     markdown = render_optimizer_markdown(payload)
     fill_csv = result_to_fill_csv(result)
@@ -1147,11 +1194,7 @@ def render_result(
         if st.button("Generera tabell för Pitch", key=f"generate_pitch_table_{run_id}", type="secondary"):
             st.session_state[pitch_table_key] = True
         if st.session_state.get(pitch_table_key, False):
-            st.dataframe(
-                _build_pitch_table_rows(result, fill_view["selected_option"]),
-                use_container_width=True,
-                hide_index=True,
-            )
+            _render_pitch_table(_build_pitch_table_rows(result, fill_view["selected_option"]))
 
     with st.container(border=True, key="cardresultsactions"):
         _section_header("Åtgärder och detaljer", "Nedladdningar och tekniska detaljer.", "soft-gray")

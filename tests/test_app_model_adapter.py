@@ -360,6 +360,21 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertEqual(app._format_pitch_total_impressions(1880), "1 880 000")
         self.assertEqual(app._format_pitch_total_impressions(1880.4), "1 880 400")
 
+    def test_pitch_table_html_renders_line_breaks_inside_value_cell(self) -> None:
+        import app
+
+        rendered = app._pitch_table_html(
+            [
+                {
+                    "Post": "Influencer Marketing Instagram",
+                    "Värde": "1x Profil á 10-20K följare\n2x Profil á 20-50K följare",
+                }
+            ]
+        )
+
+        self.assertIn("1x Profil á 10-20K följare<br>2x Profil á 20-50K följare", rendered)
+        self.assertNotIn("följare\n2x", rendered)
+
     def test_ui_language_defaults_to_swedish_and_supports_en_path(self) -> None:
         import app
 
