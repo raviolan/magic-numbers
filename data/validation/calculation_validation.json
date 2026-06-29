@@ -1,0 +1,5086 @@
+{
+  "input_file": "data/normalized/canonical_normalized_models.json",
+  "campaign_count": 6,
+  "selected_row_fee_formula": "thousands_rounded_path",
+  "validation_thresholds": {
+    "pass_abs_delta_max": 0.01,
+    "close_abs_delta_max": 1
+  },
+  "status_counts": {
+    "pass": 6,
+    "close": 0,
+    "mismatch": 0
+  },
+  "records": [
+    {
+      "source": {
+        "workbook_name": "5311 Dear Dahlia Kalkyl (V.A).xlsx",
+        "sheet_name": "10 profiler",
+        "workbook_diff_cell": "H21",
+        "workbook_diff_value": -46.2
+      },
+      "inputs": {
+        "budget": 32000,
+        "agency_fee": 14904,
+        "paid_media": 4800,
+        "paid_media_included": false,
+        "profile_budget_target_multiplier": 0.925
+      },
+      "diagnostics": {
+        "selected_row_fee_formula": "thousands_rounded_path",
+        "legacy_campaign_total_cost": 30255,
+        "legacy_campaign_total_diff": 1745,
+        "cpm_derived_profile_fee_sum": 15351,
+        "raw_impressions_profile_fee_sum": 15351,
+        "thousands_rounded_profile_fee_sum": 15860,
+        "captured_impressions_profile_fee_sum": 15860,
+        "selected_deterministic_row_fee_sum": 15860,
+        "captured_workbook_profile_fee_sum": 15860,
+        "profile_budget_target": 15813.8,
+        "profile_budget_target_cell": "H20",
+        "profile_fee_sum_cell": "H19",
+        "workbook_style_calculated_diff": -46.2
+      },
+      "row_calculations": [
+        {
+          "row_index": 9,
+          "profile_size": 35000,
+          "profile_size_cell": "B9",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F9",
+          "cpm": 35,
+          "cpm_cell": "G9",
+          "activations": 1,
+          "activations_cell": "C9",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H9",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 10,
+          "profile_size": 35000,
+          "profile_size_cell": "B10",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F10",
+          "cpm": 35,
+          "cpm_cell": "G10",
+          "activations": 1,
+          "activations_cell": "C10",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H10",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 11,
+          "profile_size": 35000,
+          "profile_size_cell": "B11",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F11",
+          "cpm": 35,
+          "cpm_cell": "G11",
+          "activations": 1,
+          "activations_cell": "C11",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H11",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 12,
+          "profile_size": 75000,
+          "profile_size_cell": "B12",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F12",
+          "cpm": 35,
+          "cpm_cell": "G12",
+          "activations": 1,
+          "activations_cell": "C12",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H12",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 13,
+          "profile_size": 75000,
+          "profile_size_cell": "B13",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F13",
+          "cpm": 35,
+          "cpm_cell": "G13",
+          "activations": 1,
+          "activations_cell": "C13",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H13",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 14,
+          "profile_size": 35000,
+          "profile_size_cell": "B14",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F14",
+          "cpm": 46,
+          "cpm_cell": "G14",
+          "activations": 1,
+          "activations_cell": "C14",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H14",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 15,
+          "profile_size": 35000,
+          "profile_size_cell": "B15",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F15",
+          "cpm": 46,
+          "cpm_cell": "G15",
+          "activations": 1,
+          "activations_cell": "C15",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H15",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 16,
+          "profile_size": 35000,
+          "profile_size_cell": "B16",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F16",
+          "cpm": 46,
+          "cpm_cell": "G16",
+          "activations": 1,
+          "activations_cell": "C16",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H16",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 17,
+          "profile_size": 75000,
+          "profile_size_cell": "B17",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F17",
+          "cpm": 46,
+          "cpm_cell": "G17",
+          "activations": 1,
+          "activations_cell": "C17",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H17",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 18,
+          "profile_size": 75000,
+          "profile_size_cell": "B18",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F18",
+          "cpm": 46,
+          "cpm_cell": "G18",
+          "activations": 1,
+          "activations_cell": "C18",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H18",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        }
+      ],
+      "totals": {
+        "calculated_profile_cost": 15351,
+        "included_paid_media_cost": 0,
+        "agency_fee": 14904,
+        "calculated_total_cost": 30255,
+        "calculated_diff": 1745
+      },
+      "validation": {
+        "diff_delta_vs_workbook": 1791.2,
+        "abs_diff_delta_vs_workbook": 1791.2,
+        "row_fee_sum_delta": 0,
+        "workbook_style_diff_delta_vs_workbook": 0,
+        "validation_status": "pass",
+        "warnings": []
+      }
+    },
+    {
+      "source": {
+        "workbook_name": "5311 Dear Dahlia Kalkyl (V.A).xlsx",
+        "sheet_name": "20 profiler",
+        "workbook_diff_cell": "H31",
+        "workbook_diff_value": 114.8
+      },
+      "inputs": {
+        "budget": 63000,
+        "agency_fee": 28584,
+        "paid_media": 9450,
+        "paid_media_included": false,
+        "profile_budget_target_multiplier": 0.925
+      },
+      "diagnostics": {
+        "selected_row_fee_formula": "thousands_rounded_path",
+        "legacy_campaign_total_cost": 59286,
+        "legacy_campaign_total_diff": 3714,
+        "cpm_derived_profile_fee_sum": 30702,
+        "raw_impressions_profile_fee_sum": 30702,
+        "thousands_rounded_profile_fee_sum": 31720,
+        "captured_impressions_profile_fee_sum": 31720,
+        "selected_deterministic_row_fee_sum": 31720,
+        "captured_workbook_profile_fee_sum": 31720,
+        "profile_budget_target": 31834.8,
+        "profile_budget_target_cell": "H30",
+        "profile_fee_sum_cell": "H29",
+        "workbook_style_calculated_diff": 114.8
+      },
+      "row_calculations": [
+        {
+          "row_index": 9,
+          "profile_size": 35000,
+          "profile_size_cell": "B9",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F9",
+          "cpm": 35,
+          "cpm_cell": "G9",
+          "activations": 1,
+          "activations_cell": "C9",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H9",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 10,
+          "profile_size": 35000,
+          "profile_size_cell": "B10",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F10",
+          "cpm": 35,
+          "cpm_cell": "G10",
+          "activations": 1,
+          "activations_cell": "C10",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H10",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 11,
+          "profile_size": 35000,
+          "profile_size_cell": "B11",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F11",
+          "cpm": 35,
+          "cpm_cell": "G11",
+          "activations": 1,
+          "activations_cell": "C11",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H11",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 12,
+          "profile_size": 35000,
+          "profile_size_cell": "B12",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F12",
+          "cpm": 35,
+          "cpm_cell": "G12",
+          "activations": 1,
+          "activations_cell": "C12",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H12",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 13,
+          "profile_size": 35000,
+          "profile_size_cell": "B13",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F13",
+          "cpm": 35,
+          "cpm_cell": "G13",
+          "activations": 1,
+          "activations_cell": "C13",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H13",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 14,
+          "profile_size": 35000,
+          "profile_size_cell": "B14",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F14",
+          "cpm": 35,
+          "cpm_cell": "G14",
+          "activations": 1,
+          "activations_cell": "C14",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H14",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 15,
+          "profile_size": 75000,
+          "profile_size_cell": "B15",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F15",
+          "cpm": 35,
+          "cpm_cell": "G15",
+          "activations": 1,
+          "activations_cell": "C15",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H15",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 16,
+          "profile_size": 75000,
+          "profile_size_cell": "B16",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F16",
+          "cpm": 35,
+          "cpm_cell": "G16",
+          "activations": 1,
+          "activations_cell": "C16",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H16",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 17,
+          "profile_size": 75000,
+          "profile_size_cell": "B17",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F17",
+          "cpm": 35,
+          "cpm_cell": "G17",
+          "activations": 1,
+          "activations_cell": "C17",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H17",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 18,
+          "profile_size": 75000,
+          "profile_size_cell": "B18",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F18",
+          "cpm": 35,
+          "cpm_cell": "G18",
+          "activations": 1,
+          "activations_cell": "C18",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H18",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 19,
+          "profile_size": 35000,
+          "profile_size_cell": "B19",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F19",
+          "cpm": 46,
+          "cpm_cell": "G19",
+          "activations": 1,
+          "activations_cell": "C19",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H19",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 20,
+          "profile_size": 35000,
+          "profile_size_cell": "B20",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F20",
+          "cpm": 46,
+          "cpm_cell": "G20",
+          "activations": 1,
+          "activations_cell": "C20",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H20",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 21,
+          "profile_size": 35000,
+          "profile_size_cell": "B21",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F21",
+          "cpm": 46,
+          "cpm_cell": "G21",
+          "activations": 1,
+          "activations_cell": "C21",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H21",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 22,
+          "profile_size": 35000,
+          "profile_size_cell": "B22",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F22",
+          "cpm": 46,
+          "cpm_cell": "G22",
+          "activations": 1,
+          "activations_cell": "C22",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H22",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 23,
+          "profile_size": 35000,
+          "profile_size_cell": "B23",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F23",
+          "cpm": 46,
+          "cpm_cell": "G23",
+          "activations": 1,
+          "activations_cell": "C23",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H23",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 24,
+          "profile_size": 35000,
+          "profile_size_cell": "B24",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F24",
+          "cpm": 46,
+          "cpm_cell": "G24",
+          "activations": 1,
+          "activations_cell": "C24",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H24",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 25,
+          "profile_size": 75000,
+          "profile_size_cell": "B25",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F25",
+          "cpm": 46,
+          "cpm_cell": "G25",
+          "activations": 1,
+          "activations_cell": "C25",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H25",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 26,
+          "profile_size": 75000,
+          "profile_size_cell": "B26",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F26",
+          "cpm": 46,
+          "cpm_cell": "G26",
+          "activations": 1,
+          "activations_cell": "C26",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H26",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 27,
+          "profile_size": 75000,
+          "profile_size_cell": "B27",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F27",
+          "cpm": 46,
+          "cpm_cell": "G27",
+          "activations": 1,
+          "activations_cell": "C27",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H27",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 28,
+          "profile_size": 75000,
+          "profile_size_cell": "B28",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F28",
+          "cpm": 46,
+          "cpm_cell": "G28",
+          "activations": 1,
+          "activations_cell": "C28",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H28",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        }
+      ],
+      "totals": {
+        "calculated_profile_cost": 30702,
+        "included_paid_media_cost": 0,
+        "agency_fee": 28584,
+        "calculated_total_cost": 59286,
+        "calculated_diff": 3714
+      },
+      "validation": {
+        "diff_delta_vs_workbook": 3599.2,
+        "abs_diff_delta_vs_workbook": 3599.2,
+        "row_fee_sum_delta": 0,
+        "workbook_style_diff_delta_vs_workbook": 0,
+        "validation_status": "pass",
+        "warnings": []
+      }
+    },
+    {
+      "source": {
+        "workbook_name": "5311 Dear Dahlia Kalkyl (V.A).xlsx",
+        "sheet_name": "30 profiler",
+        "workbook_diff_cell": "H41",
+        "workbook_diff_value": 480.8
+      },
+      "inputs": {
+        "budget": 95000,
+        "agency_fee": 42264,
+        "paid_media": 14250,
+        "paid_media_included": false,
+        "profile_budget_target_multiplier": 0.925
+      },
+      "diagnostics": {
+        "selected_row_fee_formula": "thousands_rounded_path",
+        "legacy_campaign_total_cost": 89269,
+        "legacy_campaign_total_diff": 5731,
+        "cpm_derived_profile_fee_sum": 47005,
+        "raw_impressions_profile_fee_sum": 47005,
+        "thousands_rounded_profile_fee_sum": 48300,
+        "captured_impressions_profile_fee_sum": 48300,
+        "selected_deterministic_row_fee_sum": 48300,
+        "captured_workbook_profile_fee_sum": 48300,
+        "profile_budget_target": 48780.8,
+        "profile_budget_target_cell": "H40",
+        "profile_fee_sum_cell": "H39",
+        "workbook_style_calculated_diff": 480.8
+      },
+      "row_calculations": [
+        {
+          "row_index": 9,
+          "profile_size": 35000,
+          "profile_size_cell": "B9",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F9",
+          "cpm": 35,
+          "cpm_cell": "G9",
+          "activations": 1,
+          "activations_cell": "C9",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H9",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 10,
+          "profile_size": 35000,
+          "profile_size_cell": "B10",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F10",
+          "cpm": 35,
+          "cpm_cell": "G10",
+          "activations": 1,
+          "activations_cell": "C10",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H10",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 11,
+          "profile_size": 35000,
+          "profile_size_cell": "B11",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F11",
+          "cpm": 35,
+          "cpm_cell": "G11",
+          "activations": 1,
+          "activations_cell": "C11",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H11",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 12,
+          "profile_size": 35000,
+          "profile_size_cell": "B12",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F12",
+          "cpm": 35,
+          "cpm_cell": "G12",
+          "activations": 1,
+          "activations_cell": "C12",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H12",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 13,
+          "profile_size": 35000,
+          "profile_size_cell": "B13",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F13",
+          "cpm": 35,
+          "cpm_cell": "G13",
+          "activations": 1,
+          "activations_cell": "C13",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H13",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 14,
+          "profile_size": 35000,
+          "profile_size_cell": "B14",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F14",
+          "cpm": 35,
+          "cpm_cell": "G14",
+          "activations": 1,
+          "activations_cell": "C14",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H14",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 15,
+          "profile_size": 35000,
+          "profile_size_cell": "B15",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F15",
+          "cpm": 35,
+          "cpm_cell": "G15",
+          "activations": 1,
+          "activations_cell": "C15",
+          "calculated_row_cost": 980,
+          "captured_workbook_row_fee": 1050,
+          "profile_fee_cell": "H15",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 980,
+            "delta_vs_workbook": -70
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 1050,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1050,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 16,
+          "profile_size": 75000,
+          "profile_size_cell": "B16",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F16",
+          "cpm": 35,
+          "cpm_cell": "G16",
+          "activations": 1,
+          "activations_cell": "C16",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H16",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 17,
+          "profile_size": 75000,
+          "profile_size_cell": "B17",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F17",
+          "cpm": 35,
+          "cpm_cell": "G17",
+          "activations": 1,
+          "activations_cell": "C17",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H17",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 18,
+          "profile_size": 75000,
+          "profile_size_cell": "B18",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F18",
+          "cpm": 35,
+          "cpm_cell": "G18",
+          "activations": 1,
+          "activations_cell": "C18",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H18",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 19,
+          "profile_size": 75000,
+          "profile_size_cell": "B19",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F19",
+          "cpm": 35,
+          "cpm_cell": "G19",
+          "activations": 1,
+          "activations_cell": "C19",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H19",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 20,
+          "profile_size": 75000,
+          "profile_size_cell": "B20",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F20",
+          "cpm": 35,
+          "cpm_cell": "G20",
+          "activations": 1,
+          "activations_cell": "C20",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H20",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 21,
+          "profile_size": 75000,
+          "profile_size_cell": "B21",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F21",
+          "cpm": 35,
+          "cpm_cell": "G21",
+          "activations": 1,
+          "activations_cell": "C21",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H21",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 22,
+          "profile_size": 75000,
+          "profile_size_cell": "B22",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F22",
+          "cpm": 35,
+          "cpm_cell": "G22",
+          "activations": 1,
+          "activations_cell": "C22",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H22",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 23,
+          "profile_size": 75000,
+          "profile_size_cell": "B23",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": null,
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F23",
+          "cpm": 35,
+          "cpm_cell": "G23",
+          "activations": 1,
+          "activations_cell": "C23",
+          "calculated_row_cost": 2100,
+          "captured_workbook_row_fee": 2100,
+          "profile_fee_cell": "H23",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 2100,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2100,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 24,
+          "profile_size": 35000,
+          "profile_size_cell": "B24",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F24",
+          "cpm": 46,
+          "cpm_cell": "G24",
+          "activations": 1,
+          "activations_cell": "C24",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H24",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 25,
+          "profile_size": 35000,
+          "profile_size_cell": "B25",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F25",
+          "cpm": 46,
+          "cpm_cell": "G25",
+          "activations": 1,
+          "activations_cell": "C25",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H25",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 26,
+          "profile_size": 35000,
+          "profile_size_cell": "B26",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F26",
+          "cpm": 46,
+          "cpm_cell": "G26",
+          "activations": 1,
+          "activations_cell": "C26",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H26",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 27,
+          "profile_size": 35000,
+          "profile_size_cell": "B27",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F27",
+          "cpm": 46,
+          "cpm_cell": "G27",
+          "activations": 1,
+          "activations_cell": "C27",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H27",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 28,
+          "profile_size": 35000,
+          "profile_size_cell": "B28",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F28",
+          "cpm": 46,
+          "cpm_cell": "G28",
+          "activations": 1,
+          "activations_cell": "C28",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H28",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 29,
+          "profile_size": 35000,
+          "profile_size_cell": "B29",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F29",
+          "cpm": 46,
+          "cpm_cell": "G29",
+          "activations": 1,
+          "activations_cell": "C29",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H29",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 30,
+          "profile_size": 35000,
+          "profile_size_cell": "B30",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F30",
+          "cpm": 46,
+          "cpm_cell": "G30",
+          "activations": 1,
+          "activations_cell": "C30",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H30",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 31,
+          "profile_size": 35000,
+          "profile_size_cell": "B31",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F31",
+          "cpm": 46,
+          "cpm_cell": "G31",
+          "activations": 1,
+          "activations_cell": "C31",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H31",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 32,
+          "profile_size": 35000,
+          "profile_size_cell": "B32",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F32",
+          "cpm": 46,
+          "cpm_cell": "G32",
+          "activations": 1,
+          "activations_cell": "C32",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H32",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 33,
+          "profile_size": 35000,
+          "profile_size_cell": "B33",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F33",
+          "cpm": 46,
+          "cpm_cell": "G33",
+          "activations": 1,
+          "activations_cell": "C33",
+          "calculated_row_cost": 1127,
+          "captured_workbook_row_fee": 1150,
+          "profile_fee_cell": "H33",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 1127,
+            "delta_vs_workbook": -23
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 1150,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 1150,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 34,
+          "profile_size": 75000,
+          "profile_size_cell": "B34",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F34",
+          "cpm": 46,
+          "cpm_cell": "G34",
+          "activations": 1,
+          "activations_cell": "C34",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H34",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 35,
+          "profile_size": 75000,
+          "profile_size_cell": "B35",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F35",
+          "cpm": 46,
+          "cpm_cell": "G35",
+          "activations": 1,
+          "activations_cell": "C35",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H35",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 36,
+          "profile_size": 75000,
+          "profile_size_cell": "B36",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F36",
+          "cpm": 46,
+          "cpm_cell": "G36",
+          "activations": 1,
+          "activations_cell": "C36",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H36",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 37,
+          "profile_size": 75000,
+          "profile_size_cell": "B37",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F37",
+          "cpm": 46,
+          "cpm_cell": "G37",
+          "activations": 1,
+          "activations_cell": "C37",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H37",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 38,
+          "profile_size": 75000,
+          "profile_size_cell": "B38",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": null,
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F38",
+          "cpm": 46,
+          "cpm_cell": "G38",
+          "activations": 1,
+          "activations_cell": "C38",
+          "calculated_row_cost": 2415,
+          "captured_workbook_row_fee": 2530,
+          "profile_fee_cell": "H38",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 2415,
+            "delta_vs_workbook": -115
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 2530,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 2530,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        }
+      ],
+      "totals": {
+        "calculated_profile_cost": 47005,
+        "included_paid_media_cost": 0,
+        "agency_fee": 42264,
+        "calculated_total_cost": 89269,
+        "calculated_diff": 5731
+      },
+      "validation": {
+        "diff_delta_vs_workbook": 5250.2,
+        "abs_diff_delta_vs_workbook": 5250.2,
+        "row_fee_sum_delta": 0,
+        "workbook_style_diff_delta_vs_workbook": 0,
+        "validation_status": "pass",
+        "warnings": []
+      }
+    },
+    {
+      "source": {
+        "workbook_name": "5312 Medclair Kalkyl (V.A).xlsx",
+        "sheet_name": "600K",
+        "workbook_diff_cell": "H34",
+        "workbook_diff_value": 1640.375
+      },
+      "inputs": {
+        "budget": 600000,
+        "agency_fee": 286605,
+        "paid_media": 90000,
+        "paid_media_included": true,
+        "profile_budget_target_multiplier": 0.925
+      },
+      "diagnostics": {
+        "selected_row_fee_formula": "thousands_rounded_path",
+        "legacy_campaign_total_cost": 586855,
+        "legacy_campaign_total_diff": 13145,
+        "cpm_derived_profile_fee_sum": 210250,
+        "raw_impressions_profile_fee_sum": 210250,
+        "thousands_rounded_profile_fee_sum": 205000,
+        "captured_impressions_profile_fee_sum": 205000,
+        "selected_deterministic_row_fee_sum": 205000,
+        "captured_workbook_profile_fee_sum": 205000,
+        "profile_budget_target": 206640.375,
+        "profile_budget_target_cell": "H33",
+        "profile_fee_sum_cell": "H32",
+        "workbook_style_calculated_diff": 1640.375
+      },
+      "row_calculations": [
+        {
+          "row_index": 20,
+          "profile_size": 15000,
+          "profile_size_cell": "B20",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F20",
+          "cpm": 800,
+          "cpm_cell": "G20",
+          "activations": 1,
+          "activations_cell": "C20",
+          "calculated_row_cost": 9600,
+          "captured_workbook_row_fee": 8000,
+          "profile_fee_cell": "H20",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 9600,
+            "delta_vs_workbook": 1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 8000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 21,
+          "profile_size": 15000,
+          "profile_size_cell": "B21",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F21",
+          "cpm": 800,
+          "cpm_cell": "G21",
+          "activations": 1,
+          "activations_cell": "C21",
+          "calculated_row_cost": 9600,
+          "captured_workbook_row_fee": 8000,
+          "profile_fee_cell": "H21",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 9600,
+            "delta_vs_workbook": 1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 8000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 22,
+          "profile_size": 15000,
+          "profile_size_cell": "B22",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F22",
+          "cpm": 800,
+          "cpm_cell": "G22",
+          "activations": 1,
+          "activations_cell": "C22",
+          "calculated_row_cost": 9600,
+          "captured_workbook_row_fee": 8000,
+          "profile_fee_cell": "H22",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 9600,
+            "delta_vs_workbook": 1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 8000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 23,
+          "profile_size": 35000,
+          "profile_size_cell": "B23",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F23",
+          "cpm": 800,
+          "cpm_cell": "G23",
+          "activations": 1,
+          "activations_cell": "C23",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H23",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 24,
+          "profile_size": 35000,
+          "profile_size_cell": "B24",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F24",
+          "cpm": 800,
+          "cpm_cell": "G24",
+          "activations": 1,
+          "activations_cell": "C24",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H24",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 25,
+          "profile_size": 35000,
+          "profile_size_cell": "B25",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F25",
+          "cpm": 800,
+          "cpm_cell": "G25",
+          "activations": 1,
+          "activations_cell": "C25",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H25",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 26,
+          "profile_size": 15000,
+          "profile_size_cell": "B26",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F26",
+          "cpm": 1100,
+          "cpm_cell": "G26",
+          "activations": 1,
+          "activations_cell": "C26",
+          "calculated_row_cost": 13200,
+          "captured_workbook_row_fee": 11000,
+          "profile_fee_cell": "H26",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 13200,
+            "delta_vs_workbook": 2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 11000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 27,
+          "profile_size": 15000,
+          "profile_size_cell": "B27",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F27",
+          "cpm": 1100,
+          "cpm_cell": "G27",
+          "activations": 1,
+          "activations_cell": "C27",
+          "calculated_row_cost": 13200,
+          "captured_workbook_row_fee": 11000,
+          "profile_fee_cell": "H27",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 13200,
+            "delta_vs_workbook": 2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 11000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 28,
+          "profile_size": 35000,
+          "profile_size_cell": "B28",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F28",
+          "cpm": 1100,
+          "cpm_cell": "G28",
+          "activations": 1,
+          "activations_cell": "C28",
+          "calculated_row_cost": 30800,
+          "captured_workbook_row_fee": 33000,
+          "profile_fee_cell": "H28",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 30800,
+            "delta_vs_workbook": -2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 33000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 29,
+          "profile_size": 15000,
+          "profile_size_cell": "B29",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 10500,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F29",
+          "cpm": 1100,
+          "cpm_cell": "G29",
+          "activations": 1,
+          "activations_cell": "C29",
+          "calculated_row_cost": 11550,
+          "captured_workbook_row_fee": 11000,
+          "profile_fee_cell": "H29",
+          "raw_impressions_path": {
+            "impressions": 10500,
+            "row_fee": 11550,
+            "delta_vs_workbook": 550
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 11000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 30,
+          "profile_size": 35000,
+          "profile_size_cell": "B30",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F30",
+          "cpm": 1100,
+          "cpm_cell": "G30",
+          "activations": 1,
+          "activations_cell": "C30",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H30",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 31,
+          "profile_size": 35000,
+          "profile_size_cell": "B31",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F31",
+          "cpm": 1100,
+          "cpm_cell": "G31",
+          "activations": 1,
+          "activations_cell": "C31",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H31",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        }
+      ],
+      "totals": {
+        "calculated_profile_cost": 210250,
+        "included_paid_media_cost": 90000,
+        "agency_fee": 286605,
+        "calculated_total_cost": 586855,
+        "calculated_diff": 13145
+      },
+      "validation": {
+        "diff_delta_vs_workbook": 11504.625,
+        "abs_diff_delta_vs_workbook": 11504.625,
+        "row_fee_sum_delta": 0,
+        "workbook_style_diff_delta_vs_workbook": 0,
+        "validation_status": "pass",
+        "warnings": []
+      }
+    },
+    {
+      "source": {
+        "workbook_name": "5312 Medclair Kalkyl (V.A).xlsx",
+        "sheet_name": "1.2M",
+        "workbook_diff_cell": "H46",
+        "workbook_diff_value": 207.375
+      },
+      "inputs": {
+        "budget": 1200000,
+        "agency_fee": 448965,
+        "paid_media": 220000,
+        "paid_media_included": true,
+        "profile_budget_target_multiplier": 0.925
+      },
+      "diagnostics": {
+        "selected_row_fee_formula": "thousands_rounded_path",
+        "legacy_campaign_total_cost": 1158665,
+        "legacy_campaign_total_diff": 41335,
+        "cpm_derived_profile_fee_sum": 489700,
+        "raw_impressions_profile_fee_sum": 489700,
+        "thousands_rounded_profile_fee_sum": 491000,
+        "captured_impressions_profile_fee_sum": 491000,
+        "selected_deterministic_row_fee_sum": 491000,
+        "captured_workbook_profile_fee_sum": 491000,
+        "profile_budget_target": 491207.375,
+        "profile_budget_target_cell": "H45",
+        "profile_fee_sum_cell": "H44",
+        "workbook_style_calculated_diff": 207.375
+      },
+      "row_calculations": [
+        {
+          "row_index": 20,
+          "profile_size": 15000,
+          "profile_size_cell": "B20",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F20",
+          "cpm": 800,
+          "cpm_cell": "G20",
+          "activations": 1,
+          "activations_cell": "C20",
+          "calculated_row_cost": 9600,
+          "captured_workbook_row_fee": 8000,
+          "profile_fee_cell": "H20",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 9600,
+            "delta_vs_workbook": 1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 8000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 21,
+          "profile_size": 15000,
+          "profile_size_cell": "B21",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F21",
+          "cpm": 800,
+          "cpm_cell": "G21",
+          "activations": 1,
+          "activations_cell": "C21",
+          "calculated_row_cost": 9600,
+          "captured_workbook_row_fee": 8000,
+          "profile_fee_cell": "H21",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 9600,
+            "delta_vs_workbook": 1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 8000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 22,
+          "profile_size": 15000,
+          "profile_size_cell": "B22",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F22",
+          "cpm": 800,
+          "cpm_cell": "G22",
+          "activations": 1,
+          "activations_cell": "C22",
+          "calculated_row_cost": 9600,
+          "captured_workbook_row_fee": 8000,
+          "profile_fee_cell": "H22",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 9600,
+            "delta_vs_workbook": 1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 8000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 23,
+          "profile_size": 35000,
+          "profile_size_cell": "B23",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F23",
+          "cpm": 800,
+          "cpm_cell": "G23",
+          "activations": 1,
+          "activations_cell": "C23",
+          "calculated_row_cost": 22400,
+          "captured_workbook_row_fee": 24000,
+          "profile_fee_cell": "H23",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 22400,
+            "delta_vs_workbook": -1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 24000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 24,
+          "profile_size": 35000,
+          "profile_size_cell": "B24",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F24",
+          "cpm": 800,
+          "cpm_cell": "G24",
+          "activations": 1,
+          "activations_cell": "C24",
+          "calculated_row_cost": 22400,
+          "captured_workbook_row_fee": 24000,
+          "profile_fee_cell": "H24",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 22400,
+            "delta_vs_workbook": -1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 24000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 25,
+          "profile_size": 35000,
+          "profile_size_cell": "B25",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F25",
+          "cpm": 800,
+          "cpm_cell": "G25",
+          "activations": 1,
+          "activations_cell": "C25",
+          "calculated_row_cost": 22400,
+          "captured_workbook_row_fee": 24000,
+          "profile_fee_cell": "H25",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 22400,
+            "delta_vs_workbook": -1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 24000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 26,
+          "profile_size": 15000,
+          "profile_size_cell": "B26",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 10500,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F26",
+          "cpm": 800,
+          "cpm_cell": "G26",
+          "activations": 1,
+          "activations_cell": "C26",
+          "calculated_row_cost": 8400,
+          "captured_workbook_row_fee": 8000,
+          "profile_fee_cell": "H26",
+          "raw_impressions_path": {
+            "impressions": 10500,
+            "row_fee": 8400,
+            "delta_vs_workbook": 400
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 8000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 27,
+          "profile_size": 15000,
+          "profile_size_cell": "B27",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 10500,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F27",
+          "cpm": 800,
+          "cpm_cell": "G27",
+          "activations": 1,
+          "activations_cell": "C27",
+          "calculated_row_cost": 8400,
+          "captured_workbook_row_fee": 8000,
+          "profile_fee_cell": "H27",
+          "raw_impressions_path": {
+            "impressions": 10500,
+            "row_fee": 8400,
+            "delta_vs_workbook": 400
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 8000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 8000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 28,
+          "profile_size": 35000,
+          "profile_size_cell": "B28",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F28",
+          "cpm": 800,
+          "cpm_cell": "G28",
+          "activations": 1,
+          "activations_cell": "C28",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H28",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 29,
+          "profile_size": 35000,
+          "profile_size_cell": "B29",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F29",
+          "cpm": 800,
+          "cpm_cell": "G29",
+          "activations": 1,
+          "activations_cell": "C29",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H29",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 30,
+          "profile_size": 35000,
+          "profile_size_cell": "B30",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F30",
+          "cpm": 800,
+          "cpm_cell": "G30",
+          "activations": 1,
+          "activations_cell": "C30",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H30",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 31,
+          "profile_size": 75000,
+          "profile_size_cell": "B31",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 52500,
+          "captured_workbook_impressions": 55,
+          "impressions_cell": "F31",
+          "cpm": 800,
+          "cpm_cell": "G31",
+          "activations": 1,
+          "activations_cell": "C31",
+          "calculated_row_cost": 42000,
+          "captured_workbook_row_fee": 44000,
+          "profile_fee_cell": "H31",
+          "raw_impressions_path": {
+            "impressions": 52500,
+            "row_fee": 42000,
+            "delta_vs_workbook": -2000
+          },
+          "thousands_rounded_path": {
+            "impressions": 55,
+            "row_fee": 44000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 55,
+            "row_fee": 44000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 44000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 32,
+          "profile_size": 15000,
+          "profile_size_cell": "B32",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F32",
+          "cpm": 1100,
+          "cpm_cell": "G32",
+          "activations": 1,
+          "activations_cell": "C32",
+          "calculated_row_cost": 13200,
+          "captured_workbook_row_fee": 11000,
+          "profile_fee_cell": "H32",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 13200,
+            "delta_vs_workbook": 2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 11000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 33,
+          "profile_size": 15000,
+          "profile_size_cell": "B33",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F33",
+          "cpm": 1100,
+          "cpm_cell": "G33",
+          "activations": 1,
+          "activations_cell": "C33",
+          "calculated_row_cost": 13200,
+          "captured_workbook_row_fee": 11000,
+          "profile_fee_cell": "H33",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 13200,
+            "delta_vs_workbook": 2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 11000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 34,
+          "profile_size": 15000,
+          "profile_size_cell": "B34",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F34",
+          "cpm": 1100,
+          "cpm_cell": "G34",
+          "activations": 1,
+          "activations_cell": "C34",
+          "calculated_row_cost": 13200,
+          "captured_workbook_row_fee": 11000,
+          "profile_fee_cell": "H34",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 13200,
+            "delta_vs_workbook": 2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 11000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 35,
+          "profile_size": 15000,
+          "profile_size_cell": "B35",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 12000,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F35",
+          "cpm": 1100,
+          "cpm_cell": "G35",
+          "activations": 1,
+          "activations_cell": "C35",
+          "calculated_row_cost": 13200,
+          "captured_workbook_row_fee": 11000,
+          "profile_fee_cell": "H35",
+          "raw_impressions_path": {
+            "impressions": 12000,
+            "row_fee": 13200,
+            "delta_vs_workbook": 2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 11000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 36,
+          "profile_size": 35000,
+          "profile_size_cell": "B36",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F36",
+          "cpm": 1100,
+          "cpm_cell": "G36",
+          "activations": 1,
+          "activations_cell": "C36",
+          "calculated_row_cost": 30800,
+          "captured_workbook_row_fee": 33000,
+          "profile_fee_cell": "H36",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 30800,
+            "delta_vs_workbook": -2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 33000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 37,
+          "profile_size": 35000,
+          "profile_size_cell": "B37",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F37",
+          "cpm": 1100,
+          "cpm_cell": "G37",
+          "activations": 1,
+          "activations_cell": "C37",
+          "calculated_row_cost": 30800,
+          "captured_workbook_row_fee": 33000,
+          "profile_fee_cell": "H37",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 30800,
+            "delta_vs_workbook": -2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 33000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 38,
+          "profile_size": 35000,
+          "profile_size_cell": "B38",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F38",
+          "cpm": 1100,
+          "cpm_cell": "G38",
+          "activations": 1,
+          "activations_cell": "C38",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H38",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 39,
+          "profile_size": 35000,
+          "profile_size_cell": "B39",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F39",
+          "cpm": 1100,
+          "cpm_cell": "G39",
+          "activations": 1,
+          "activations_cell": "C39",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H39",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 40,
+          "profile_size": 35000,
+          "profile_size_cell": "B40",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F40",
+          "cpm": 1100,
+          "cpm_cell": "G40",
+          "activations": 1,
+          "activations_cell": "C40",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H40",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 41,
+          "profile_size": 35000,
+          "profile_size_cell": "B41",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F41",
+          "cpm": 1100,
+          "cpm_cell": "G41",
+          "activations": 1,
+          "activations_cell": "C41",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H41",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 42,
+          "profile_size": 35000,
+          "profile_size_cell": "B42",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F42",
+          "cpm": 1100,
+          "cpm_cell": "G42",
+          "activations": 1,
+          "activations_cell": "C42",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H42",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 43,
+          "profile_size": 35000,
+          "profile_size_cell": "B43",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F43",
+          "cpm": 1100,
+          "cpm_cell": "G43",
+          "activations": 1,
+          "activations_cell": "C43",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H43",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        }
+      ],
+      "totals": {
+        "calculated_profile_cost": 489700,
+        "included_paid_media_cost": 220000,
+        "agency_fee": 448965,
+        "calculated_total_cost": 1158665,
+        "calculated_diff": 41335
+      },
+      "validation": {
+        "diff_delta_vs_workbook": 41127.625,
+        "abs_diff_delta_vs_workbook": 41127.625,
+        "row_fee_sum_delta": 0,
+        "workbook_style_diff_delta_vs_workbook": 0,
+        "validation_status": "pass",
+        "warnings": []
+      }
+    },
+    {
+      "source": {
+        "workbook_name": "5312 Medclair Kalkyl (V.A).xlsx",
+        "sheet_name": "2M",
+        "workbook_diff_cell": "H52",
+        "workbook_diff_value": 13100.5
+      },
+      "inputs": {
+        "budget": 2000000,
+        "agency_fee": 595980,
+        "paid_media": 400000,
+        "paid_media_included": true,
+        "profile_budget_target_multiplier": 0.925
+      },
+      "diagnostics": {
+        "selected_row_fee_formula": "thousands_rounded_path",
+        "legacy_campaign_total_cost": 1882998,
+        "legacy_campaign_total_diff": 117002,
+        "cpm_derived_profile_fee_sum": 887018,
+        "raw_impressions_profile_fee_sum": 887018,
+        "thousands_rounded_profile_fee_sum": 915618,
+        "captured_impressions_profile_fee_sum": 915618,
+        "selected_deterministic_row_fee_sum": 915618,
+        "captured_workbook_profile_fee_sum": 915618,
+        "profile_budget_target": 928718.5,
+        "profile_budget_target_cell": "H51",
+        "profile_fee_sum_cell": "H50",
+        "workbook_style_calculated_diff": 13100.5
+      },
+      "row_calculations": [
+        {
+          "row_index": 20,
+          "profile_size": 35000,
+          "profile_size_cell": "B20",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F20",
+          "cpm": 800,
+          "cpm_cell": "G20",
+          "activations": 1,
+          "activations_cell": "C20",
+          "calculated_row_cost": 22400,
+          "captured_workbook_row_fee": 24000,
+          "profile_fee_cell": "H20",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 22400,
+            "delta_vs_workbook": -1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 24000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 21,
+          "profile_size": 35000,
+          "profile_size_cell": "B21",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F21",
+          "cpm": 800,
+          "cpm_cell": "G21",
+          "activations": 1,
+          "activations_cell": "C21",
+          "calculated_row_cost": 22400,
+          "captured_workbook_row_fee": 24000,
+          "profile_fee_cell": "H21",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 22400,
+            "delta_vs_workbook": -1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 24000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 22,
+          "profile_size": 35000,
+          "profile_size_cell": "B22",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F22",
+          "cpm": 800,
+          "cpm_cell": "G22",
+          "activations": 1,
+          "activations_cell": "C22",
+          "calculated_row_cost": 22400,
+          "captured_workbook_row_fee": 24000,
+          "profile_fee_cell": "H22",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 22400,
+            "delta_vs_workbook": -1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 24000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 23,
+          "profile_size": 35000,
+          "profile_size_cell": "B23",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F23",
+          "cpm": 800,
+          "cpm_cell": "G23",
+          "activations": 1,
+          "activations_cell": "C23",
+          "calculated_row_cost": 22400,
+          "captured_workbook_row_fee": 24000,
+          "profile_fee_cell": "H23",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 22400,
+            "delta_vs_workbook": -1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 24000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 24,
+          "profile_size": 35000,
+          "profile_size_cell": "B24",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F24",
+          "cpm": 800,
+          "cpm_cell": "G24",
+          "activations": 1,
+          "activations_cell": "C24",
+          "calculated_row_cost": 22400,
+          "captured_workbook_row_fee": 24000,
+          "profile_fee_cell": "H24",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 22400,
+            "delta_vs_workbook": -1600
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 24000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 24000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 25,
+          "profile_size": 75000,
+          "profile_size_cell": "B25",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "UK",
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F25",
+          "cpm": 685.3,
+          "cpm_cell": "G25",
+          "activations": 1,
+          "activations_cell": "C25",
+          "calculated_row_cost": 41118,
+          "captured_workbook_row_fee": 41118,
+          "profile_fee_cell": "H25",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 41118,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 41118,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 41118,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 41118,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 26,
+          "profile_size": 35000,
+          "profile_size_cell": "B26",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F26",
+          "cpm": 800,
+          "cpm_cell": "G26",
+          "activations": 1,
+          "activations_cell": "C26",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H26",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 27,
+          "profile_size": 35000,
+          "profile_size_cell": "B27",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F27",
+          "cpm": 800,
+          "cpm_cell": "G27",
+          "activations": 1,
+          "activations_cell": "C27",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H27",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 28,
+          "profile_size": 35000,
+          "profile_size_cell": "B28",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F28",
+          "cpm": 800,
+          "cpm_cell": "G28",
+          "activations": 1,
+          "activations_cell": "C28",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H28",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 29,
+          "profile_size": 35000,
+          "profile_size_cell": "B29",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F29",
+          "cpm": 800,
+          "cpm_cell": "G29",
+          "activations": 1,
+          "activations_cell": "C29",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H29",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 30,
+          "profile_size": 35000,
+          "profile_size_cell": "B30",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F30",
+          "cpm": 800,
+          "cpm_cell": "G30",
+          "activations": 1,
+          "activations_cell": "C30",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H30",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 31,
+          "profile_size": 35000,
+          "profile_size_cell": "B31",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F31",
+          "cpm": 800,
+          "cpm_cell": "G31",
+          "activations": 1,
+          "activations_cell": "C31",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H31",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 32,
+          "profile_size": 35000,
+          "profile_size_cell": "B32",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F32",
+          "cpm": 800,
+          "cpm_cell": "G32",
+          "activations": 1,
+          "activations_cell": "C32",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H32",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 33,
+          "profile_size": 35000,
+          "profile_size_cell": "B33",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F33",
+          "cpm": 800,
+          "cpm_cell": "G33",
+          "activations": 1,
+          "activations_cell": "C33",
+          "calculated_row_cost": 19600,
+          "captured_workbook_row_fee": 20000,
+          "profile_fee_cell": "H33",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 19600,
+            "delta_vs_workbook": -400
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 20000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 20000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 34,
+          "profile_size": 125000,
+          "profile_size_cell": "B34",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "UK",
+          "multiplier": 0.7,
+          "impressions": 87500,
+          "captured_workbook_impressions": 90,
+          "impressions_cell": "F34",
+          "cpm": 800,
+          "cpm_cell": "G34",
+          "activations": 1,
+          "activations_cell": "C34",
+          "calculated_row_cost": 70000,
+          "captured_workbook_row_fee": 72000,
+          "profile_fee_cell": "H34",
+          "raw_impressions_path": {
+            "impressions": 87500,
+            "row_fee": 70000,
+            "delta_vs_workbook": -2000
+          },
+          "thousands_rounded_path": {
+            "impressions": 90,
+            "row_fee": 72000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 90,
+            "row_fee": 72000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 72000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 35,
+          "profile_size": 35000,
+          "profile_size_cell": "B35",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F35",
+          "cpm": 1100,
+          "cpm_cell": "G35",
+          "activations": 1,
+          "activations_cell": "C35",
+          "calculated_row_cost": 30800,
+          "captured_workbook_row_fee": 33000,
+          "profile_fee_cell": "H35",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 30800,
+            "delta_vs_workbook": -2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 33000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 36,
+          "profile_size": 35000,
+          "profile_size_cell": "B36",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F36",
+          "cpm": 1100,
+          "cpm_cell": "G36",
+          "activations": 1,
+          "activations_cell": "C36",
+          "calculated_row_cost": 30800,
+          "captured_workbook_row_fee": 33000,
+          "profile_fee_cell": "H36",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 30800,
+            "delta_vs_workbook": -2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 33000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 37,
+          "profile_size": 35000,
+          "profile_size_cell": "B37",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F37",
+          "cpm": 1100,
+          "cpm_cell": "G37",
+          "activations": 1,
+          "activations_cell": "C37",
+          "calculated_row_cost": 30800,
+          "captured_workbook_row_fee": 33000,
+          "profile_fee_cell": "H37",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 30800,
+            "delta_vs_workbook": -2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 33000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 38,
+          "profile_size": 35000,
+          "profile_size_cell": "B38",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F38",
+          "cpm": 1100,
+          "cpm_cell": "G38",
+          "activations": 1,
+          "activations_cell": "C38",
+          "calculated_row_cost": 30800,
+          "captured_workbook_row_fee": 33000,
+          "profile_fee_cell": "H38",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 30800,
+            "delta_vs_workbook": -2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 33000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 39,
+          "profile_size": 35000,
+          "profile_size_cell": "B39",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F39",
+          "cpm": 1100,
+          "cpm_cell": "G39",
+          "activations": 1,
+          "activations_cell": "C39",
+          "calculated_row_cost": 30800,
+          "captured_workbook_row_fee": 33000,
+          "profile_fee_cell": "H39",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 30800,
+            "delta_vs_workbook": -2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 33000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 40,
+          "profile_size": 35000,
+          "profile_size_cell": "B40",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F40",
+          "cpm": 1100,
+          "cpm_cell": "G40",
+          "activations": 1,
+          "activations_cell": "C40",
+          "calculated_row_cost": 30800,
+          "captured_workbook_row_fee": 33000,
+          "profile_fee_cell": "H40",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 30800,
+            "delta_vs_workbook": -2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 33000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 41,
+          "profile_size": 35000,
+          "profile_size_cell": "B41",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 28000,
+          "captured_workbook_impressions": 30,
+          "impressions_cell": "F41",
+          "cpm": 1100,
+          "cpm_cell": "G41",
+          "activations": 1,
+          "activations_cell": "C41",
+          "calculated_row_cost": 30800,
+          "captured_workbook_row_fee": 33000,
+          "profile_fee_cell": "H41",
+          "raw_impressions_path": {
+            "impressions": 28000,
+            "row_fee": 30800,
+            "delta_vs_workbook": -2200
+          },
+          "thousands_rounded_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 30,
+            "row_fee": 33000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 33000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 42,
+          "profile_size": 75000,
+          "profile_size_cell": "B42",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 60000,
+          "captured_workbook_impressions": 60,
+          "impressions_cell": "F42",
+          "cpm": 1100,
+          "cpm_cell": "G42",
+          "activations": 1,
+          "activations_cell": "C42",
+          "calculated_row_cost": 66000,
+          "captured_workbook_row_fee": 66000,
+          "profile_fee_cell": "H42",
+          "raw_impressions_path": {
+            "impressions": 60000,
+            "row_fee": 66000,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 60,
+            "row_fee": 66000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 60,
+            "row_fee": 66000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 66000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 43,
+          "profile_size": 125000,
+          "profile_size_cell": "B43",
+          "workbook_raw_profile_size_value": null,
+          "channel": "TikTok",
+          "market": "US",
+          "multiplier": 0.8,
+          "impressions": 100000,
+          "captured_workbook_impressions": 100,
+          "impressions_cell": "F43",
+          "cpm": 1100,
+          "cpm_cell": "G43",
+          "activations": 1,
+          "activations_cell": "C43",
+          "calculated_row_cost": 110000,
+          "captured_workbook_row_fee": 110000,
+          "profile_fee_cell": "H43",
+          "raw_impressions_path": {
+            "impressions": 100000,
+            "row_fee": 110000,
+            "delta_vs_workbook": 0
+          },
+          "thousands_rounded_path": {
+            "impressions": 100,
+            "row_fee": 110000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 100,
+            "row_fee": 110000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 110000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 44,
+          "profile_size": 15000,
+          "profile_size_cell": "B44",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 10500,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F44",
+          "cpm": 1100,
+          "cpm_cell": "G44",
+          "activations": 1,
+          "activations_cell": "C44",
+          "calculated_row_cost": 11550,
+          "captured_workbook_row_fee": 11000,
+          "profile_fee_cell": "H44",
+          "raw_impressions_path": {
+            "impressions": 10500,
+            "row_fee": 11550,
+            "delta_vs_workbook": 550
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 11000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 45,
+          "profile_size": 15000,
+          "profile_size_cell": "B45",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 10500,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F45",
+          "cpm": 1100,
+          "cpm_cell": "G45",
+          "activations": 1,
+          "activations_cell": "C45",
+          "calculated_row_cost": 11550,
+          "captured_workbook_row_fee": 11000,
+          "profile_fee_cell": "H45",
+          "raw_impressions_path": {
+            "impressions": 10500,
+            "row_fee": 11550,
+            "delta_vs_workbook": 550
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 11000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 46,
+          "profile_size": 15000,
+          "profile_size_cell": "B46",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 10500,
+          "captured_workbook_impressions": 10,
+          "impressions_cell": "F46",
+          "cpm": 1100,
+          "cpm_cell": "G46",
+          "activations": 1,
+          "activations_cell": "C46",
+          "calculated_row_cost": 11550,
+          "captured_workbook_row_fee": 11000,
+          "profile_fee_cell": "H46",
+          "raw_impressions_path": {
+            "impressions": 10500,
+            "row_fee": 11550,
+            "delta_vs_workbook": 550
+          },
+          "thousands_rounded_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 10,
+            "row_fee": 11000,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 11000,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 47,
+          "profile_size": 35000,
+          "profile_size_cell": "B47",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F47",
+          "cpm": 1100,
+          "cpm_cell": "G47",
+          "activations": 1,
+          "activations_cell": "C47",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H47",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 48,
+          "profile_size": 35000,
+          "profile_size_cell": "B48",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F48",
+          "cpm": 1100,
+          "cpm_cell": "G48",
+          "activations": 1,
+          "activations_cell": "C48",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H48",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        },
+        {
+          "row_index": 49,
+          "profile_size": 35000,
+          "profile_size_cell": "B49",
+          "workbook_raw_profile_size_value": null,
+          "channel": "Instagram",
+          "market": "US",
+          "multiplier": 0.7,
+          "impressions": 24500,
+          "captured_workbook_impressions": 25,
+          "impressions_cell": "F49",
+          "cpm": 1100,
+          "cpm_cell": "G49",
+          "activations": 1,
+          "activations_cell": "C49",
+          "calculated_row_cost": 26950,
+          "captured_workbook_row_fee": 27500,
+          "profile_fee_cell": "H49",
+          "raw_impressions_path": {
+            "impressions": 24500,
+            "row_fee": 26950,
+            "delta_vs_workbook": -550
+          },
+          "thousands_rounded_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "captured_impressions_path": {
+            "impressions": 25,
+            "row_fee": 27500,
+            "delta_vs_workbook": 0
+          },
+          "selected_row_fee_formula": "thousands_rounded_path",
+          "selected_row_fee_value": 27500,
+          "selected_row_fee_delta_vs_workbook": 0,
+          "warnings": []
+        }
+      ],
+      "totals": {
+        "calculated_profile_cost": 887018,
+        "included_paid_media_cost": 400000,
+        "agency_fee": 595980,
+        "calculated_total_cost": 1882998,
+        "calculated_diff": 117002
+      },
+      "validation": {
+        "diff_delta_vs_workbook": 103901.5,
+        "abs_diff_delta_vs_workbook": 103901.5,
+        "row_fee_sum_delta": 0,
+        "workbook_style_diff_delta_vs_workbook": 0,
+        "validation_status": "pass",
+        "warnings": []
+      }
+    }
+  ]
+}

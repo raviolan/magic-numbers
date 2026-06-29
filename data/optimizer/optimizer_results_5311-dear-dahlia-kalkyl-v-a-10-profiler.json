@@ -1,0 +1,1206 @@
+{
+  "input_file": "data/normalized/canonical_normalized_models.json",
+  "selected_formula": "thousands_rounded_path",
+  "search_method": {
+    "name": "bounded_beam_search",
+    "bounded": true,
+    "approximate": true,
+    "global_optimality_guaranteed": false
+  },
+  "campaign_count": 1,
+  "options_generated": 6,
+  "strategy": "math",
+  "allow_negative": false,
+  "beam_width": 1000,
+  "warnings": [],
+  "executive_summary": [
+    {
+      "workbook_name": "5311 Dear Dahlia Kalkyl (V.A).xlsx",
+      "sheet_name": "10 profiler",
+      "recommended_option_label": "fallback_option",
+      "recommended_diff": 13.8,
+      "baseline_diff": -46.2,
+      "improvement_vs_baseline": 32.4,
+      "main_note": "Recommended as best balance between budget fit and profile quality."
+    }
+  ],
+  "results": [
+    {
+      "source": {
+        "workbook_name": "5311 Dear Dahlia Kalkyl (V.A).xlsx",
+        "sheet_name": "10 profiler"
+      },
+      "profile_budget_target": 15813.8,
+      "row_count": 10,
+      "recommended_option_label": "fallback_option",
+      "recommendation_reason": "Recommended as best balance between budget fit and profile quality.",
+      "recommendation_score_breakdown": {
+        "math_fit_score": 99986.2,
+        "non_negative_bonus": 5000.0,
+        "baseline_improvement_bonus": 3000.0,
+        "small_tier_penalty": 0.0,
+        "polarization_penalty": 0.0,
+        "mid_tier_balance_bonus": 1800.0,
+        "large_profile_bonus": 200.0,
+        "total_score": 109986.2
+      },
+      "executive_summary": {
+        "recommended_diff": 13.8,
+        "baseline_diff": -46.2,
+        "improvement_vs_baseline": 32.4,
+        "main_note": "Recommended as best balance between budget fit and profile quality."
+      },
+      "options": [
+        {
+          "option_label": "fallback_option",
+          "rank": 4,
+          "optimized_diff": 13.8,
+          "profile_fee_sum": 15800,
+          "profile_budget_target": 15813.8,
+          "tier_counts": {
+            "15000": 3,
+            "35000": 2,
+            "75000": 5,
+            "125000": 0,
+            "175000": 0
+          },
+          "total_impressions": 365,
+          "impressions_by_channel": {
+            "Instagram": 275,
+            "TikTok": 90
+          },
+          "impressions_by_market": {},
+          "fill_instructions": [
+            {
+              "profile_size_cell": "B9",
+              "recommended_profile_size": 15000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 350
+            },
+            {
+              "profile_size_cell": "B10",
+              "recommended_profile_size": 15000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 350
+            },
+            {
+              "profile_size_cell": "B11",
+              "recommended_profile_size": 15000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 350
+            },
+            {
+              "profile_size_cell": "B12",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B13",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B14",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            },
+            {
+              "profile_size_cell": "B15",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            },
+            {
+              "profile_size_cell": "B16",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            },
+            {
+              "profile_size_cell": "B17",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            },
+            {
+              "profile_size_cell": "B18",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            }
+          ],
+          "diagnostics": {
+            "non_negative_diff": true,
+            "abs_diff": 13.8,
+            "strategic_notes": [
+              "Majority of rows are 75K+ tiers."
+            ]
+          },
+          "strategic_metrics": {
+            "row_count": 10,
+            "count_15k": 3,
+            "count_75k_plus": 5,
+            "count_125k_plus": 0,
+            "count_175k": 0,
+            "mid_tier_count": 7,
+            "avg_profile_size": 49000.0
+          },
+          "baseline_comparison": "improves",
+          "improves_on_baseline": true,
+          "count_15k": 3,
+          "count_75k_plus": 5,
+          "mid_tier_count": 7,
+          "share_15k": 0.3,
+          "high_15k_share": false,
+          "very_high_15k_share": false,
+          "polarized_mix": false,
+          "balanced_mid_tiers": true,
+          "strategic_notes": [
+            "Majority of rows are 75K+ tiers.",
+            "More balanced mid-tier distribution",
+            "Recommended as best balance between budget fit and profile quality"
+          ],
+          "strategic_warnings": [],
+          "strategic_warning_count": 0,
+          "main_note": "Majority of rows are 75K+ tiers.",
+          "recommendation_score_breakdown": {
+            "math_fit_score": 99986.2,
+            "non_negative_bonus": 5000.0,
+            "baseline_improvement_bonus": 3000.0,
+            "small_tier_penalty": 0.0,
+            "polarization_penalty": 0.0,
+            "mid_tier_balance_bonus": 1800.0,
+            "large_profile_bonus": 200.0,
+            "total_score": 109986.2
+          },
+          "recommendation_rank": 1,
+          "is_recommended": true
+        },
+        {
+          "option_label": "balanced_option",
+          "rank": 18,
+          "optimized_diff": 93.8,
+          "profile_fee_sum": 15720,
+          "profile_budget_target": 15813.8,
+          "tier_counts": {
+            "15000": 3,
+            "35000": 3,
+            "75000": 3,
+            "125000": 1,
+            "175000": 0
+          },
+          "total_impressions": 380,
+          "impressions_by_channel": {
+            "Instagram": 220,
+            "TikTok": 160
+          },
+          "impressions_by_market": {},
+          "fill_instructions": [
+            {
+              "profile_size_cell": "B9",
+              "recommended_profile_size": 15000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 350
+            },
+            {
+              "profile_size_cell": "B10",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B11",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B12",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B13",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 2100
+            },
+            {
+              "profile_size_cell": "B14",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            },
+            {
+              "profile_size_cell": "B15",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            },
+            {
+              "profile_size_cell": "B16",
+              "recommended_profile_size": 125000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 4140
+            },
+            {
+              "profile_size_cell": "B17",
+              "recommended_profile_size": 15000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 460
+            },
+            {
+              "profile_size_cell": "B18",
+              "recommended_profile_size": 15000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 460
+            }
+          ],
+          "diagnostics": {
+            "non_negative_diff": true,
+            "abs_diff": 93.8,
+            "strategic_notes": []
+          },
+          "strategic_metrics": {
+            "row_count": 10,
+            "count_15k": 3,
+            "count_75k_plus": 4,
+            "count_125k_plus": 1,
+            "count_175k": 0,
+            "mid_tier_count": 7,
+            "avg_profile_size": 50000.0
+          },
+          "baseline_comparison": "worse",
+          "improves_on_baseline": false,
+          "count_15k": 3,
+          "count_75k_plus": 4,
+          "mid_tier_count": 7,
+          "share_15k": 0.3,
+          "high_15k_share": false,
+          "very_high_15k_share": false,
+          "polarized_mix": false,
+          "balanced_mid_tiers": true,
+          "strategic_notes": [
+            "More balanced mid-tier distribution"
+          ],
+          "strategic_warnings": [],
+          "strategic_warning_count": 0,
+          "main_note": "More balanced mid-tier distribution",
+          "recommendation_score_breakdown": {
+            "math_fit_score": 99906.2,
+            "non_negative_bonus": 5000.0,
+            "baseline_improvement_bonus": 0.0,
+            "small_tier_penalty": 0.0,
+            "polarization_penalty": 0.0,
+            "mid_tier_balance_bonus": 1800.0,
+            "large_profile_bonus": 160.0,
+            "total_score": 106866.2
+          },
+          "recommendation_rank": 2,
+          "is_recommended": false
+        },
+        {
+          "option_label": "best_mathematical_fit",
+          "rank": 1,
+          "optimized_diff": 3.8,
+          "profile_fee_sum": 15810,
+          "profile_budget_target": 15813.8,
+          "tier_counts": {
+            "15000": 4,
+            "35000": 4,
+            "75000": 0,
+            "125000": 1,
+            "175000": 1
+          },
+          "total_impressions": 370,
+          "impressions_by_channel": {
+            "Instagram": 260,
+            "TikTok": 110
+          },
+          "impressions_by_market": {},
+          "fill_instructions": [
+            {
+              "profile_size_cell": "B9",
+              "recommended_profile_size": 15000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 350
+            },
+            {
+              "profile_size_cell": "B10",
+              "recommended_profile_size": 15000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 350
+            },
+            {
+              "profile_size_cell": "B11",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B12",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B13",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B14",
+              "recommended_profile_size": 15000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 460
+            },
+            {
+              "profile_size_cell": "B15",
+              "recommended_profile_size": 15000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 460
+            },
+            {
+              "profile_size_cell": "B16",
+              "recommended_profile_size": 125000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 4140
+            },
+            {
+              "profile_size_cell": "B17",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 1150
+            },
+            {
+              "profile_size_cell": "B18",
+              "recommended_profile_size": 175000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 5750
+            }
+          ],
+          "diagnostics": {
+            "non_negative_diff": true,
+            "abs_diff": 3.8,
+            "strategic_notes": []
+          },
+          "strategic_metrics": {
+            "row_count": 10,
+            "count_15k": 4,
+            "count_75k_plus": 2,
+            "count_125k_plus": 2,
+            "count_175k": 1,
+            "mid_tier_count": 5,
+            "avg_profile_size": 50000.0
+          },
+          "baseline_comparison": "improves",
+          "improves_on_baseline": true,
+          "count_15k": 4,
+          "count_75k_plus": 2,
+          "mid_tier_count": 5,
+          "share_15k": 0.4,
+          "high_15k_share": true,
+          "very_high_15k_share": false,
+          "polarized_mix": false,
+          "balanced_mid_tiers": false,
+          "strategic_notes": [
+            "Closest mathematical fit, but less sellable mix"
+          ],
+          "strategic_warnings": [
+            "Very high 15K share"
+          ],
+          "strategic_warning_count": 1,
+          "main_note": "Very high 15K share",
+          "recommendation_score_breakdown": {
+            "math_fit_score": 99996.2,
+            "non_negative_bonus": 5000.0,
+            "baseline_improvement_bonus": 3000.0,
+            "small_tier_penalty": -1800.0,
+            "polarization_penalty": 0.0,
+            "mid_tier_balance_bonus": 0.0,
+            "large_profile_bonus": 80.0,
+            "total_score": 106276.2
+          },
+          "recommendation_rank": 3,
+          "is_recommended": false
+        },
+        {
+          "option_label": "best_strategic_fit",
+          "rank": 91,
+          "optimized_diff": 673.8,
+          "profile_fee_sum": 15140,
+          "profile_budget_target": 15813.8,
+          "tier_counts": {
+            "15000": 0,
+            "35000": 7,
+            "75000": 3,
+            "125000": 0,
+            "175000": 0
+          },
+          "total_impressions": 365,
+          "impressions_by_channel": {
+            "Instagram": 215,
+            "TikTok": 150
+          },
+          "impressions_by_market": {},
+          "fill_instructions": [
+            {
+              "profile_size_cell": "B9",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B10",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B11",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B12",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B13",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B14",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 1150
+            },
+            {
+              "profile_size_cell": "B15",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 1150
+            },
+            {
+              "profile_size_cell": "B16",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            },
+            {
+              "profile_size_cell": "B17",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            },
+            {
+              "profile_size_cell": "B18",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            }
+          ],
+          "diagnostics": {
+            "non_negative_diff": true,
+            "abs_diff": 673.8,
+            "strategic_notes": [
+              "No 15K profiles used."
+            ]
+          },
+          "strategic_metrics": {
+            "row_count": 10,
+            "count_15k": 0,
+            "count_75k_plus": 3,
+            "count_125k_plus": 0,
+            "count_175k": 0,
+            "mid_tier_count": 10,
+            "avg_profile_size": 47000.0
+          },
+          "baseline_comparison": "worse",
+          "improves_on_baseline": false,
+          "count_15k": 0,
+          "count_75k_plus": 3,
+          "mid_tier_count": 10,
+          "share_15k": 0.0,
+          "high_15k_share": false,
+          "very_high_15k_share": false,
+          "polarized_mix": false,
+          "balanced_mid_tiers": true,
+          "strategic_notes": [
+            "No 15K profiles used.",
+            "More balanced mid-tier distribution"
+          ],
+          "strategic_warnings": [],
+          "strategic_warning_count": 0,
+          "main_note": "No 15K profiles used.",
+          "recommendation_score_breakdown": {
+            "math_fit_score": 99326.2,
+            "non_negative_bonus": 5000.0,
+            "baseline_improvement_bonus": 0.0,
+            "small_tier_penalty": 0.0,
+            "polarization_penalty": 0.0,
+            "mid_tier_balance_bonus": 1800.0,
+            "large_profile_bonus": 120.0,
+            "total_score": 106246.2
+          },
+          "recommendation_rank": 4,
+          "is_recommended": false
+        },
+        {
+          "option_label": "larger_profile_alternative",
+          "rank": 161,
+          "optimized_diff": 1333.8,
+          "profile_fee_sum": 14480,
+          "profile_budget_target": 15813.8,
+          "tier_counts": {
+            "15000": 0,
+            "35000": 7,
+            "75000": 3,
+            "125000": 0,
+            "175000": 0
+          },
+          "total_impressions": 365,
+          "impressions_by_channel": {
+            "Instagram": 155,
+            "TikTok": 210
+          },
+          "impressions_by_market": {},
+          "fill_instructions": [
+            {
+              "profile_size_cell": "B9",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B10",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B11",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B12",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 2100
+            },
+            {
+              "profile_size_cell": "B13",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 2100
+            },
+            {
+              "profile_size_cell": "B14",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 1150
+            },
+            {
+              "profile_size_cell": "B15",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 1150
+            },
+            {
+              "profile_size_cell": "B16",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 1150
+            },
+            {
+              "profile_size_cell": "B17",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            },
+            {
+              "profile_size_cell": "B18",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 1150
+            }
+          ],
+          "diagnostics": {
+            "non_negative_diff": true,
+            "abs_diff": 1333.8,
+            "strategic_notes": [
+              "No 15K profiles used."
+            ]
+          },
+          "strategic_metrics": {
+            "row_count": 10,
+            "count_15k": 0,
+            "count_75k_plus": 3,
+            "count_125k_plus": 0,
+            "count_175k": 0,
+            "mid_tier_count": 10,
+            "avg_profile_size": 47000.0
+          },
+          "baseline_comparison": "worse",
+          "improves_on_baseline": false,
+          "count_15k": 0,
+          "count_75k_plus": 3,
+          "mid_tier_count": 10,
+          "share_15k": 0.0,
+          "high_15k_share": false,
+          "very_high_15k_share": false,
+          "polarized_mix": false,
+          "balanced_mid_tiers": true,
+          "strategic_notes": [
+            "No 15K profiles used.",
+            "More balanced mid-tier distribution"
+          ],
+          "strategic_warnings": [],
+          "strategic_warning_count": 0,
+          "main_note": "No 15K profiles used.",
+          "recommendation_score_breakdown": {
+            "math_fit_score": 98666.2,
+            "non_negative_bonus": 5000.0,
+            "baseline_improvement_bonus": 0.0,
+            "small_tier_penalty": 0.0,
+            "polarization_penalty": 0.0,
+            "mid_tier_balance_bonus": 1800.0,
+            "large_profile_bonus": 120.0,
+            "total_score": 105586.2
+          },
+          "recommendation_rank": 5,
+          "is_recommended": false
+        },
+        {
+          "option_label": "current_workbook_mix",
+          "rank": 0,
+          "optimized_diff": -46.2,
+          "profile_fee_sum": 15860,
+          "profile_budget_target": 15813.8,
+          "tier_counts": {
+            "15000": 0,
+            "35000": 6,
+            "75000": 4,
+            "125000": 0,
+            "175000": 0
+          },
+          "total_impressions": 395,
+          "impressions_by_channel": {
+            "Instagram": 185,
+            "TikTok": 210
+          },
+          "impressions_by_market": {},
+          "fill_instructions": [
+            {
+              "profile_size_cell": "B9",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B10",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B11",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 1050
+            },
+            {
+              "profile_size_cell": "B12",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 2100
+            },
+            {
+              "profile_size_cell": "B13",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "TikTok",
+              "market": null,
+              "cpm": 35,
+              "activations": 1,
+              "row_fee": 2100
+            },
+            {
+              "profile_size_cell": "B14",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 1150
+            },
+            {
+              "profile_size_cell": "B15",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 1150
+            },
+            {
+              "profile_size_cell": "B16",
+              "recommended_profile_size": 35000,
+              "previous_profile_size": 35000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 1150
+            },
+            {
+              "profile_size_cell": "B17",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            },
+            {
+              "profile_size_cell": "B18",
+              "recommended_profile_size": 75000,
+              "previous_profile_size": 75000,
+              "channel": "Instagram",
+              "market": null,
+              "cpm": 46,
+              "activations": 1,
+              "row_fee": 2530
+            }
+          ],
+          "diagnostics": {
+            "non_negative_diff": false,
+            "abs_diff": 46.2,
+            "strategic_notes": [
+              "No 15K profiles used."
+            ]
+          },
+          "strategic_metrics": {
+            "row_count": 10,
+            "count_15k": 0,
+            "count_75k_plus": 4,
+            "count_125k_plus": 0,
+            "count_175k": 0,
+            "mid_tier_count": 10,
+            "avg_profile_size": 51000.0
+          },
+          "baseline_comparison": "equals",
+          "improves_on_baseline": false,
+          "count_15k": 0,
+          "count_75k_plus": 4,
+          "mid_tier_count": 10,
+          "share_15k": 0.0,
+          "high_15k_share": false,
+          "very_high_15k_share": false,
+          "polarized_mix": false,
+          "balanced_mid_tiers": true,
+          "strategic_notes": [
+            "No 15K profiles used.",
+            "More balanced mid-tier distribution"
+          ],
+          "strategic_warnings": [],
+          "strategic_warning_count": 0,
+          "main_note": "No 15K profiles used.",
+          "recommendation_score_breakdown": {
+            "math_fit_score": 99953.8,
+            "non_negative_bonus": 0.0,
+            "baseline_improvement_bonus": 1000.0,
+            "small_tier_penalty": 0.0,
+            "polarization_penalty": 0.0,
+            "mid_tier_balance_bonus": 1800.0,
+            "large_profile_bonus": 160.0,
+            "total_score": 102913.8
+          },
+          "recommendation_rank": 6,
+          "is_recommended": false
+        }
+      ],
+      "option_comparison": [
+        {
+          "option_label": "fallback_option",
+          "recommendation_rank": 1,
+          "optimized_diff": 13.8,
+          "profile_fee_sum": 15800,
+          "tier_counts": {
+            "15000": 3,
+            "35000": 2,
+            "75000": 5,
+            "125000": 0,
+            "175000": 0
+          },
+          "count_15k": 3,
+          "count_75k_plus": 5,
+          "total_impressions": 365,
+          "strategic_warning_count": 0,
+          "improves_on_baseline": true,
+          "main_note": "Majority of rows are 75K+ tiers."
+        },
+        {
+          "option_label": "balanced_option",
+          "recommendation_rank": 2,
+          "optimized_diff": 93.8,
+          "profile_fee_sum": 15720,
+          "tier_counts": {
+            "15000": 3,
+            "35000": 3,
+            "75000": 3,
+            "125000": 1,
+            "175000": 0
+          },
+          "count_15k": 3,
+          "count_75k_plus": 4,
+          "total_impressions": 380,
+          "strategic_warning_count": 0,
+          "improves_on_baseline": false,
+          "main_note": "More balanced mid-tier distribution"
+        },
+        {
+          "option_label": "best_mathematical_fit",
+          "recommendation_rank": 3,
+          "optimized_diff": 3.8,
+          "profile_fee_sum": 15810,
+          "tier_counts": {
+            "15000": 4,
+            "35000": 4,
+            "75000": 0,
+            "125000": 1,
+            "175000": 1
+          },
+          "count_15k": 4,
+          "count_75k_plus": 2,
+          "total_impressions": 370,
+          "strategic_warning_count": 1,
+          "improves_on_baseline": true,
+          "main_note": "Very high 15K share"
+        },
+        {
+          "option_label": "best_strategic_fit",
+          "recommendation_rank": 4,
+          "optimized_diff": 673.8,
+          "profile_fee_sum": 15140,
+          "tier_counts": {
+            "15000": 0,
+            "35000": 7,
+            "75000": 3,
+            "125000": 0,
+            "175000": 0
+          },
+          "count_15k": 0,
+          "count_75k_plus": 3,
+          "total_impressions": 365,
+          "strategic_warning_count": 0,
+          "improves_on_baseline": false,
+          "main_note": "No 15K profiles used."
+        },
+        {
+          "option_label": "larger_profile_alternative",
+          "recommendation_rank": 5,
+          "optimized_diff": 1333.8,
+          "profile_fee_sum": 14480,
+          "tier_counts": {
+            "15000": 0,
+            "35000": 7,
+            "75000": 3,
+            "125000": 0,
+            "175000": 0
+          },
+          "count_15k": 0,
+          "count_75k_plus": 3,
+          "total_impressions": 365,
+          "strategic_warning_count": 0,
+          "improves_on_baseline": false,
+          "main_note": "No 15K profiles used."
+        },
+        {
+          "option_label": "current_workbook_mix",
+          "recommendation_rank": 6,
+          "optimized_diff": -46.2,
+          "profile_fee_sum": 15860,
+          "tier_counts": {
+            "15000": 0,
+            "35000": 6,
+            "75000": 4,
+            "125000": 0,
+            "175000": 0
+          },
+          "count_15k": 0,
+          "count_75k_plus": 4,
+          "total_impressions": 395,
+          "strategic_warning_count": 0,
+          "improves_on_baseline": false,
+          "main_note": "No 15K profiles used."
+        }
+      ],
+      "warnings": [],
+      "search_diagnostics": {
+        "row_count": 10,
+        "candidate_count_per_row": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "max_frontier_before_prune": 5000,
+        "max_frontier_after_prune": 1000,
+        "expanded_state_count": 15455,
+        "retained_state_count": 1000,
+        "beam_width": 1000,
+        "search_method": "bounded_beam_search",
+        "bounded_search": true,
+        "approximate_search": true,
+        "global_optimality_guaranteed": false,
+        "current_baseline_included": true,
+        "current_baseline_profile_fee_sum": 15860,
+        "current_baseline_diff": -46.2,
+        "current_baseline_retained_by_protection": true,
+        "current_baseline_would_have_been_pruned_by_deduplication": true,
+        "current_baseline_would_have_been_pruned_by_beam_limit": true,
+        "best_mathematical_fit_baseline_comparison": "improves",
+        "best_mathematical_fit_improves_on_current_baseline": true,
+        "best_mathematical_fit_equals_current_baseline": false
+      }
+    }
+  ]
+}
