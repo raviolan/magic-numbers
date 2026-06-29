@@ -249,24 +249,6 @@ def inject_app_css() -> None:
         div[data-baseweb="textarea"] textarea {{
             color: #3b3821 !important;
         }}
-        h1.app-title,
-        .stMarkdown h1.app-title,
-        div[data-testid="stMarkdownContainer"] h1.app-title {{
-            font-family: 'Nine Gyst Kursiv', 'Nine Upgrade', Arial, sans-serif !important;
-            color: #f0fc03 !important;
-            font-style: italic;
-            font-weight: 400;
-            margin: 0 0 0.35rem 0;
-            line-height: 1.05;
-        }}
-        h1.app-title *,
-        .stMarkdown h1.app-title *,
-        div[data-testid="stMarkdownContainer"] h1.app-title * {{
-            font-family: 'Nine Gyst Kursiv', 'Nine Upgrade', Arial, sans-serif !important;
-            color: #f0fc03 !important;
-            font-style: italic;
-            font-weight: 400;
-        }}
         .app-caption {{
             color: #f9e9d4;
             font-size: 0.92rem;
@@ -510,6 +492,19 @@ def inject_app_css() -> None:
         }
         div[data-testid="stDataEditor"] [data-testid="stDataFrameResizable"] div[role="gridcell"] {
             background: #fbf1e4 !important;
+        }
+        .magic-title,
+        .magic-title * {
+            font-family: 'Nine Gyst Kursiv', 'Nine Upgrade', Arial, sans-serif !important;
+            color: #f0fc03 !important;
+            font-style: italic !important;
+            font-weight: 400 !important;
+        }
+        .magic-title {
+            display: block;
+            margin: 0 0 0.35rem 0;
+            line-height: 1.05;
+            font-size: clamp(2.5rem, 8vw, 5.25rem);
         }
         </style>
         """,
@@ -1477,7 +1472,7 @@ def main() -> None:
     language = _ui_language_from_url(getattr(st.context, "url", None))
     st.set_page_config(page_title=_ui_text(language, "page_title"), layout="wide")
     inject_app_css()
-    st.markdown(f'<h1 class="app-title">{_ui_text(language, "page_title")}</h1>', unsafe_allow_html=True)
+    st.markdown(f'<div class="magic-title">{_ui_text(language, "page_title")}</div>', unsafe_allow_html=True)
     app_caption = _ui_text(language, "app_caption")
     if app_caption:
         st.markdown(f'<div class="app-caption">{app_caption}</div>', unsafe_allow_html=True)
