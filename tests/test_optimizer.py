@@ -536,6 +536,68 @@ class OptimizerTests(unittest.TestCase):
         self.assertIn("Closest mathematical fit, but distribution has risk flags.", analyzed["strategic_notes"])
         self.assertNotIn("Very high 15K share", analyzed["strategic_warnings"])
 
+    def test_budget_guidance_warns_when_100k_uses_profiles_above_35k(self) -> None:
+        baseline = self._build_manual_option(
+            "current_workbook_mix",
+            1000,
+            {"15000": 2, "35000": 2, "75000": 0, "125000": 0, "175000": 0},
+        )
+        option = self._build_manual_option(
+            "best_mathematical_fit",
+            100,
+            {"15000": 2, "35000": 1, "75000": 1, "125000": 0, "175000": 0},
+        )
+        analyzed = analyze_option_strategy(option, baseline, 4, "best_mathematical_fit", budget=100000)
+        self.assertIn(
+            "100K budget: profile sizes above 35K are outside the recommended max for this preset.",
+            analyzed["strategic_warnings"],
+        )
+        self.assertEqual(analyzed["budget_guidance_warning_count"], 1)
+
+    def test_budget_guidance_treats_125k_and_175k_as_same_anchor_rule_at_250k(self) -> None:
+        baseline = self._build_manual_option(
+            "current_workbook_mix",
+            1000,
+            {"15000": 3, "35000": 2, "75000": 2, "125000": 0, "175000": 0},
+        )
+        one_anchor = self._build_manual_option(
+            "best_mathematical_fit",
+            100,
+            {"15000": 3, "35000": 2, "75000": 1, "125000": 0, "175000": 1},
+        )
+        two_anchors = self._build_manual_option(
+            "balanced_option",
+            100,
+            {"15000": 3, "35000": 2, "75000": 0, "125000": 1, "175000": 1},
+        )
+
+        analyzed_one = analyze_option_strategy(one_anchor, baseline, 7, "best_mathematical_fit", budget=250000)
+        analyzed_two = analyze_option_strategy(two_anchors, baseline, 7, "best_mathematical_fit", budget=250000)
+
+        self.assertIn(
+            "250K budget: one 125K+ anchor profile is borderline; keep the rest of the mix efficient.",
+            analyzed_one["strategic_notes"],
+        )
+        self.assertNotIn("250K budget: use at most 1 profile at 125K or larger.", analyzed_one["strategic_warnings"])
+        self.assertIn("250K budget: use at most 1 profile at 125K or larger.", analyzed_two["strategic_warnings"])
+
+    def test_budget_guidance_allows_125k_plus_anchor_tiers_at_300k_and_keeps_175k_valid(self) -> None:
+        self.assertIn(175000, VALID_PROFILE_TIERS)
+        baseline = self._build_manual_option(
+            "current_workbook_mix",
+            1000,
+            {"15000": 2, "35000": 3, "75000": 2, "125000": 0, "175000": 0},
+        )
+        option = self._build_manual_option(
+            "best_mathematical_fit",
+            100,
+            {"15000": 2, "35000": 2, "75000": 1, "125000": 1, "175000": 1},
+        )
+        analyzed = analyze_option_strategy(option, baseline, 7, "best_mathematical_fit", budget=300000)
+        self.assertFalse(
+            any("recommended max" in warning or "125K or larger" in warning for warning in analyzed["strategic_warnings"])
+        )
+
     def test_recommendation_score_is_not_penalized_for_15k_usage_by_default(self) -> None:
         baseline = self._build_manual_option(
             "current_workbook_mix",

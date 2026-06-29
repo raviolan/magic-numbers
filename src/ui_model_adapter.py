@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from decimal import Decimal
+from decimal import Decimal, ROUND_FLOOR
 import math
 import re
 from typing import Any, Callable
@@ -12,10 +12,38 @@ from optimizer import VALID_PROFILE_TIERS
 
 SUPPORTED_CHANNELS = {"Instagram", "TikTok", "YouTube"}
 SUPPORTED_CHANNELS_ORDERED = ["Instagram", "TikTok", "YouTube"]
+SIMPLIFIED_MANUAL_CHANNELS = ("Instagram", "TikTok")
 DEFAULT_SELECTED_MANUAL_CHANNELS = ("Instagram", "TikTok")
+SIMPLIFIED_FIXED_BUDGETS = (100000, 150000, 200000, 250000, 300000, 350000, 400000)
+SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES = "Many profiles"
+SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES = "Larger profile sizes"
+SIMPLIFIED_OPTIMIZATION_FOCUS_OPTIONS = (
+    SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES,
+    SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES,
+)
+SIMPLIFIED_PRESET_VALUES = {
+    SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES: {
+        100000: {"agency_fee": 36828, "total_profiles": 2},
+        150000: {"agency_fee": 58806, "total_profiles": 4},
+        200000: {"agency_fee": 69795, "total_profiles": 5},
+        250000: {"agency_fee": 80784, "total_profiles": 6},
+        300000: {"agency_fee": 102762, "total_profiles": 8},
+        350000: {"agency_fee": 124740, "total_profiles": 10},
+        400000: {"agency_fee": 146718, "total_profiles": 12},
+    },
+    SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES: {
+        200000: {"agency_fee": 58806, "total_profiles": 4},
+        250000: {"agency_fee": 80784, "total_profiles": 6},
+        300000: {"agency_fee": 80784, "total_profiles": 6},
+        350000: {"agency_fee": 102762, "total_profiles": 8},
+        400000: {"agency_fee": 124740, "total_profiles": 10},
+    },
+}
+SIMPLIFIED_FIXED_CPMS = {"Instagram": 570.0, "TikTok": 430.0, "YouTube": None}
+SIMPLIFIED_PAID_MEDIA_PERCENT = Decimal("15")
 MANUAL_FEE_MODES = ("Fixed amount", "Percentage of budget", "Percentage range")
 DEFAULT_MANUAL_FEE_MODE = "Percentage of budget"
-DEFAULT_AGENCY_FEE_PERCENT_TEXT = "32%"
+DEFAULT_AGENCY_FEE_PERCENT_TEXT = "0%"
 DEFAULT_PAID_MEDIA_PERCENT_TEXT = "15%"
 DEFAULT_PAID_MEDIA_INCLUDED = True
 DEFAULT_PROFILE_FEE_DEDUCTION_PERCENT = Decimal("7.5")
@@ -300,6 +328,89 @@ def normalize_selected_channels(selected_channels: list[str] | tuple[str, ...] |
             normalized.append(text)
             seen.add(text)
     return [channel for channel in SUPPORTED_CHANNELS_ORDERED if channel in normalized]
+
+
+def build_simplified_budget_setup(
+    budget: Any,
+    paid_media_included: bool,
+    profile_budget_target_multiplier: Any = Decimal("0.925"),
+    optimization_focus: str | None = SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES,
+) -> dict[str, float | int | bool]:
+    budget_decimal = _to_required_decimal(budget, "budget")
+    budget_int = int(budget_decimal)
+    if budget_int not in SIMPLIFIED_FIXED_BUDGETS or budget_decimal != Decimal(budget_int):
+        raise ValueError(f"budget must be one of {list(SIMPLIFIED_FIXED_BUDGETS)}.")
+
+    requested_focus = optimization_focus or SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES
+    if requested_focus not in SIMPLIFIED_OPTIMIZATION_FOCUS_OPTIONS:
+        raise ValueError(f"optimization_focus must be one of {list(SIMPLIFIED_OPTIMIZATION_FOCUS_OPTIONS)}.")
+    resolved_focus = requested_focus
+    preset = SIMPLIFIED_PRESET_VALUES[resolved_focus].get(budget_int)
+    if preset is None:
+        resolved_focus = SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES
+        preset = SIMPLIFIED_PRESET_VALUES[resolved_focus][budget_int]
+
+    agency_fee = Decimal(preset["agency_fee"])
+    paid_media = (budget_decimal * SIMPLIFIED_PAID_MEDIA_PERCENT) / Decimal("100")
+    included_paid_media = paid_media if paid_media_included else Decimal("0")
+    available_before_deduction = budget_decimal - agency_fee - included_paid_media
+    multiplier = _to_required_decimal(profile_budget_target_multiplier, "profile_budget_target_multiplier")
+    available_after_deduction = available_before_deduction * multiplier
+
+    return {
+        "budget": float(budget_decimal),
+        "agency_fee": float(agency_fee),
+        "agency_fee_percent": None,
+        "optimization_focus": resolved_focus,
+        "paid_media": float(paid_media),
+        "paid_media_percent": float(SIMPLIFIED_PAID_MEDIA_PERCENT),
+        "paid_media_included": bool(paid_media_included),
+        "available_before_deduction": float(available_before_deduction),
+        "profile_budget_target_multiplier": float(multiplier),
+        "available_after_deduction": float(available_after_deduction),
+        "total_profiles": int(preset["total_profiles"]),
+    }
+
+
+def parse_channel_percentage_split(
+    total_profiles: Any,
+    percentages: dict[str, Any],
+    selected_channels: list[str] | tuple[str, ...],
+) -> dict[str, int]:
+    total = int(_to_required_decimal(total_profiles, "total_profiles"))
+    if total <= 0:
+        raise ValueError("total_profiles must be greater than 0.")
+    selected = normalize_selected_channels(selected_channels)
+    if not selected:
+        raise ValueError("At least one channel must be selected.")
+    if len(selected) == 1:
+        return {channel: (total if channel == selected[0] else 0) for channel in SUPPORTED_CHANNELS_ORDERED}
+
+    parsed_percentages: dict[str, Decimal] = {}
+    for channel in selected:
+        parsed_percentages[channel] = parse_percentage_value(percentages.get(channel, 0), f"{channel} percentage")
+    total_percent = sum(parsed_percentages.values(), Decimal("0"))
+    if total_percent != Decimal("100.000"):
+        raise ValueError("Selected channel percentages must sum to 100.")
+
+    raw_counts = {
+        channel: (Decimal(total) * parsed_percentages[channel] / Decimal("100"))
+        for channel in selected
+    }
+    floors = {channel: int(raw_counts[channel].to_integral_value(rounding=ROUND_FLOOR)) for channel in selected}
+    remainder = total - sum(floors.values())
+    ranked_remainders = sorted(
+        selected,
+        key=lambda channel: (raw_counts[channel] - Decimal(floors[channel]), -SUPPORTED_CHANNELS_ORDERED.index(channel)),
+        reverse=True,
+    )
+    for channel in ranked_remainders[:remainder]:
+        floors[channel] += 1
+
+    resolved = {channel: (floors.get(channel, 0) if channel in selected else 0) for channel in SUPPORTED_CHANNELS_ORDERED}
+    if sum(resolved.values()) != total:
+        raise ValueError("Resolved channel split does not equal total profiles.")
+    return resolved
 
 
 def parse_channel_split(

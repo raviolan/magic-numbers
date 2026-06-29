@@ -80,6 +80,7 @@ class ResultsViewHelpersTests(unittest.TestCase):
         self.assertFalse(include_market)
         self.assertFalse(include_activations)
         self.assertEqual(rows[0]["Size"], "15")
+        self.assertNotIn("Row", rows[0])
         self.assertNotIn("previous_profile_size", rows[0])
         self.assertNotIn("Activations", rows[0])
         self.assertNotIn("profile_size_cell", rows[0])

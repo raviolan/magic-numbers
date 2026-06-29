@@ -58,6 +58,7 @@
         "small_tier_penalty": 0.0,
         "concentration_penalty": 0.0,
         "polarization_penalty": 0.0,
+        "budget_guidance_penalty": -0.0,
         "mid_tier_balance_bonus": 1200.0,
         "broad_tier_mix_bonus": 0.0,
         "large_profile_bonus": 0.0,
@@ -362,6 +363,7 @@
           "concentrated_tier_mix": false,
           "low_mid_tier_representation": false,
           "balanced_mid_tiers": true,
+          "budget_guidance_warning_count": 0,
           "strategic_notes": [
             "Balanced tier distribution.",
             "Recommended as best balance between diff fit and distribution."
@@ -376,6 +378,7 @@
             "small_tier_penalty": 0.0,
             "concentration_penalty": 0.0,
             "polarization_penalty": 0.0,
+            "budget_guidance_penalty": -0.0,
             "mid_tier_balance_bonus": 1200.0,
             "broad_tier_mix_bonus": 0.0,
             "large_profile_bonus": 0.0,
@@ -676,6 +679,7 @@
           "concentrated_tier_mix": true,
           "low_mid_tier_representation": false,
           "balanced_mid_tiers": true,
+          "budget_guidance_warning_count": 0,
           "strategic_notes": [
             "Concentrated tier mix.",
             "Balanced tier distribution."
@@ -692,6 +696,7 @@
             "small_tier_penalty": 0.0,
             "concentration_penalty": -1800.0,
             "polarization_penalty": 0.0,
+            "budget_guidance_penalty": -0.0,
             "mid_tier_balance_bonus": 1200.0,
             "broad_tier_mix_bonus": 0.0,
             "large_profile_bonus": 0.0,
@@ -990,6 +995,7 @@
           "concentrated_tier_mix": false,
           "low_mid_tier_representation": false,
           "balanced_mid_tiers": true,
+          "budget_guidance_warning_count": 0,
           "strategic_notes": [
             "Balanced tier distribution."
           ],
@@ -1003,6 +1009,7 @@
             "small_tier_penalty": 0.0,
             "concentration_penalty": 0.0,
             "polarization_penalty": 0.0,
+            "budget_guidance_penalty": -0.0,
             "mid_tier_balance_bonus": 1200.0,
             "broad_tier_mix_bonus": 0.0,
             "large_profile_bonus": 0.0,
@@ -1304,6 +1311,7 @@
           "concentrated_tier_mix": true,
           "low_mid_tier_representation": false,
           "balanced_mid_tiers": false,
+          "budget_guidance_warning_count": 0,
           "strategic_notes": [
             "Uses a broad mix of tiers.",
             "Concentrated tier mix.",
@@ -1321,6 +1329,7 @@
             "small_tier_penalty": 0.0,
             "concentration_penalty": -1800.0,
             "polarization_penalty": 0.0,
+            "budget_guidance_penalty": -0.0,
             "mid_tier_balance_bonus": 0.0,
             "broad_tier_mix_bonus": 900.0,
             "large_profile_bonus": 0.0,
@@ -1622,6 +1631,7 @@
           "concentrated_tier_mix": true,
           "low_mid_tier_representation": false,
           "balanced_mid_tiers": false,
+          "budget_guidance_warning_count": 0,
           "strategic_notes": [
             "Uses a broad mix of tiers.",
             "Concentrated tier mix."
@@ -1638,6 +1648,7 @@
             "small_tier_penalty": 0.0,
             "concentration_penalty": -1800.0,
             "polarization_penalty": 0.0,
+            "budget_guidance_penalty": -0.0,
             "mid_tier_balance_bonus": 0.0,
             "broad_tier_mix_bonus": 900.0,
             "large_profile_bonus": 0.0,
@@ -1936,6 +1947,7 @@
           "concentrated_tier_mix": false,
           "low_mid_tier_representation": false,
           "balanced_mid_tiers": true,
+          "budget_guidance_warning_count": 0,
           "strategic_notes": [
             "Balanced tier distribution."
           ],
@@ -1949,6 +1961,7 @@
             "small_tier_penalty": 0.0,
             "concentration_penalty": 0.0,
             "polarization_penalty": 0.0,
+            "budget_guidance_penalty": -0.0,
             "mid_tier_balance_bonus": 1200.0,
             "broad_tier_mix_bonus": 0.0,
             "large_profile_bonus": 0.0,

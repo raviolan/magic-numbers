@@ -53,29 +53,15 @@ Manual builder budget rule wording:
   - Profile fee deduction (7.5% default)
   - Available profile-fee target
 
-Manual builder fee input modes:
-- Agency fee:
-  - Fixed amount
-  - Percentage of budget
-  - Percentage range (for example `29-35%` with a step such as `0.5`)
-- Paid media:
-  - Fixed amount
-  - Percentage of budget
-  - Percentage range (for example `10-15%`)
-- Default mode for both agency fee and paid media is `Percentage of budget`.
-- Default percentages:
-  - Agency fee: `32%`
-  - Paid media: `15%`
-
-Range behavior:
-- The app expands percentage ranges to concrete values using the configured step.
-- It evaluates all agency-fee / paid-media combinations.
-- It runs the existing optimizer for each combination and picks the best recommended result.
-- Selected values are shown in the results:
-  - selected agency fee amount (+ percent when applicable)
-  - selected paid media amount (+ percent when applicable)
-  - number of combinations evaluated
-- Safety guard: maximum `200` combinations by default. If exceeded, narrow ranges or increase step.
+Simplified budget preset behavior:
+- Agency fee comes from the selected preset budget tier as a fixed amount.
+- Paid media is `15%` of the selected budget tier.
+- Paid media can be included or excluded from the optimizer profile-budget target.
+- The fixed `7.5%` profile-fee deduction is applied after agency fee and included paid media.
+- The selected budget tier also controls the generated profile count.
+- The default preset variant is `Many profiles`.
+- For budget tiers from `200 000 SEK` and up, `Larger profile sizes` can be selected to use the alternate preset agency fee and profile count.
+- For `100 000 SEK` and `150 000 SEK`, the app always uses `Many profiles`.
 
 Project CPM setup:
 - Set default CPM per supported channel before row generation:

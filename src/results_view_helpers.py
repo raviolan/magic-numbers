@@ -182,7 +182,7 @@ def build_simplified_fill_rows(fill_instructions: list[dict[str, Any]]) -> tuple
     include_market = any(bool((row.get("market") or "").strip()) for row in fill_instructions if isinstance(row, dict))
     include_activations = any((row.get("activations") not in (None, "", 1, 1.0, "1")) for row in fill_instructions if isinstance(row, dict))
     rows: list[dict[str, Any]] = []
-    for index, row in enumerate(fill_instructions, start=1):
+    for row in fill_instructions:
         if not isinstance(row, dict):
             continue
         rec_size = row.get("recommended_profile_size")
@@ -192,7 +192,6 @@ def build_simplified_fill_rows(fill_instructions: list[dict[str, Any]]) -> tuple
         except (TypeError, ValueError):
             rec_display = ""
         item: dict[str, Any] = {
-            "Row": row.get("profile_size_cell") or f"manual row {index}",
             "Size": rec_display,
             "Channel": row.get("channel"),
             "CPM": row.get("cpm"),

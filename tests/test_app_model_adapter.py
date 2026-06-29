@@ -8,7 +8,7 @@ from unittest import mock
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from calculation_engine import load_normalized_models
-from optimizer import run_optimizer_for_models
+from optimizer import compute_profile_budget_target, run_optimizer_for_models
 from ui_model_adapter import (
     DEFAULT_AGENCY_FEE_PERCENT_TEXT,
     DEFAULT_MANUAL_FEE_MODE,
@@ -18,8 +18,12 @@ from ui_model_adapter import (
     DEFAULT_PROFILE_FEE_DEDUCTION_PERCENT,
     MANUAL_FEE_MODES,
     MAX_MANUAL_FEE_COMBINATIONS,
+    SIMPLIFIED_FIXED_CPMS,
+    SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES,
+    SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES,
     build_manual_campaign_model,
     build_fee_paid_combinations,
+    build_simplified_budget_setup,
     deduction_percent_to_multiplier,
     evaluate_fee_paid_combinations,
     expand_percentage_range,
@@ -28,6 +32,7 @@ from ui_model_adapter import (
     choose_option_for_fill_view,
     generate_profile_rows,
     normalize_selected_channels,
+    parse_channel_percentage_split,
     parse_friendly_amount,
     profile_size_to_k_display,
     parse_percentage_range,
@@ -72,6 +77,116 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertEqual(app._mround_to_5(572.5), 575)
         self.assertEqual(app._mround_to_5(461.5), 460)
         self.assertEqual(app._mround_to_5(955), 955)
+
+    def test_selectable_fill_view_uses_selected_non_recommended_option(self) -> None:
+        import app
+
+        result = {
+            "recommended_option_label": "best_mathematical_fit",
+            "options": [
+                {
+                    "option_label": "best_mathematical_fit",
+                    "optimized_diff": 100,
+                    "fill_instructions": [{"channel": "Instagram", "recommended_profile_size": 15000}],
+                    "main_note": "A",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "best_strategic_fit",
+                    "optimized_diff": 200,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 75000}],
+                    "main_note": "B",
+                    "strategic_warnings": [],
+                },
+            ],
+        }
+
+        view = app._build_selectable_fill_view(result, selected_option_label="best_strategic_fit")
+
+        self.assertEqual(view["selected_label"], "best_strategic_fit")
+        self.assertEqual(view["simple_fill_rows"][0]["Channel"], "TikTok")
+        self.assertEqual(view["simple_fill_rows"][0]["Size"], "75")
+
+    def test_selectable_fill_view_invalid_selection_falls_back_to_recommended(self) -> None:
+        import app
+
+        result = {
+            "recommended_option_label": "best_mathematical_fit",
+            "options": [
+                {
+                    "option_label": "best_mathematical_fit",
+                    "optimized_diff": 100,
+                    "fill_instructions": [{"channel": "Instagram", "recommended_profile_size": 35000}],
+                    "main_note": "A",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "best_strategic_fit",
+                    "optimized_diff": 200,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 75000}],
+                    "main_note": "B",
+                    "strategic_warnings": [],
+                },
+            ],
+        }
+
+        view = app._build_selectable_fill_view(result, selected_option_label="missing_option")
+
+        self.assertEqual(view["selected_label"], "best_mathematical_fit")
+        self.assertEqual(view["simple_fill_rows"][0]["Channel"], "Instagram")
+        self.assertEqual(view["simple_fill_rows"][0]["Size"], "35")
+
+    def test_selectable_fill_view_option_labels_are_derived_from_current_result(self) -> None:
+        import app
+
+        result = {
+            "recommended_option_label": "custom_recommended",
+            "options": [
+                {
+                    "option_label": "custom_recommended",
+                    "optimized_diff": 100,
+                    "fill_instructions": [{"channel": "Instagram", "recommended_profile_size": 15000}],
+                    "main_note": "A",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "custom_alternative",
+                    "optimized_diff": 300,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 35000}],
+                    "main_note": "B",
+                    "strategic_warnings": [],
+                },
+            ],
+        }
+
+        view = app._build_selectable_fill_view(result)
+
+        self.assertEqual(view["option_labels"], ["custom_recommended", "custom_alternative"])
+        self.assertNotIn("best_strategic_fit", view["option_labels"])
+
+    def test_main_fill_selector_key_changes_between_results(self) -> None:
+        import app
+
+        self.assertNotEqual(app._main_fill_selector_key(1), app._main_fill_selector_key(2))
+
+    def test_ui_language_defaults_to_swedish_and_supports_en_path(self) -> None:
+        import app
+
+        self.assertEqual(app._ui_language_from_url(None), "sv")
+        self.assertEqual(app._ui_language_from_url("http://localhost:8502/"), "sv")
+        self.assertEqual(app._ui_language_from_url("http://localhost:8502/en/"), "en")
+        self.assertEqual(app._ui_language_from_url("http://localhost:8502/en/?x=1"), "en")
+        self.assertEqual(app._ui_text("sv", "page_title"), "Magisk kalkyl")
+        self.assertEqual(app._ui_text("sv", "app_caption"), "Generera kalkyler för enklare kundprojekt")
+        self.assertEqual(app._ui_text("en", "page_title"), "Magic Numbers")
+
+    def test_positive_buffer_above_recommended_gets_attention_highlight(self) -> None:
+        import app
+
+        self.assertTrue(app._option_has_positive_buffer_above_recommended({"diff": 250, "delta_vs_recommended": 100}))
+        self.assertFalse(app._option_has_positive_buffer_above_recommended({"diff": -50, "delta_vs_recommended": 100}))
+        self.assertFalse(app._option_has_positive_buffer_above_recommended({"diff": 250, "delta_vs_recommended": 0}))
+        self.assertFalse(app._option_has_positive_buffer_above_recommended({"diff": 100, "delta_vs_recommended": -50}))
 
     def test_result_budget_view_prefers_result_breakdown_and_formats_agency_fee(self) -> None:
         import app
@@ -156,7 +271,7 @@ class ManualCampaignAdapterTests(unittest.TestCase):
     def test_manual_builder_default_mode_and_percent_defaults(self) -> None:
         self.assertEqual(DEFAULT_MANUAL_FEE_MODE, "Percentage of budget")
         self.assertIn(DEFAULT_MANUAL_FEE_MODE, MANUAL_FEE_MODES)
-        self.assertEqual(DEFAULT_AGENCY_FEE_PERCENT_TEXT, "32%")
+        self.assertEqual(DEFAULT_AGENCY_FEE_PERCENT_TEXT, "0%")
         self.assertEqual(DEFAULT_PAID_MEDIA_PERCENT_TEXT, "15%")
         self.assertTrue(DEFAULT_PAID_MEDIA_INCLUDED)
         self.assertEqual(DEFAULT_SELECTED_MANUAL_CHANNELS, ("Instagram", "TikTok"))
@@ -164,6 +279,100 @@ class ManualCampaignAdapterTests(unittest.TestCase):
     def test_default_deduction_percent_is_7_5_and_maps_to_0_925_multiplier(self) -> None:
         self.assertEqual(float(DEFAULT_PROFILE_FEE_DEDUCTION_PERCENT), 7.5)
         self.assertEqual(deduction_percent_to_multiplier(DEFAULT_PROFILE_FEE_DEDUCTION_PERCENT), 0.925)
+
+    def test_simplified_budget_setup_uses_fixed_preset_fee_paid_media_and_deduction(self) -> None:
+        setup = build_simplified_budget_setup(100000, paid_media_included=True)
+        self.assertEqual(setup["optimization_focus"], SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES)
+        self.assertEqual(setup["agency_fee"], 36828.0)
+        self.assertIsNone(setup["agency_fee_percent"])
+        self.assertEqual(setup["paid_media"], 15000.0)
+        self.assertEqual(setup["available_before_deduction"], 48172.0)
+        self.assertEqual(setup["available_after_deduction"], 44559.1)
+        self.assertEqual(setup["total_profiles"], 2)
+
+    def test_simplified_budget_setup_100k_and_150k_fallback_to_many_profiles(self) -> None:
+        setup_100k = build_simplified_budget_setup(
+            100000,
+            paid_media_included=True,
+            optimization_focus=SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES,
+        )
+        setup_150k = build_simplified_budget_setup(
+            150000,
+            paid_media_included=True,
+            optimization_focus=SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES,
+        )
+        self.assertEqual(setup_100k["optimization_focus"], SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES)
+        self.assertEqual(setup_100k["agency_fee"], 36828.0)
+        self.assertEqual(setup_100k["total_profiles"], 2)
+        self.assertEqual(setup_150k["optimization_focus"], SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES)
+        self.assertEqual(setup_150k["agency_fee"], 58806.0)
+        self.assertEqual(setup_150k["total_profiles"], 4)
+
+    def test_simplified_budget_setup_250k_uses_exact_preset_values(self) -> None:
+        setup = build_simplified_budget_setup(250000, paid_media_included=True)
+        self.assertEqual(setup["agency_fee"], 80784.0)
+        self.assertIsNone(setup["agency_fee_percent"])
+        self.assertEqual(setup["paid_media"], 37500.0)
+        self.assertEqual(setup["available_before_deduction"], 131716.0)
+        self.assertEqual(setup["available_after_deduction"], 121837.3)
+        self.assertEqual(setup["total_profiles"], 6)
+
+    def test_simplified_budget_setup_many_profiles_200k_uses_default_variant(self) -> None:
+        setup = build_simplified_budget_setup(
+            200000,
+            paid_media_included=True,
+            optimization_focus=SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES,
+        )
+        self.assertEqual(setup["optimization_focus"], SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES)
+        self.assertEqual(setup["agency_fee"], 69795.0)
+        self.assertEqual(setup["paid_media"], 30000.0)
+        self.assertEqual(setup["total_profiles"], 5)
+
+    def test_simplified_budget_setup_larger_profiles_200k_uses_variant(self) -> None:
+        setup = build_simplified_budget_setup(
+            200000,
+            paid_media_included=True,
+            optimization_focus=SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES,
+        )
+        self.assertEqual(setup["optimization_focus"], SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES)
+        self.assertEqual(setup["agency_fee"], 58806.0)
+        self.assertEqual(setup["paid_media"], 30000.0)
+        self.assertEqual(setup["available_before_deduction"], 111194.0)
+        self.assertEqual(setup["available_after_deduction"], 102854.45)
+        self.assertEqual(setup["total_profiles"], 4)
+
+    def test_simplified_budget_setup_larger_profiles_300k_uses_variant(self) -> None:
+        setup = build_simplified_budget_setup(
+            300000,
+            paid_media_included=True,
+            optimization_focus=SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES,
+        )
+        self.assertEqual(setup["agency_fee"], 80784.0)
+        self.assertEqual(setup["paid_media"], 45000.0)
+        self.assertEqual(setup["total_profiles"], 6)
+
+    def test_simplified_budget_setup_larger_profiles_400k_uses_variant(self) -> None:
+        setup = build_simplified_budget_setup(
+            400000,
+            paid_media_included=True,
+            optimization_focus=SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES,
+        )
+        self.assertEqual(setup["agency_fee"], 124740.0)
+        self.assertEqual(setup["paid_media"], 60000.0)
+        self.assertEqual(setup["total_profiles"], 10)
+
+    def test_simplified_budget_setup_agency_fee_comes_from_preset_not_percentage(self) -> None:
+        setup = build_simplified_budget_setup(300000, paid_media_included=True)
+        self.assertEqual(setup["agency_fee"], 102762.0)
+        self.assertNotEqual(setup["agency_fee"], 96000.0)
+        self.assertEqual(setup["total_profiles"], 8)
+
+    def test_simplified_fixed_cpms_and_default_channels_exclude_youtube(self) -> None:
+        self.assertEqual(SIMPLIFIED_FIXED_CPMS["Instagram"], 570.0)
+        self.assertEqual(SIMPLIFIED_FIXED_CPMS["TikTok"], 430.0)
+        self.assertIsNone(SIMPLIFIED_FIXED_CPMS["YouTube"])
+        self.assertEqual(DEFAULT_SELECTED_MANUAL_CHANNELS, ("Instagram", "TikTok"))
+        self.assertNotIn("YouTube", DEFAULT_SELECTED_MANUAL_CHANNELS)
 
     def test_deduction_percent_to_multiplier_conversion(self) -> None:
         self.assertEqual(deduction_percent_to_multiplier(0), 1.0)
@@ -175,8 +384,8 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertEqual(candidates, [{"amount": 25000.0, "percent": None}])
 
     def test_percentage_agency_fee_mode(self) -> None:
-        candidates = resolve_fee_candidates(mode="Percentage of budget", budget=100000, percent_value="32%", field_name="agency_fee")
-        self.assertEqual(candidates, [{"amount": 32000.0, "percent": 32.0}])
+        candidates = resolve_fee_candidates(mode="Percentage of budget", budget=100000, percent_value="30%", field_name="agency_fee")
+        self.assertEqual(candidates, [{"amount": 30000.0, "percent": 30.0}])
 
     def test_agency_fee_range_expansion(self) -> None:
         values = expand_percentage_range("29-30%", 0.5, "agency_fee")
@@ -463,6 +672,31 @@ class ManualCampaignAdapterTests(unittest.TestCase):
                 selected_channels=["Instagram", "TikTok"],
             )
 
+    def test_percentage_split_conversion_sums_to_total_profiles(self) -> None:
+        split = parse_channel_percentage_split(
+            total_profiles=7,
+            percentages={"Instagram": 70, "TikTok": 30},
+            selected_channels=["Instagram", "TikTok"],
+        )
+        self.assertEqual(sum(split.values()), 7)
+        self.assertEqual(split, {"Instagram": 5, "TikTok": 2, "YouTube": 0})
+
+    def test_percentage_split_requires_selected_channels_to_sum_to_100(self) -> None:
+        with self.assertRaisesRegex(ValueError, "sum to 100"):
+            parse_channel_percentage_split(
+                total_profiles=7,
+                percentages={"Instagram": 60, "TikTok": 30},
+                selected_channels=["Instagram", "TikTok"],
+            )
+
+    def test_percentage_split_single_channel_gets_all_profiles(self) -> None:
+        split = parse_channel_percentage_split(
+            total_profiles=8,
+            percentages={"TikTok": 20},
+            selected_channels=["TikTok"],
+        )
+        self.assertEqual(split, {"Instagram": 0, "TikTok": 8, "YouTube": 0})
+
     def test_generate_profile_rows_respects_selected_channels(self) -> None:
         project_cpms = resolve_project_cpms(instagram_cpm=1000, tiktok_cpm=900, youtube_cpm="")
         rows = generate_profile_rows(
@@ -532,6 +766,68 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         payload = run_optimizer_for_models([model], input_label="manual")
         self.assertEqual(payload["campaign_count"], 1)
         self.assertGreaterEqual(len(payload["results"][0]["options"]), 2)
+
+    def test_optimizer_runs_with_simplified_generated_rows(self) -> None:
+        setup = build_simplified_budget_setup(100000, paid_media_included=True)
+        split = parse_channel_percentage_split(
+            total_profiles=setup["total_profiles"],
+            percentages={"Instagram": 50, "TikTok": 50},
+            selected_channels=["Instagram", "TikTok"],
+        )
+        rows = generate_profile_rows(
+            total_profiles=setup["total_profiles"],
+            project_cpms=SIMPLIFIED_FIXED_CPMS,
+            channel_split=split,
+            selected_channels=["Instagram", "TikTok"],
+        )
+        model = build_manual_campaign_model(
+            campaign_name="Simplified generated rows",
+            budget=setup["budget"],
+            agency_fee=setup["agency_fee"],
+            paid_media=setup["paid_media"],
+            paid_media_included=True,
+            profile_budget_target_multiplier=setup["profile_budget_target_multiplier"],
+            rows=rows,
+        )
+        payload = run_optimizer_for_models([model], input_label="manual", top_n=3, allowed_tiers=None)
+        self.assertEqual(payload["campaign_count"], 1)
+        self.assertEqual(payload["results"][0]["profile_budget_target"], 44559.1)
+        self.assertGreaterEqual(len(payload["results"][0]["options"]), 2)
+
+    def test_paid_included_vs_excluded_changes_profile_budget_target(self) -> None:
+        included_setup = build_simplified_budget_setup(100000, paid_media_included=True)
+        excluded_setup = build_simplified_budget_setup(100000, paid_media_included=False)
+        split = parse_channel_percentage_split(
+            total_profiles=included_setup["total_profiles"],
+            percentages={"Instagram": 50, "TikTok": 50},
+            selected_channels=["Instagram", "TikTok"],
+        )
+        rows = generate_profile_rows(
+            total_profiles=included_setup["total_profiles"],
+            project_cpms=SIMPLIFIED_FIXED_CPMS,
+            channel_split=split,
+            selected_channels=["Instagram", "TikTok"],
+        )
+        included_model = build_manual_campaign_model(
+            campaign_name="Included paid",
+            budget=included_setup["budget"],
+            agency_fee=included_setup["agency_fee"],
+            paid_media=included_setup["paid_media"],
+            paid_media_included=True,
+            profile_budget_target_multiplier=included_setup["profile_budget_target_multiplier"],
+            rows=rows,
+        )
+        excluded_model = build_manual_campaign_model(
+            campaign_name="Excluded paid",
+            budget=excluded_setup["budget"],
+            agency_fee=excluded_setup["agency_fee"],
+            paid_media=excluded_setup["paid_media"],
+            paid_media_included=False,
+            profile_budget_target_multiplier=excluded_setup["profile_budget_target_multiplier"],
+            rows=rows,
+        )
+        self.assertEqual(float(compute_profile_budget_target(included_model)), 44559.1)
+        self.assertEqual(float(compute_profile_budget_target(excluded_model)), 58434.1)
 
     def test_optimizer_allowed_tiers_flow_from_run_payload(self) -> None:
         project_cpms = resolve_project_cpms(instagram_cpm=1000, tiktok_cpm=900, youtube_cpm=800)

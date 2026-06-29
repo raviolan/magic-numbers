@@ -25,6 +25,15 @@ OUTPUT_DIR = Path("data/optimizer")
 JSON_OUTPUT_PATH = OUTPUT_DIR / "optimizer_results.json"
 MARKDOWN_OUTPUT_PATH = OUTPUT_DIR / "optimizer_results.md"
 VALID_PROFILE_TIERS = (15000, 35000, 75000, 125000, 175000)
+SIMPLIFIED_BUDGET_PROFILE_GUIDANCE = {
+    100000: {"recommended_max_tier": 35000, "anchor_tier_limit": 0},
+    150000: {"recommended_max_tier": 75000, "anchor_tier_limit": 0},
+    200000: {"recommended_max_tier": 75000, "anchor_tier_limit": 0},
+    250000: {"recommended_max_tier": 175000, "anchor_tier_limit": 1},
+    300000: {"recommended_max_tier": 175000, "anchor_tier_limit": None},
+    350000: {"recommended_max_tier": 175000, "anchor_tier_limit": None},
+    400000: {"recommended_max_tier": 175000, "anchor_tier_limit": None},
+}
 SELECTED_ROW_FEE_FORMULA = "thousands_rounded_path"
 DEFAULT_BEAM_WIDTH = 1000
 DEFAULT_TOP_N = 5
@@ -885,11 +894,53 @@ def build_option_main_note(option: dict[str, Any]) -> str:
     return "No notable distribution risk flags."
 
 
+def _budget_guidance_for_option(
+    budget: Any,
+    count_75k: int,
+    count_125k: int,
+    count_175k: int,
+) -> tuple[list[str], list[str]]:
+    budget_decimal = to_decimal(budget)
+    if budget_decimal is None or budget_decimal != budget_decimal.to_integral_value():
+        return [], []
+    guidance = SIMPLIFIED_BUDGET_PROFILE_GUIDANCE.get(int(budget_decimal))
+    if guidance is None:
+        return [], []
+
+    warnings: list[str] = []
+    notes: list[str] = []
+    budget_label = f"{int(budget_decimal / Decimal('1000'))}K budget"
+    recommended_max_tier = int(guidance["recommended_max_tier"])
+
+    above_recommended_max = 0
+    if recommended_max_tier < 75000:
+        above_recommended_max += count_75k
+    if recommended_max_tier < 125000:
+        above_recommended_max += count_125k
+    if recommended_max_tier < 175000:
+        above_recommended_max += count_175k
+
+    if above_recommended_max:
+        warnings.append(
+            f"{budget_label}: profile sizes above {int(recommended_max_tier / 1000)}K are outside the recommended max for this preset."
+        )
+
+    anchor_count = count_125k + count_175k
+    anchor_tier_limit = guidance["anchor_tier_limit"]
+    if anchor_tier_limit == 1 and anchor_count == 1:
+        notes.append("250K budget: one 125K+ anchor profile is borderline; keep the rest of the mix efficient.")
+    elif anchor_tier_limit is not None and anchor_count > int(anchor_tier_limit):
+        warnings.append(f"{budget_label}: use at most {int(anchor_tier_limit)} profile at 125K or larger.")
+
+    return warnings, notes
+
+
 def analyze_option_strategy(
     option: dict[str, Any],
     baseline_option: dict[str, Any] | None,
     row_count: int,
     best_mathematical_label: str,
+    budget: Any = None,
 ) -> dict[str, Any]:
     tier_counts = option["tier_counts"]
     count_15k = int(tier_counts.get("15000", 0))
@@ -920,6 +971,16 @@ def analyze_option_strategy(
         strategic_warnings.append("Polarized mix: heavy use of smallest and largest tiers")
     if low_mid_tier_representation:
         strategic_warnings.append("Low mid-tier representation")
+    budget_guidance_warnings, budget_guidance_notes = _budget_guidance_for_option(
+        budget=budget,
+        count_75k=count_75k,
+        count_125k=count_125k,
+        count_175k=count_175k,
+    )
+    strategic_warnings.extend(budget_guidance_warnings)
+    for note in budget_guidance_notes:
+        if note not in strategic_notes:
+            strategic_notes.append(note)
     if balanced_mid_tiers and "Balanced tier distribution." not in strategic_notes:
         strategic_notes.append("Balanced tier distribution.")
     if broad_tier_mix and "Uses a broad mix of tiers." not in strategic_notes:
@@ -943,6 +1004,7 @@ def analyze_option_strategy(
     option["concentrated_tier_mix"] = concentrated_tier_mix
     option["low_mid_tier_representation"] = low_mid_tier_representation
     option["balanced_mid_tiers"] = balanced_mid_tiers
+    option["budget_guidance_warning_count"] = len(budget_guidance_warnings)
     option["strategic_notes"] = strategic_notes
     option["strategic_warnings"] = strategic_warnings
     option["strategic_warning_count"] = len(strategic_warnings)
@@ -960,6 +1022,7 @@ def compute_recommendation_score(option: dict[str, Any]) -> dict[str, Any]:
     small_tier_penalty = 0.0
     concentration_penalty = -1800.0 if option.get("concentrated_tier_mix") else 0.0
     polarization_penalty = -2500.0 if option["polarized_mix"] else 0.0
+    budget_guidance_penalty = -3500.0 * int(option.get("budget_guidance_warning_count", 0))
     mid_tier_balance_bonus = 1200.0 if option["balanced_mid_tiers"] else 0.0
     broad_tier_mix_bonus = 900.0 if non_zero_tier_count >= 4 else 0.0
     large_profile_bonus = 0.0
@@ -970,6 +1033,7 @@ def compute_recommendation_score(option: dict[str, Any]) -> dict[str, Any]:
         + small_tier_penalty
         + concentration_penalty
         + polarization_penalty
+        + budget_guidance_penalty
         + mid_tier_balance_bonus
         + broad_tier_mix_bonus
         + large_profile_bonus
@@ -981,6 +1045,7 @@ def compute_recommendation_score(option: dict[str, Any]) -> dict[str, Any]:
         "small_tier_penalty": round(small_tier_penalty, 3),
         "concentration_penalty": round(concentration_penalty, 3),
         "polarization_penalty": round(polarization_penalty, 3),
+        "budget_guidance_penalty": round(budget_guidance_penalty, 3),
         "mid_tier_balance_bonus": round(mid_tier_balance_bonus, 3),
         "broad_tier_mix_bonus": round(broad_tier_mix_bonus, 3),
         "large_profile_bonus": round(large_profile_bonus, 3),
@@ -1108,7 +1173,7 @@ def optimize_model(
     baseline_option = next((option for option in options if option["option_label"] == "current_workbook_mix"), None)
     best_math_label = "best_mathematical_fit"
     analyzed_options = [
-        analyze_option_strategy(option, baseline_option, len(model.profile_rows), best_math_label)
+        analyze_option_strategy(option, baseline_option, len(model.profile_rows), best_math_label, budget=model.budget)
         for option in options
     ]
     for option in analyzed_options:

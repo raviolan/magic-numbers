@@ -5,6 +5,7 @@ import io
 import json
 import math
 from pathlib import Path
+from urllib.parse import urlparse
 
 import pandas as pd
 import streamlit as st
@@ -39,6 +40,13 @@ from optimizer import (
 from cpm_reference_import import import_reference_cpm_rows, preview_reference_cpm_import
 from ui_model_adapter import (
     MANUAL_FEE_MODES,
+    SIMPLIFIED_FIXED_BUDGETS,
+    SIMPLIFIED_FIXED_CPMS,
+    SIMPLIFIED_MANUAL_CHANNELS,
+    SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES,
+    SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES,
+    SIMPLIFIED_OPTIMIZATION_FOCUS_OPTIONS,
+    build_simplified_budget_setup,
     DEFAULT_MANUAL_FEE_MODE,
     DEFAULT_AGENCY_FEE_PERCENT_TEXT,
     DEFAULT_PAID_MEDIA_PERCENT_TEXT,
@@ -51,6 +59,7 @@ from ui_model_adapter import (
     deduction_percent_to_multiplier,
     evaluate_fee_paid_combinations,
     generate_profile_rows,
+    parse_channel_percentage_split,
     parse_channel_split,
     normalize_selected_channels,
     resolve_project_cpms,
@@ -71,6 +80,48 @@ from results_view_helpers import (
     select_option_label,
     tier_mix_by_channel_lines,
 )
+
+UI_TRANSLATIONS = {
+    "sv": {
+        "page_title": "Magisk kalkyl",
+        "app_caption": "Generera kalkyler för enklare kundprojekt",
+        "campaign_setup_title": "1. Kampanjregler",
+        "campaign_setup_description": "Välj budgetnivå, paid och (för budgetar större än 200Kkr), optimering för profiler.",
+        "channels_title": "2. Kanaler",
+        "channels_description": "Välj mellan tiktok och instagram.",
+        "optional_split": "Kanaluppdelning",
+        "current_setup_title": "3. Förhandsgranska detaljer (frivilligt)",
+        "current_setup_caption": "",
+        "run_optimizer_title": "4. Kör kalkyl",
+        "run_optimizer_description": "Du kommer få tre förslag att välja mellan",
+        "run_optimizer_button": "Kör kalkyl",
+    },
+    "en": {
+        "page_title": "Magic Numbers",
+        "app_caption": "Simplified manual campaign builder with deterministic profile-size optimization.",
+        "campaign_setup_title": "1. Campaign setup",
+        "campaign_setup_description": "Choose the campaign budget and paid amplification treatment.",
+        "channels_title": "2. Channels",
+        "channels_description": "Select Instagram and/or TikTok for generated profile rows.",
+        "optional_split": "Optional percentage split",
+        "current_setup_title": "3. Current setup",
+        "current_setup_caption": "Quick check before running the optimizer.",
+        "run_optimizer_title": "4. Run optimizer",
+        "run_optimizer_description": "Generate three deterministic recommendation options.",
+        "run_optimizer_button": "Run optimizer",
+    },
+}
+
+
+def _ui_language_from_url(url: str | None) -> str:
+    if not url:
+        return "sv"
+    path = urlparse(str(url)).path
+    return "en" if "/en/" in f"{path}/" else "sv"
+
+
+def _ui_text(language: str, key: str) -> str:
+    return UI_TRANSLATIONS.get(language, UI_TRANSLATIONS["sv"]).get(key, UI_TRANSLATIONS["en"].get(key, key))
 
 
 def _format_cpm(value: float | int | None) -> str:
@@ -162,12 +213,60 @@ def inject_app_css() -> None:
             background: #f8fafc;
             font-size: 0.8rem;
         }
-        .option-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 0.65rem 0.75rem;
-            background: #ffffff;
-            min-height: 200px;
+        .option-click-area {
+            position: relative;
+            border-radius: 8px;
+            padding: 0.65rem 0.7rem;
+            min-height: 215px;
+            overflow: hidden;
+        }
+        .option-click-selected {
+            border: 1px solid #16a34a;
+            background: #f0fdf4;
+            color: #111827;
+        }
+        .option-click-positive-buffer {
+            border: 1px solid #f59e0b;
+            background: #fffbeb;
+            color: #111827;
+        }
+        .option-click-muted {
+            border: 1px solid transparent;
+            background: #f3f4f6;
+            color: #6b7280;
+            opacity: 0.78;
+        }
+        .option-click-area:hover {
+            background: #f8fafc;
+            cursor: pointer;
+        }
+        .option-click-title {
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+            padding-right: 0.25rem;
+        }
+        .option-summary-title {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .option-summary-line {
+            font-size: 0.9rem;
+            margin-bottom: 0.22rem;
+        }
+        div[class*="st-key-optionselect_"] {
+            position: relative;
+        }
+        div[class*="st-key-optionselect_"] div[data-testid="stButton"] {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+        }
+        div[class*="st-key-optionselect_"] div[data-testid="stButton"] button {
+            width: 100%;
+            height: 100%;
+            min-height: 215px;
+            opacity: 0;
+            border: 0;
         }
         .section-banner {
             border-radius: 10px;
@@ -564,6 +663,41 @@ def _build_result_budget_view(
     }
 
 
+def _build_selectable_fill_view(result: dict, selected_option_label: str | None = None) -> dict:
+    cards = build_option_quick_compare_cards(result)
+    option_labels = [str(card["option_label"]) for card in cards if card.get("option_label")]
+    if not option_labels:
+        option_labels = [str(option.get("option_label")) for option in result.get("options", []) if option.get("option_label")]
+    recommended_label = str(result.get("recommended_option_label", ""))
+    selected_label = select_option_label(option_labels, recommended_label, selected=selected_option_label)
+    selected_option = choose_option_for_fill_view(
+        options=result.get("options", []),
+        recommended_option_label=recommended_label,
+        selected_option_label=selected_label,
+    )
+    selected_label = str(selected_option.get("option_label") or selected_label)
+    simple_fill_rows, include_market, include_activations = build_simplified_fill_rows(
+        selected_option.get("fill_instructions", [])
+    )
+    return {
+        "cards": cards,
+        "option_labels": option_labels,
+        "selected_label": selected_label,
+        "selected_option": selected_option,
+        "simple_fill_rows": simple_fill_rows,
+        "include_market": include_market,
+        "include_activations": include_activations,
+    }
+
+
+def _main_fill_selector_key(run_id: object) -> str:
+    return f"main_fill_option_selector_{run_id}"
+
+
+def _option_has_positive_buffer_above_recommended(card: dict) -> bool:
+    return float(card.get("diff", 0)) > 0 and float(card.get("delta_vs_recommended", 0)) > 0
+
+
 def _render_downloads(payload: dict, result: dict) -> None:
     markdown = render_optimizer_markdown(payload)
     fill_csv = result_to_fill_csv(result)
@@ -585,6 +719,10 @@ def render_result(
     recommended = _recommended_option(result)
     baseline = next((option for option in result["options"] if option["option_label"] == "current_workbook_mix"), None)
     budget_view = _build_result_budget_view(result, manual_context=manual_context, budget_inputs=budget_inputs)
+    run_id = st.session_state.get("latest_run_data", {}).get("run_id", "current")
+    fill_selector_key = _main_fill_selector_key(run_id)
+    selected_from_state = st.session_state.get(fill_selector_key)
+    fill_view = _build_selectable_fill_view(result, selected_from_state)
 
     st.markdown("### 8. Results")
     with st.container(border=True, key="cardresultsrecommendation"):
@@ -627,42 +765,73 @@ def render_result(
         )
         for line in tier_mix_by_channel_lines(recommended.get("fill_instructions", [])):
             st.write(line)
-        _render_badges([baseline_badge, closest_positive_badge, "Ready to approve"])
+        _render_badges([baseline_badge, closest_positive_badge])
 
     with st.container(border=True, key="cardresultscomparison"):
-        _section_header("Option quick compare", "Decision-oriented alternatives (max 3).", "soft-gray")
-        cards = build_option_quick_compare_cards(result)
+        _section_header("Option quick compare", "", "soft-gray")
+        cards = fill_view["cards"]
         if cards:
             cols = st.columns(len(cards))
             for idx, card in enumerate(cards):
                 with cols[idx]:
-                    st.markdown('<div class="option-card">', unsafe_allow_html=True)
-                    st.markdown(f"**{card['title']}**")
-                    st.write(f"Diff: {format_display_number(card['diff'])}")
+                    option_label = str(card.get("option_label"))
+                    is_selected = option_label == str(fill_view["selected_label"])
                     delta = float(card["delta_vs_recommended"])
                     if delta > 0:
-                        st.caption(f"{format_display_number(delta)} more buffer than recommended")
+                        delta_text = f"{format_display_number(delta)} more buffer than recommended"
                     elif delta < 0:
-                        st.caption(f"{format_display_number(abs(delta))} closer than recommended")
+                        delta_text = f"{format_display_number(abs(delta))} closer than recommended"
                     else:
-                        st.caption("Same diff as recommended")
-                    st.write(f"Tradeoff: {card['tradeoff']}")
-                    for line in card["tier_mix_lines"]:
-                        st.caption(line)
-                    st.write(f"Why consider it: {card['main_note']}")
+                        delta_text = "Same diff as recommended"
+                    has_positive_buffer = _option_has_positive_buffer_above_recommended(card)
+                    if has_positive_buffer:
+                        click_class = "option-click-positive-buffer"
+                    elif is_selected:
+                        click_class = "option-click-selected"
+                    else:
+                        click_class = "option-click-muted"
+                    tier_lines = "".join(
+                        f'<div class="option-summary-line">{line}</div>'
+                        for line in card["tier_mix_lines"]
+                    )
                     unique_warnings = [warning for warning in card["warnings"] if warning != card["main_note"]]
-                    if unique_warnings:
-                        with st.expander("Why this may be risky", expanded=False):
-                            for warning in unique_warnings:
-                                st.write(f"- {warning}")
-                    st.markdown("</div>", unsafe_allow_html=True)
+                    warning_line = (
+                        f'<div class="option-summary-line"><strong>Risk:</strong> {unique_warnings[0]}</div>'
+                        if unique_warnings
+                        else ""
+                    )
+                    with st.container(key=f"optionselect_{run_id}_{idx}"):
+                        if st.button(
+                            f"Select {card['title']}",
+                            key=f"{fill_selector_key}_{idx}_{option_label}",
+                            use_container_width=True,
+                            type="secondary",
+                        ):
+                            st.session_state[fill_selector_key] = option_label
+                            st.rerun()
+                        st.markdown(
+                            f"""
+                            <div class="option-click-area {click_class}">
+                              <div class="option-click-title">{card['title']}</div>
+                              <div class="option-summary-line"><strong>Diff:</strong> {format_display_number(card['diff'])}</div>
+                              <div class="option-summary-line">{delta_text}</div>
+                              <div class="option-summary-line"><strong>Tradeoff:</strong> {card['tradeoff']}</div>
+                              {tier_lines}
+                              <div class="option-summary-line"><strong>Why consider it:</strong> {card['main_note']}</div>
+                              {warning_line}
+                            </div>
+                            """,
+                            unsafe_allow_html=True,
+                        )
 
     with st.container(border=True, key="cardresultsfill"):
-        _section_header("Fill instructions", "Recommended option preview for calculator input.", "soft-yellow")
-        simple_fill_rows, _, _ = build_simplified_fill_rows(recommended.get("fill_instructions", []))
-        st.dataframe(_format_table_rows(simple_fill_rows), use_container_width=True)
-
-    _render_approval_section()
+        selected_display_label = format_option_label(fill_view["selected_label"])
+        _section_header(
+            f"Fill instructions: {selected_display_label}",
+            "Profile sizes for the selected recommendation option.",
+            "soft-yellow",
+        )
+        st.dataframe(_format_table_rows(fill_view["simple_fill_rows"]), use_container_width=True)
 
     with st.container(border=True, key="cardresultsactions"):
         _section_header("Actions & detailed review", "Downloads and expandable technical detail.", "soft-gray")
@@ -1143,437 +1312,240 @@ def _render_approval_section() -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Influencer Calculation Optimizer", layout="wide")
+    language = _ui_language_from_url(getattr(st.context, "url", None))
+    st.set_page_config(page_title=_ui_text(language, "page_title"), layout="wide")
     inject_app_css()
-    st.title("Influencer Calculation Optimizer")
-    st.caption("Local prototype: canonical sheets + manual campaign builder only.")
+    st.title(_ui_text(language, "page_title"))
+    app_caption = _ui_text(language, "app_caption")
+    if app_caption:
+        st.caption(app_caption)
 
-    _, models = load_normalized_models(Path(INPUT_PATH))
+    profile_fee_deduction_percent = float(DEFAULT_PROFILE_FEE_DEDUCTION_PERCENT)
+    profile_budget_target_multiplier = deduction_percent_to_multiplier(profile_fee_deduction_percent)
+    project_cpms = dict(SIMPLIFIED_FIXED_CPMS)
+    allowed_tiers = list(VALID_PROFILE_TIERS)
 
-    with st.sidebar:
-        st.caption("Reference panel")
-        mode = st.selectbox("Mode", ["Existing canonical sheet", "Manual campaign builder"], index=1)
-        cpm_observations, _, cpm_error = _load_seeded_cpm_library(models)
-        _render_sidebar_cpm_library(cpm_observations, cpm_error)
+    with st.container(border=True, key="cardbudget"):
+        _section_header(
+            _ui_text(language, "campaign_setup_title"),
+            _ui_text(language, "campaign_setup_description"),
+            "soft-green",
+        )
+        campaign_name = "Manual builder"
+        budget_options = list(SIMPLIFIED_FIXED_BUDGETS)
+        selected_budget = st.selectbox(
+            "Budget",
+            options=budget_options,
+            index=0,
+            format_func=lambda value: f"{format_display_number(value)} SEK",
+        )
+        if int(selected_budget) >= 200000:
+            optimization_focus = st.selectbox(
+                "Optimize for",
+                options=list(SIMPLIFIED_OPTIMIZATION_FOCUS_OPTIONS),
+                index=list(SIMPLIFIED_OPTIMIZATION_FOCUS_OPTIONS).index(SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES),
+                key="manual_optimization_focus",
+            )
+        else:
+            optimization_focus = SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES
+        paid_media_included = st.checkbox("Paid amplification included", value=DEFAULT_PAID_MEDIA_INCLUDED)
+        budget_setup = build_simplified_budget_setup(
+            selected_budget,
+            paid_media_included=paid_media_included,
+            profile_budget_target_multiplier=profile_budget_target_multiplier,
+            optimization_focus=optimization_focus,
+        )
 
-    if mode == "Existing canonical sheet":
-        st.markdown("### Optimizer settings")
-        allowed_tiers = render_allowed_profile_sizes("canonical")
-        beam_width, top_n, allow_negative, strategy, optimization_method, max_exact_states, _ = render_advanced_settings()
-        labels = [f"{model.source.workbook_name} / {model.source.sheet_name}" for model in models]
-        selected_label = st.selectbox("Canonical campaign", labels)
-        selected_model = models[labels.index(selected_label)]
+    with st.container(border=True, key="cardchannels"):
+        _section_header(
+            _ui_text(language, "channels_title"),
+            _ui_text(language, "channels_description"),
+            "soft-blue",
+        )
+        for channel in SIMPLIFIED_MANUAL_CHANNELS:
+            key = f"manual_selected_{channel.lower()}"
+            if key not in st.session_state:
+                st.session_state[key] = channel in DEFAULT_SELECTED_MANUAL_CHANNELS
+        channel_cols = st.columns(2)
+        with channel_cols[0]:
+            st.checkbox("Instagram", key="manual_selected_instagram")
+        with channel_cols[1]:
+            st.checkbox("TikTok", key="manual_selected_tiktok")
+        selected_channels = normalize_selected_channels(
+            [
+                channel
+                for channel in SIMPLIFIED_MANUAL_CHANNELS
+                if st.session_state.get(f"manual_selected_{channel.lower()}")
+            ]
+        )
+        if not selected_channels:
+            st.error("At least one channel must be selected.")
 
-        if st.button("Run optimizer for selected canonical sheet"):
-            if not allowed_tiers:
-                st.error("Select at least one allowed profile size before running optimization.")
-                return
+        total_profiles = int(budget_setup["total_profiles"])
+        percentage_inputs = {channel: 100 if len(selected_channels) == 1 else 50 for channel in selected_channels}
+        if len(selected_channels) == 1:
+            st.caption(f"{selected_channels[0]} receives all {total_profiles} profiles.")
+        elif selected_channels:
+            with st.expander(_ui_text(language, "optional_split"), expanded=False):
+                split_cols = st.columns(len(selected_channels))
+                for index, channel in enumerate(selected_channels):
+                    with split_cols[index]:
+                        percentage_inputs[channel] = st.number_input(
+                            f"{channel} %",
+                            min_value=0,
+                            max_value=100,
+                            value=50,
+                            step=5,
+                            key=f"manual_split_percent_{channel.lower()}",
+                        )
+
+        split_error: str | None = None
+        try:
+            channel_split = parse_channel_percentage_split(
+                total_profiles=total_profiles,
+                percentages=percentage_inputs,
+                selected_channels=selected_channels,
+            )
+        except ValueError as error:
+            channel_split = {"Instagram": 0, "TikTok": 0, "YouTube": 0}
+            split_error = str(error)
+            st.warning(split_error)
+
+    current_rows: list[dict] = []
+    if selected_channels and split_error is None:
+        try:
+            current_rows = generate_profile_rows(
+                total_profiles=total_profiles,
+                project_cpms=project_cpms,
+                channel_split=channel_split,
+                selected_channels=selected_channels,
+            )
+        except ValueError as error:
+            st.warning(str(error))
+
+    row_status = _profile_row_status(total_profiles, current_rows)
+    channel_split_summary = (
+        ", ".join(f"{channel}: {channel_split[channel]}" for channel in selected_channels)
+        if selected_channels and split_error is None
+        else "invalid split"
+    )
+
+    with st.expander(_ui_text(language, "current_setup_title"), expanded=False):
+        current_setup_caption = _ui_text(language, "current_setup_caption")
+        if current_setup_caption:
+            st.caption(current_setup_caption)
+        setup_rows = _build_setup_summary_rows(
+            budget=float(budget_setup["budget"]),
+            agency_amount=float(budget_setup["agency_fee"]),
+            paid_amount=float(budget_setup["paid_media"]),
+            agency_text=f"Fixed preset ({format_display_number(budget_setup['agency_fee'])})",
+            paid_text=f"15.00% ({format_display_number(budget_setup['paid_media'])})",
+            paid_media_included=paid_media_included,
+            profile_fee_deduction_percent=profile_fee_deduction_percent,
+            total_profiles=total_profiles,
+            selected_channels=selected_channels,
+            channel_split_summary=channel_split_summary,
+            cpm_currency="SEK",
+            project_cpms=project_cpms,
+            generated_row_count=len(current_rows),
+            row_status_text=(
+                "Rows ready"
+                if len(current_rows) == total_profiles and split_error is None
+                else "Setup needs attention"
+            ),
+        )
+        setup_rows.insert(
+            5,
+            {
+                "Field": "Available before deduction",
+                "Value": format_display_number(budget_setup["available_before_deduction"]),
+            },
+        )
+        if int(budget_setup["budget"]) >= 200000:
+            setup_rows.insert(
+                1,
+                {
+                    "Field": "Optimize for",
+                    "Value": str(budget_setup["optimization_focus"]),
+                },
+            )
+        setup_df = pd.DataFrame(setup_rows)
+        st.dataframe(_style_current_setup_rows(setup_df), use_container_width=True, hide_index=True)
+
+    with st.container(border=True, key="cardrunoptimizer"):
+        _section_header(
+            _ui_text(language, "run_optimizer_title"),
+            _ui_text(language, "run_optimizer_description"),
+            "soft-blue",
+        )
+        if st.button(_ui_text(language, "run_optimizer_button")):
             try:
+                if not selected_channels:
+                    raise ValueError("At least one channel must be selected.")
+                if split_error is not None:
+                    raise ValueError(split_error)
+                validate_rows_use_selected_channels(current_rows, selected_channels)
+                validate_project_cpms_for_rows(current_rows, project_cpms)
+                model = build_manual_campaign_model(
+                    campaign_name=campaign_name,
+                    budget=budget_setup["budget"],
+                    agency_fee=budget_setup["agency_fee"],
+                    paid_media=budget_setup["paid_media"],
+                    paid_media_included=paid_media_included,
+                    profile_budget_target_multiplier=profile_budget_target_multiplier,
+                    rows=current_rows,
+                )
                 payload, result = run_and_render(
-                    models=[selected_model],
-                    input_label=str(INPUT_PATH),
-                    beam_width=int(beam_width),
-                    top_n=int(top_n),
-                    allow_negative=allow_negative,
-                    strategy=strategy,
-                    optimization_method=optimization_method,
+                    models=[model],
+                    input_label="manual_campaign_builder",
+                    beam_width=DEFAULT_BEAM_WIDTH,
+                    top_n=3,
+                    allow_negative=False,
+                    strategy="math",
+                    optimization_method="fast_closest_diff",
                     allowed_tiers=allowed_tiers,
-                    max_exact_states=max_exact_states,
+                    max_exact_states=DEFAULT_EXACT_MAX_STATES,
                 )
             except ValueError as error:
                 st.error(str(error))
                 return
+
+            manual_context = {
+                "budget": budget_setup["budget"],
+                "selected_agency_fee_amount": budget_setup["agency_fee"],
+                "selected_agency_fee_percent": None,
+                "selected_paid_media_amount": budget_setup["paid_media"],
+                "selected_paid_media_percent": budget_setup["paid_media_percent"],
+                "paid_media": budget_setup["paid_media"],
+                "paid_media_included": paid_media_included,
+                "profile_fee_deduction_percent": profile_fee_deduction_percent,
+                "combinations_evaluated": 1,
+            }
+            run_id = int(st.session_state.get("latest_run_id", 0)) + 1
+            st.session_state.latest_run_id = run_id
             st.session_state.latest_run_data = {
+                "run_id": run_id,
                 "payload": payload,
                 "result": result,
-                "manual_context": None,
-                "default_calculation_name": selected_label,
-                "default_currency": infer_reference_currency(selected_model.source.workbook_name, selected_model.source.sheet_name)
-                if infer_reference_currency(selected_model.source.workbook_name, selected_model.source.sheet_name) in SUPPORTED_CURRENCIES
-                else "SEK",
+                "manual_context": manual_context,
+                "default_calculation_name": campaign_name,
+                "default_currency": "SEK",
                 "source": {
-                    "mode": "canonical_sheet",
-                    "workbook_name": selected_model.source.workbook_name,
-                    "sheet_name": selected_model.source.sheet_name,
+                    "mode": "manual_campaign_builder",
+                    "workbook_name": None,
+                    "sheet_name": campaign_name,
                 },
                 "budget_inputs": _build_budget_inputs(
                     result=result,
-                    budget=float(selected_model.budget),
-                    agency_fee_amount=float(selected_model.agency_fee),
-                    paid_media_amount=float(selected_model.paid_media or 0),
-                    paid_media_included=bool(selected_model.paid_media_included),
-                    profile_fee_deduction_percent=(1 - float(selected_model.profile_budget_target_multiplier or 0.925)) * 100,
+                    budget=float(budget_setup["budget"]),
+                    agency_fee_amount=float(budget_setup["agency_fee"]),
                     agency_fee_percent=None,
-                    paid_media_percent=None,
+                    paid_media_amount=float(budget_setup["paid_media"]),
+                    paid_media_percent=float(budget_setup["paid_media_percent"]),
+                    paid_media_included=paid_media_included,
+                    profile_fee_deduction_percent=profile_fee_deduction_percent,
                 ),
             }
-            st.session_state.approval_calculation_name = selected_label
-            st.session_state.approval_comment = ""
-            st.session_state.approval_option_label = result["recommended_option_label"]
-            inferred_currency = infer_reference_currency(selected_model.source.workbook_name, selected_model.source.sheet_name)
-            st.session_state.approval_currency = inferred_currency if inferred_currency in SUPPORTED_CURRENCIES else "SEK"
-    else:
-        allowed_tiers = list(VALID_PROFILE_TIERS)
-        if "project_cpm_currency" not in st.session_state:
-            st.session_state.project_cpm_currency = "SEK"
-        if "project_cpm_instagram" not in st.session_state:
-            _apply_library_medians_to_state(st.session_state.project_cpm_currency, cpm_observations)
-        for channel in ("Instagram", "TikTok", "YouTube"):
-            key = f"manual_selected_{channel.lower()}"
-            if key not in st.session_state:
-                st.session_state[key] = channel in DEFAULT_SELECTED_MANUAL_CHANNELS
-        st.session_state.setdefault("manual_rows_structure_signature", None)
-        st.session_state.setdefault("manual_rows", manual_rows_default())
-        with st.container(border=True, key="cardbudget"):
-            _section_header("1. Campaign budget", "Set the financial frame for this calculation.", "soft-green")
-            campaign_name = st.text_input("Campaign name", value="Manual builder")
-            budget_input = st.text_input("Budget", value="1 000 000")
-            agency_mode, agency_fixed, agency_percent, agency_range, agency_step = _manual_mode_fee_inputs(
-                "Agency fee",
-                default_fixed=100000.0,
-                default_percent=DEFAULT_AGENCY_FEE_PERCENT_TEXT,
-            )
-            paid_mode, paid_fixed, paid_percent, paid_range, paid_step = _manual_mode_fee_inputs(
-                "Paid media",
-                default_fixed=0.0,
-                default_percent=DEFAULT_PAID_MEDIA_PERCENT_TEXT,
-            )
-            paid_media_included = st.checkbox("Paid media included in target", value=DEFAULT_PAID_MEDIA_INCLUDED)
-
-        with st.container(border=True, key="cardchannels"):
-            _section_header("2. Channel selection", "Choose which platforms are allowed in this campaign.", "soft-blue")
-            ch1, ch2, ch3 = st.columns(3)
-            with ch1:
-                st.checkbox("Instagram", key="manual_selected_instagram")
-            with ch2:
-                st.checkbox("TikTok", key="manual_selected_tiktok")
-            with ch3:
-                st.checkbox("YouTube", key="manual_selected_youtube")
-            selected_channels = normalize_selected_channels(
-                [
-                    channel
-                    for channel in ("Instagram", "TikTok", "YouTube")
-                    if st.session_state.get(f"manual_selected_{channel.lower()}")
-                ]
-            )
-            if not selected_channels:
-                st.error("At least one channel must be selected.")
-
-        with st.container(border=True, key="cardcpmsetup"):
-            _section_header("3. CPM setup", "Use library medians or enter project-specific CPMs.", "soft-purple")
-            cpm_currency = st.selectbox("CPM median currency", options=list(SUPPORTED_CURRENCIES), key="project_cpm_currency")
-            median_cpms = _get_currency_median_cpms(cpm_observations, cpm_currency)
-            if st.button("Use library medians"):
-                if not selected_channels:
-                    st.error("Select at least one channel before applying medians.")
-                else:
-                    _apply_library_medians_to_state(cpm_currency, cpm_observations, selected_channels)
-                    st.success(f"Applied {cpm_currency} library medians to project CPM setup.")
-                    st.rerun()
-            st.caption("Switch currency and click 'Use library medians' to apply that currency set. Manual overrides are kept until you apply.")
-            cpm_inputs: dict[str, str] = {}
-            for channel in selected_channels:
-                key = {
-                    "Instagram": "project_cpm_instagram",
-                    "TikTok": "project_cpm_tiktok",
-                    "YouTube": "project_cpm_youtube",
-                }[channel]
-                cpm_inputs[channel] = st.text_input(f"{channel} CPM", key=key)
-                st.caption(
-                    f"Library median, {cpm_currency}: {format_display_number(_mround_to_5(median_cpms[channel]))}"
-                    if channel in median_cpms
-                    else f"No library median available for {cpm_currency}."
-                )
-            instagram_cpm_input = cpm_inputs.get("Instagram", "")
-            tiktok_cpm_input = cpm_inputs.get("TikTok", "")
-            youtube_cpm_input = cpm_inputs.get("YouTube", "")
-
-        with st.container(border=True, key="cardprofilestructure"):
-            _section_header("4. Profile structure", "Define how many profile slots the optimizer should use.", "soft-yellow")
-            total_profiles = st.number_input("Total number of profiles", min_value=1, value=12, step=1, key="manual_total_profiles")
-            with st.expander("Optional channel split", expanded=False):
-                st.caption("Set channel-specific profile counts. Leave all blank for deterministic default distribution.")
-                instagram_count_input = st.text_input("Instagram profile count", value="") if "Instagram" in selected_channels else ""
-                tiktok_count_input = st.text_input("TikTok profile count", value="") if "TikTok" in selected_channels else ""
-                youtube_count_input = st.text_input("YouTube profile count", value="") if "YouTube" in selected_channels else ""
-            auto_generation_error: str | None = None
-            try:
-                if not selected_channels:
-                    raise ValueError("Select at least one channel.")
-                auto_project_cpms = resolve_project_cpms(
-                    instagram_cpm=instagram_cpm_input,
-                    tiktok_cpm=tiktok_cpm_input,
-                    youtube_cpm=youtube_cpm_input,
-                )
-                auto_channel_split = parse_channel_split(
-                    total_profiles=total_profiles,
-                    instagram_count=instagram_count_input,
-                    tiktok_count=tiktok_count_input,
-                    youtube_count=youtube_count_input,
-                    selected_channels=selected_channels,
-                )
-                current_signature = _profile_structure_signature(
-                    total_profiles=int(total_profiles),
-                    selected_channels=selected_channels,
-                    instagram_count=instagram_count_input,
-                    tiktok_count=tiktok_count_input,
-                    youtube_count=youtube_count_input,
-                    project_cpms=auto_project_cpms,
-                )
-                if st.session_state.get("manual_rows_structure_signature") != current_signature:
-                    st.session_state.manual_rows = generate_profile_rows(
-                        total_profiles=total_profiles,
-                        project_cpms=auto_project_cpms,
-                        channel_split=auto_channel_split,
-                        selected_channels=selected_channels,
-                    )
-                    st.session_state.manual_rows_structure_signature = current_signature
-            except ValueError as error:
-                auto_generation_error = str(error)
-
-            row_status = _profile_row_status(int(total_profiles), st.session_state.manual_rows)
-            st.caption(f"{row_status['generated_row_count']} profile rows ready: {row_status['channel_summary']}")
-            if auto_generation_error:
-                st.warning(auto_generation_error)
-            else:
-                st.success("Profile rows are managed automatically from your profile structure.")
-            current_rows = st.session_state.manual_rows
-
-        with st.container(border=True, key="cardoptimizersettings"):
-            _section_header("5. Optimizer settings", "Advanced controls for search behavior and deduction.", "soft-gray")
-            allowed_tiers = render_allowed_profile_sizes("manual")
-            (
-                beam_width,
-                top_n,
-                allow_negative,
-                strategy,
-                optimization_method,
-                max_exact_states,
-                profile_fee_deduction_percent,
-            ) = render_advanced_settings()
-
-        budget_summary_value: float | None = None
-        agency_amount_summary: float | None = None
-        paid_amount_summary: float | None = None
-        agency_summary_text = "varies by mode"
-        paid_summary_text = "varies by mode"
-        try:
-            budget_summary_value = parse_friendly_amount(budget_input, "Budget")
-            if agency_mode == "Fixed amount":
-                agency_amount_summary = parse_friendly_amount(agency_fixed, "Agency fee amount")
-                agency_summary_text = format_display_number(agency_amount_summary)
-            elif agency_mode == "Percentage of budget":
-                agency_candidate = resolve_fee_candidates(
-                    mode=agency_mode,
-                    budget=budget_summary_value,
-                    percent_value=agency_percent,
-                    field_name="agency_fee",
-                )[0]
-                agency_amount_summary = float(agency_candidate["amount"])
-                agency_summary_text = f"{agency_candidate['percent']:.2f}% ({format_display_number(agency_amount_summary)})"
-            else:
-                agency_summary_text = f"range {agency_range} (step {agency_step})"
-
-            if paid_mode == "Fixed amount":
-                paid_amount_summary = parse_friendly_amount(paid_fixed, "Paid media amount")
-                paid_summary_text = format_display_number(paid_amount_summary)
-            elif paid_mode == "Percentage of budget":
-                paid_candidate = resolve_fee_candidates(
-                    mode=paid_mode,
-                    budget=budget_summary_value,
-                    percent_value=paid_percent,
-                    field_name="paid_media",
-                )[0]
-                paid_amount_summary = float(paid_candidate["amount"])
-                paid_summary_text = f"{paid_candidate['percent']:.2f}% ({format_display_number(paid_amount_summary)})"
-            else:
-                paid_summary_text = f"range {paid_range} (step {paid_step})"
-        except ValueError:
-            pass
-
-        try:
-            project_cpms_for_summary = resolve_project_cpms(
-                instagram_cpm=instagram_cpm_input,
-                tiktok_cpm=tiktok_cpm_input,
-                youtube_cpm=youtube_cpm_input,
-            )
-        except ValueError:
-            project_cpms_for_summary = {"Instagram": None, "TikTok": None, "YouTube": None}
-
-        try:
-            split_summary = parse_channel_split(
-                total_profiles=total_profiles,
-                instagram_count=instagram_count_input,
-                tiktok_count=tiktok_count_input,
-                youtube_count=youtube_count_input,
-                selected_channels=selected_channels,
-            )
-            channel_split_summary = ", ".join(
-                f"{channel}: {split_summary[channel]}"
-                for channel in selected_channels
-            )
-        except ValueError:
-            channel_split_summary = "invalid split"
-
-        with st.container(border=True, key="cardcurrentsetup"):
-            _section_header("6. Current setup", "Quick check before running the optimizer.", "soft-blue")
-            setup_rows = _build_setup_summary_rows(
-                budget=budget_summary_value,
-                agency_amount=agency_amount_summary,
-                paid_amount=paid_amount_summary,
-                agency_text=agency_summary_text,
-                paid_text=paid_summary_text,
-                paid_media_included=paid_media_included,
-                profile_fee_deduction_percent=profile_fee_deduction_percent,
-                total_profiles=int(total_profiles),
-                selected_channels=selected_channels,
-                channel_split_summary=channel_split_summary,
-                cpm_currency=cpm_currency,
-                project_cpms=project_cpms_for_summary,
-                generated_row_count=len(current_rows),
-                row_status_text=(
-                    "Rows ready"
-                    if len(current_rows) == int(total_profiles) and channel_split_summary != "invalid split"
-                    else "Setup needs attention"
-                ),
-            )
-            setup_df = pd.DataFrame(setup_rows)
-            st.dataframe(_style_current_setup_rows(setup_df), use_container_width=True, hide_index=True)
-
-        with st.container(border=True, key="cardrunoptimizer"):
-            _section_header("7. Run optimizer", "Generate recommended profile-size mixes from the current setup.", "soft-blue")
-            if st.button("Run optimizer for manual campaign"):
-                try:
-                    if not selected_channels:
-                        raise ValueError("At least one channel must be selected.")
-                    if not allowed_tiers:
-                        raise ValueError("At least one allowed profile size tier must be selected.")
-                    budget = parse_friendly_amount(budget_input, "Budget")
-                    project_cpms = resolve_project_cpms(
-                        instagram_cpm=instagram_cpm_input,
-                        tiktok_cpm=tiktok_cpm_input,
-                        youtube_cpm=youtube_cpm_input,
-                    )
-                    channel_split = parse_channel_split(
-                        total_profiles=total_profiles,
-                        instagram_count=instagram_count_input,
-                        tiktok_count=tiktok_count_input,
-                        youtube_count=youtube_count_input,
-                        selected_channels=selected_channels,
-                    )
-                    manual_rows = generate_profile_rows(
-                        total_profiles=total_profiles,
-                        project_cpms=project_cpms,
-                        channel_split=channel_split,
-                        selected_channels=selected_channels,
-                    )
-                    agency_fixed_amount = (
-                        parse_friendly_amount(agency_fixed, "Agency fee amount")
-                        if agency_mode == "Fixed amount"
-                        else None
-                    )
-                    paid_fixed_amount = (
-                        parse_friendly_amount(paid_fixed, "Paid media amount")
-                        if paid_mode == "Fixed amount"
-                        else None
-                    )
-                    agency_candidates = resolve_fee_candidates(
-                        mode=agency_mode,
-                        budget=budget,
-                        fixed_amount=agency_fixed_amount,
-                        percent_value=agency_percent,
-                        percent_range=agency_range,
-                        range_step=agency_step,
-                        field_name="agency_fee",
-                    )
-                    paid_candidates = resolve_fee_candidates(
-                        mode=paid_mode,
-                        budget=budget,
-                        fixed_amount=paid_fixed_amount,
-                        percent_value=paid_percent,
-                        percent_range=paid_range,
-                        range_step=paid_step,
-                        field_name="paid_media",
-                    )
-                    combinations = build_fee_paid_combinations(
-                        agency_candidates,
-                        paid_candidates,
-                        max_combinations=MAX_MANUAL_FEE_COMBINATIONS,
-                    )
-                    validate_rows_use_selected_channels(manual_rows, selected_channels)
-                    validate_project_cpms_for_rows(manual_rows, project_cpms)
-                except ValueError as error:
-                    st.error(str(error))
-                    return
-
-                try:
-                    evaluation = evaluate_fee_paid_combinations(
-                        combinations=combinations,
-                        build_model_fn=lambda agency_candidate, paid_candidate: build_manual_campaign_model(
-                            campaign_name=campaign_name,
-                            budget=budget,
-                            agency_fee=agency_candidate["amount"],
-                            paid_media=paid_candidate["amount"],
-                            paid_media_included=paid_media_included,
-                            profile_budget_target_multiplier=deduction_percent_to_multiplier(profile_fee_deduction_percent),
-                            rows=manual_rows,
-                        ),
-                        run_optimizer_fn=lambda model: run_optimizer_for_models(
-                            models=[model],
-                            input_label="manual_campaign_builder",
-                            beam_width=int(beam_width),
-                            top_n=int(top_n),
-                            allow_negative=allow_negative,
-                            strategy=strategy,
-                            optimization_method=optimization_method,
-                            allowed_tiers=allowed_tiers,
-                            max_exact_states=max_exact_states,
-                        ),
-                    )
-                except ValueError as error:
-                    st.error(str(error))
-                    return
-                best_payload = evaluation["payload"]
-                best_result = evaluation["result"]
-                best_agency = evaluation["selected_agency"]
-                best_paid = evaluation["selected_paid_media"]
-                manual_context = {
-                    "budget": budget,
-                    "selected_agency_fee_amount": best_agency["amount"],
-                    "selected_agency_fee_percent": best_agency["percent"],
-                    "selected_paid_media_amount": best_paid["amount"],
-                    "selected_paid_media_percent": best_paid["percent"],
-                    "paid_media": best_paid["amount"],
-                    "paid_media_included": paid_media_included,
-                    "profile_fee_deduction_percent": profile_fee_deduction_percent,
-                    "combinations_evaluated": evaluation["combinations_evaluated"],
-                }
-                st.session_state.latest_run_data = {
-                    "payload": best_payload,
-                    "result": best_result,
-                    "manual_context": manual_context,
-                    "default_calculation_name": campaign_name,
-                    "default_currency": "SEK",
-                    "source": {
-                        "mode": "manual_campaign_builder",
-                        "workbook_name": None,
-                        "sheet_name": campaign_name,
-                    },
-                    "budget_inputs": _build_budget_inputs(
-                        result=best_result,
-                        budget=budget,
-                        agency_fee_amount=float(best_agency["amount"]),
-                        agency_fee_percent=best_agency["percent"],
-                        paid_media_amount=float(best_paid["amount"]),
-                        paid_media_percent=best_paid["percent"],
-                        paid_media_included=paid_media_included,
-                        profile_fee_deduction_percent=profile_fee_deduction_percent,
-                    ),
-                }
-                st.session_state.approval_calculation_name = campaign_name
-                st.session_state.approval_comment = ""
-                st.session_state.approval_option_label = best_result["recommended_option_label"]
-                st.session_state.approval_currency = "SEK"
 
     if "latest_run_data" in st.session_state:
         run_data = st.session_state.latest_run_data
