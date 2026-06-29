@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from results_view_helpers import (
     at_a_glance_option_labels,
+    build_option_display_metadata,
     build_option_quick_compare_cards,
     build_channel_mix_summary,
     build_diff_status,
@@ -79,10 +80,10 @@ class ResultsViewHelpersTests(unittest.TestCase):
         )
         self.assertFalse(include_market)
         self.assertFalse(include_activations)
-        self.assertEqual(rows[0]["Size"], "15")
+        self.assertEqual(rows[0]["Storlek"], "15")
         self.assertNotIn("Row", rows[0])
         self.assertNotIn("previous_profile_size", rows[0])
-        self.assertNotIn("Activations", rows[0])
+        self.assertNotIn("Aktiveringar", rows[0])
         self.assertNotIn("profile_size_cell", rows[0])
 
     def test_build_simplified_fill_rows_shows_market_when_present(self) -> None:
@@ -90,22 +91,53 @@ class ResultsViewHelpersTests(unittest.TestCase):
             [{"profile_size_cell": "B9", "recommended_profile_size": 35000, "channel": "Instagram", "market": "SE", "cpm": 100, "activations": 1, "row_fee": 1000}]
         )
         self.assertTrue(include_market)
-        self.assertIn("Market", rows[0])
+        self.assertIn("Marknad", rows[0])
 
     def test_build_simplified_fill_rows_shows_activations_when_needed(self) -> None:
         rows, _, include_activations = build_simplified_fill_rows(
             [{"profile_size_cell": "B9", "recommended_profile_size": 35000, "channel": "Instagram", "market": "", "cpm": 100, "activations": 2, "row_fee": 1000}]
         )
         self.assertTrue(include_activations)
-        self.assertIn("Activations", rows[0])
+        self.assertIn("Aktiveringar", rows[0])
 
     def test_option_ui_label(self) -> None:
-        self.assertEqual(option_ui_label("best_mathematical_fit", "best_mathematical_fit"), "Recommended")
-        self.assertEqual(option_ui_label("best_strategic_fit", "best_mathematical_fit"), "Strategic mix")
+        self.assertEqual(option_ui_label("best_mathematical_fit", "best_mathematical_fit"), "Rekommenderat förslag")
+        self.assertEqual(option_ui_label("best_strategic_fit", "best_mathematical_fit"), "Strategiskt förslag")
 
     def test_format_option_label_mapping(self) -> None:
-        self.assertEqual(format_option_label("best_mathematical_fit"), "Closest diff")
-        self.assertEqual(format_option_label("balanced_option"), "Balanced option")
+        self.assertEqual(format_option_label("best_mathematical_fit"), "Bästa matematiska träff")
+        self.assertEqual(format_option_label("balanced_option"), "Balanserat förslag")
+
+    def test_strategic_within_high_diff_threshold_keeps_display_label(self) -> None:
+        display = build_option_display_metadata(
+            option={"option_label": "best_strategic_fit", "optimized_diff": 10099},
+            recommended_option={"option_label": "best_mathematical_fit", "optimized_diff": 100},
+            strategic_option={"option_label": "best_strategic_fit", "optimized_diff": 10099},
+        )
+        self.assertEqual(display["display_label"], "Strategiskt förslag")
+        self.assertTrue(display["is_selectable"])
+
+    def test_high_diff_strategic_gets_non_recommended_display_label(self) -> None:
+        display = build_option_display_metadata(
+            option={"option_label": "best_strategic_fit", "optimized_diff": 10101},
+            recommended_option={"option_label": "best_mathematical_fit", "optimized_diff": 100},
+            strategic_option={"option_label": "best_strategic_fit", "optimized_diff": 10101},
+        )
+        self.assertEqual(display["display_label"], "Alternativ 2 (ej rekommenderat)")
+        self.assertTrue(display["is_selectable"])
+
+    def test_balanced_worse_than_strategic_is_unavailable(self) -> None:
+        display = build_option_display_metadata(
+            option={"option_label": "balanced_option", "optimized_diff": 20000},
+            recommended_option={"option_label": "best_mathematical_fit", "optimized_diff": 100},
+            strategic_option={"option_label": "best_strategic_fit", "optimized_diff": 15000},
+        )
+        self.assertEqual(display["display_label"], "Ej tillgängligt")
+        self.assertFalse(display["is_selectable"])
+        self.assertEqual(
+            display["replacement_body_text"],
+            "Inga fler förslag finns för det här kampanjupplägget",
+        )
 
     def test_build_tier_mix_chips_omits_zero_by_default(self) -> None:
         chips = build_tier_mix_chips({"15000": 1, "35000": 0, "75000": 2})
@@ -176,7 +208,7 @@ class ResultsViewHelpersTests(unittest.TestCase):
     def test_option_tradeoff_summary_is_deterministic(self) -> None:
         recommended = {"option_label": "best_mathematical_fit", "optimized_diff": 100, "fill_instructions": []}
         option = {"option_label": "best_strategic_fit", "optimized_diff": 120, "fill_instructions": []}
-        self.assertEqual(option_tradeoff_summary(option, recommended), "More buffer")
+        self.assertEqual(option_tradeoff_summary(option, recommended), "Mer marginal")
 
     def test_build_option_quick_compare_cards_limits_and_dedupes(self) -> None:
         result = {

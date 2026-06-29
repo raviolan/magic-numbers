@@ -32,6 +32,8 @@ SIMPLIFIED_PRESET_VALUES = {
         400000: {"agency_fee": 146718, "total_profiles": 12},
     },
     SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES: {
+        100000: {"agency_fee": 25839, "total_profiles": 1},
+        150000: {"agency_fee": 36828, "total_profiles": 2},
         200000: {"agency_fee": 58806, "total_profiles": 4},
         250000: {"agency_fee": 80784, "total_profiles": 6},
         300000: {"agency_fee": 80784, "total_profiles": 6},

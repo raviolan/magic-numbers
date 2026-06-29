@@ -554,6 +554,31 @@ class OptimizerTests(unittest.TestCase):
         )
         self.assertEqual(analyzed["budget_guidance_warning_count"], 1)
 
+    def test_budget_guidance_allows_100k_larger_profile_focus_above_35k(self) -> None:
+        baseline = self._build_manual_option(
+            "current_workbook_mix",
+            1000,
+            {"15000": 1, "35000": 1, "75000": 0, "125000": 0, "175000": 0},
+        )
+        option = self._build_manual_option(
+            "best_mathematical_fit",
+            100,
+            {"15000": 0, "35000": 1, "75000": 1, "125000": 0, "175000": 0},
+        )
+        analyzed = analyze_option_strategy(
+            option,
+            baseline,
+            2,
+            "best_mathematical_fit",
+            budget=100000,
+            optimization_focus="Larger profile sizes",
+        )
+        self.assertNotIn(
+            "100K budget: profile sizes above 35K are outside the recommended max for this preset.",
+            analyzed["strategic_warnings"],
+        )
+        self.assertEqual(analyzed["budget_guidance_warning_count"], 0)
+
     def test_budget_guidance_treats_125k_and_175k_as_same_anchor_rule_at_250k(self) -> None:
         baseline = self._build_manual_option(
             "current_workbook_mix",

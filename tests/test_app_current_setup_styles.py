@@ -3,10 +3,17 @@ from __future__ import annotations
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from app import _current_setup_row_background
+from app import (
+    GYST_KURSIV_FONT_PATH,
+    UPGRADE_CAPTION_FONT_PATH,
+    UPGRADE_FONT_PATH,
+    _current_setup_row_background,
+    inject_app_css,
+)
 
 
 class CurrentSetupRowStyleTests(unittest.TestCase):
@@ -24,6 +31,44 @@ class CurrentSetupRowStyleTests(unittest.TestCase):
 
     def test_cpm_row_is_yellow(self) -> None:
         self.assertEqual(_current_setup_row_background("Instagram CPM"), "#fffbeb")
+
+    def test_required_font_assets_are_present(self) -> None:
+        self.assertTrue(GYST_KURSIV_FONT_PATH.exists())
+        self.assertTrue(UPGRADE_FONT_PATH.exists())
+        self.assertTrue(UPGRADE_CAPTION_FONT_PATH.exists())
+
+    def test_injected_css_contains_brand_style_requirements(self) -> None:
+        with patch("app.st.markdown") as markdown:
+            inject_app_css()
+
+        css = markdown.call_args.args[0]
+        self.assertTrue(markdown.call_args.kwargs["unsafe_allow_html"])
+        self.assertIn("@font-face", css)
+        self.assertIn("font-family: 'Nine Gyst Kursiv'", css)
+        self.assertIn("font-family: 'Nine Upgrade'", css)
+        self.assertIn("font-family: 'Nine Upgrade Caption'", css)
+        self.assertIn(".section-caption", css)
+        self.assertIn("font-family: 'Nine Upgrade Caption', 'Nine Upgrade', Arial, sans-serif !important;", css)
+        self.assertIn(".app-caption", css)
+        self.assertIn("color: #f9e9d4;", css)
+        self.assertNotIn(".stApp .app-caption", css)
+        self.assertNotIn(
+            '.stApp div:not([data-testid*="stIcon"]),\n        .stMarkdown',
+            css,
+        )
+        self.assertIn("data:font/otf;base64,", css)
+        self.assertNotIn(".stApp *,", css)
+        self.assertIn('div[data-testid="stExpander"]', css)
+        self.assertIn("background: #f9e9d4 !important;", css)
+        self.assertIn("background: #f9e9d4;", css)
+        self.assertIn("background: #fbf1e4 !important;", css)
+        self.assertNotIn("background: #fafafa;", css)
+        self.assertIn("box-sizing: border-box;", css)
+        self.assertIn("overflow-wrap: anywhere;", css)
+        self.assertIn('div[data-testid="column"]', css)
+        self.assertIn("min-height: 100%;", css)
+        self.assertIn("margin-bottom: 0.45rem;", css)
+        self.assertIn("padding: 0.75rem 0.85rem 1.75rem 0.85rem;", css)
 
 
 if __name__ == "__main__":

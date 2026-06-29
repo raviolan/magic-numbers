@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import csv
 import io
 import json
@@ -76,22 +77,31 @@ from results_view_helpers import (
     build_diff_status,
     build_simplified_fill_rows,
     format_option_label,
-    main_option_note,
     select_option_label,
     tier_mix_by_channel_lines,
+    translate_result_note,
 )
+
+APP_ROOT = Path(__file__).resolve().parents[1]
+FONT_DIR = APP_ROOT / "assets" / "fonts"
+GYST_KURSIV_FONT_PATH = FONT_DIR / "Gyst kursiv.otf"
+UPGRADE_FONT_PATH = FONT_DIR / "Upgrade.38091.otf"
+UPGRADE_CAPTION_FONT_PATH = FONT_DIR / "Upgrade.38095.otf"
 
 UI_TRANSLATIONS = {
     "sv": {
         "page_title": "Magisk kalkyl",
         "app_caption": "Generera kalkyler för enklare kundprojekt",
         "campaign_setup_title": "1. Kampanjregler",
-        "campaign_setup_description": "Välj budgetnivå, paid och (för budgetar större än 200Kkr), optimering för profiler.",
+        "campaign_setup_description": "Välj budgetnivå, paid och optimering för profiler.",
         "channels_title": "2. Kanaler",
         "channels_description": "Välj mellan tiktok och instagram.",
         "optional_split": "Kanaluppdelning",
         "current_setup_title": "3. Förhandsgranska detaljer (frivilligt)",
         "current_setup_caption": "",
+        "optimization_focus_label": "Optimera kampanjen för",
+        "focus_many_profiles": "så många profiler som möjligt",
+        "focus_larger_profiles": "så stora profiler som möjligt",
         "run_optimizer_title": "4. Kör kalkyl",
         "run_optimizer_description": "Du kommer få tre förslag att välja mellan",
         "run_optimizer_button": "Kör kalkyl",
@@ -106,6 +116,9 @@ UI_TRANSLATIONS = {
         "optional_split": "Optional percentage split",
         "current_setup_title": "3. Current setup",
         "current_setup_caption": "Quick check before running the optimizer.",
+        "optimization_focus_label": "Optimize for",
+        "focus_many_profiles": "Many profiles",
+        "focus_larger_profiles": "Larger profile sizes",
         "run_optimizer_title": "4. Run optimizer",
         "run_optimizer_description": "Generate three deterministic recommendation options.",
         "run_optimizer_button": "Run optimizer",
@@ -122,6 +135,14 @@ def _ui_language_from_url(url: str | None) -> str:
 
 def _ui_text(language: str, key: str) -> str:
     return UI_TRANSLATIONS.get(language, UI_TRANSLATIONS["sv"]).get(key, UI_TRANSLATIONS["en"].get(key, key))
+
+
+def _optimization_focus_display_label(language: str, focus: str) -> str:
+    if focus == SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES:
+        return _ui_text(language, "focus_many_profiles")
+    if focus == SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES:
+        return _ui_text(language, "focus_larger_profiles")
+    return str(focus)
 
 
 def _format_cpm(value: float | int | None) -> str:
@@ -151,24 +172,133 @@ def _format_table_rows(rows: list[dict]) -> list[dict]:
     return formatted_rows
 
 
+def _font_data_url(path: Path) -> str:
+    encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:font/otf;base64,{encoded}"
+
+
 def inject_app_css() -> None:
+    gyst_kursiv_url = _font_data_url(GYST_KURSIV_FONT_PATH)
+    upgrade_url = _font_data_url(UPGRADE_FONT_PATH)
+    upgrade_caption_url = _font_data_url(UPGRADE_CAPTION_FONT_PATH)
     st.markdown(
-        """
+        f"""
         <style>
+        @font-face {{
+            font-family: 'Nine Gyst Kursiv';
+            src: url("{gyst_kursiv_url}") format('opentype');
+            font-weight: 400;
+            font-style: italic;
+            font-display: swap;
+        }}
+        @font-face {{
+            font-family: 'Nine Upgrade';
+            src: url("{upgrade_url}") format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }}
+        @font-face {{
+            font-family: 'Nine Upgrade Caption';
+            src: url("{upgrade_caption_url}") format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }}
+        html,
+        body,
+        .stApp,
+        .stApp p,
+        .stApp span:not([class*="material"]):not([data-testid*="stIcon"]),
+        .stApp div:not([data-testid*="stIcon"]),
+        .stApp label,
+        .stApp li,
+        .stApp th,
+        .stApp td,
+        div[data-testid="stAppViewContainer"],
+        div[data-testid="stSidebar"],
+        div[data-baseweb],
+        button,
+        input,
+        textarea,
+        select,
+        label,
+        table {{
+            font-family: 'Nine Upgrade', Arial, sans-serif !important;
+        }}
+        .stApp {{
+            background: #3b3821;
+            color: #3b3821;
+        }}
+        div[data-testid="stAppViewContainer"],
+        section[data-testid="stSidebar"],
+        header[data-testid="stHeader"] {{
+            background: #3b3821;
+        }}
+        .stApp p,
+        .stApp li,
+        .stApp label,
+        .stApp span:not([class*="material"]):not([data-testid*="stIcon"]),
+        .stMarkdown,
+        .stMarkdown p,
+        div[data-testid="stMarkdownContainer"],
+        div[data-testid="stMarkdownContainer"] p,
+        div[data-testid="stWidgetLabel"],
+        div[data-testid="stWidgetLabel"] p,
+        div[data-baseweb="select"] span,
+        div[data-baseweb="input"] input,
+        div[data-baseweb="textarea"] textarea {{
+            color: #3b3821 !important;
+        }}
+        .stApp h1 {{
+            font-family: 'Nine Gyst Kursiv', 'Nine Upgrade', Arial, sans-serif !important;
+            color: #f0fc03 !important;
+            font-style: italic;
+            font-weight: 400;
+        }}
+        .app-caption {{
+            color: #f9e9d4;
+            font-size: 0.92rem;
+            margin-bottom: 1rem;
+        }}
+        div[data-testid="stExpander"] {{
+            position: relative;
+            z-index: 1;
+            background: #f9e9d4 !important;
+            border-radius: 8px;
+        }}
+        div[data-testid="stExpander"] details {{
+            background: #f9e9d4 !important;
+            border-radius: 8px !important;
+            overflow: hidden;
+        }}
+        div[data-testid="stExpander"] summary,
+        div[data-testid="stExpander"] details > div {{
+            position: relative;
+            z-index: 2;
+            background: #f9e9d4 !important;
+        }}
+        """
+        + """
         .section-card {
             border: 1px solid #e5e7eb;
             border-radius: 14px;
             padding: 0.9rem 1rem 1rem 1rem;
             margin-bottom: 0.9rem;
-            background: #ffffff;
+            background: #f9e9d4;
         }
-        .soft-green { border-left: 6px solid #9ae6b4; background: #f5fff8; }
-        .soft-blue { border-left: 6px solid #90cdf4; background: #f7fbff; }
-        .soft-purple { border-left: 6px solid #d6bcfa; background: #fbf9ff; }
-        .soft-yellow { border-left: 6px solid #f6e05e; background: #fffef6; }
-        .soft-gray { border-left: 6px solid #cbd5e0; background: #fafafa; }
+        .soft-green { border-left: 6px solid #9ae6b4; background: #f9e9d4; }
+        .soft-blue { border-left: 6px solid #90cdf4; background: #f9e9d4; }
+        .soft-purple { border-left: 6px solid #d6bcfa; background: #f9e9d4; }
+        .soft-yellow { border-left: 6px solid #f6e05e; background: #f9e9d4; }
+        .soft-gray { border-left: 6px solid #cbd5e0; background: #f9e9d4; }
         .section-title { font-weight: 700; margin-bottom: 0.15rem; }
-        .section-caption { color: #4a5568; font-size: 0.92rem; margin-bottom: 0.55rem; }
+        .section-caption {
+            color: #4a5568;
+            font-family: 'Nine Upgrade Caption', 'Nine Upgrade', Arial, sans-serif !important;
+            font-size: 0.92rem;
+            margin-bottom: 0.55rem;
+        }
         .status-badge {
             display: inline-block;
             padding: 0.15rem 0.5rem;
@@ -184,7 +314,7 @@ def inject_app_css() -> None:
             padding: 0.9rem 1rem;
             border: 1px solid #d1d5db;
             margin-bottom: 0.75rem;
-            background: #ffffff;
+            background: #f9e9d4;
         }
         .hero-positive { background: #f5fff8; border-color: #b7e4c7; }
         .hero-negative { background: #fff8f1; border-color: #f6ad55; }
@@ -199,7 +329,7 @@ def inject_app_css() -> None:
             border: 1px solid #e5e7eb;
             border-radius: 12px;
             padding: 0.6rem 0.7rem;
-            background: #ffffff;
+            background: #f9e9d4;
             margin-bottom: 0.4rem;
         }
         .metric-label { font-size: 0.78rem; color: #4b5563; margin-bottom: 0.2rem; }
@@ -217,18 +347,23 @@ def inject_app_css() -> None:
             position: relative;
             border-radius: 8px;
             padding: 0.65rem 0.7rem;
+            width: 100%;
+            box-sizing: border-box;
             min-height: 215px;
-            overflow: hidden;
+            margin-bottom: 0.45rem;
+            overflow: visible;
+            overflow-wrap: anywhere;
+            word-break: normal;
         }
         .option-click-selected {
             border: 1px solid #16a34a;
             background: #f0fdf4;
-            color: #111827;
+            color: #3b3821;
         }
         .option-click-positive-buffer {
             border: 1px solid #f59e0b;
             background: #fffbeb;
-            color: #111827;
+            color: #3b3821;
         }
         .option-click-muted {
             border: 1px solid transparent;
@@ -255,6 +390,9 @@ def inject_app_css() -> None:
         }
         div[class*="st-key-optionselect_"] {
             position: relative;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
         div[class*="st-key-optionselect_"] div[data-testid="stButton"] {
             position: absolute;
@@ -264,21 +402,24 @@ def inject_app_css() -> None:
         div[class*="st-key-optionselect_"] div[data-testid="stButton"] button {
             width: 100%;
             height: 100%;
-            min-height: 215px;
+            min-height: 100%;
             opacity: 0;
             border: 0;
+        }
+        .st-key-cardresultscomparison div[data-testid="column"] {
+            min-width: 0;
         }
         .section-banner {
             border-radius: 10px;
             padding: 0.55rem 0.7rem;
             margin-bottom: 0.65rem;
             border: 1px solid #e5e7eb;
-            background: #ffffff;
+            background: #f9e9d4;
         }
         .st-key-cardbudget,
         .st-key-cardresultsrecommendation,
         .st-key-cardapproval {
-            background: #f5fff8;
+            background: #f9e9d4;
             border: 1px solid #b7e4c7;
             border-radius: 14px;
             padding: 0.75rem 0.85rem 0.85rem 0.85rem;
@@ -286,14 +427,14 @@ def inject_app_css() -> None:
         }
         .st-key-cardchannels,
         .st-key-cardcurrentsetup {
-            background: #f4f9ff;
+            background: #f9e9d4;
             border: 1px solid #bfdbfe;
             border-radius: 14px;
             padding: 0.75rem 0.85rem 0.85rem 0.85rem;
             margin-bottom: 0.9rem;
         }
         .st-key-cardcpmsetup {
-            background: #fbf7ff;
+            background: #f9e9d4;
             border: 1px solid #d6bcfa;
             border-radius: 14px;
             padding: 0.75rem 0.85rem 0.85rem 0.85rem;
@@ -302,20 +443,33 @@ def inject_app_css() -> None:
         .st-key-cardprofilestructure,
         .st-key-cardprofilerows,
         .st-key-cardresultsfill {
-            background: #fffdf4;
+            background: #f9e9d4;
             border: 1px solid #f6e05e;
             border-radius: 14px;
             padding: 0.75rem 0.85rem 0.85rem 0.85rem;
             margin-bottom: 0.9rem;
         }
         .st-key-cardoptimizersettings,
-        .st-key-cardresultscomparison,
         .st-key-cardresultsdetails,
         .st-key-cardresultsdiagnostics,
-        .st-key-carddownloads,
-        .st-key-cardrunoptimizer {
-            background: #fafafa;
+        .st-key-carddownloads {
+            background: #f9e9d4;
             border: 1px solid #d1d5db;
+            border-radius: 14px;
+            padding: 0.75rem 0.85rem 0.85rem 0.85rem;
+            margin-bottom: 0.9rem;
+        }
+        .st-key-cardresultscomparison {
+            background: #f9e9d4;
+            border: 1px solid #d1d5db;
+            border-radius: 14px;
+            padding: 0.75rem 0.85rem 1.75rem 0.85rem;
+            margin-bottom: 0.9rem;
+            overflow: visible;
+        }
+        .st-key-cardrunoptimizer {
+            background: #f9e9d4;
+            border: 3px solid #f0fc03;
             border-radius: 14px;
             padding: 0.75rem 0.85rem 0.85rem 0.85rem;
             margin-bottom: 0.9rem;
@@ -326,7 +480,7 @@ def inject_app_css() -> None:
         div[data-testid="stNumberInput"] div[data-baseweb="input"] > div,
         div[data-testid="stTextInput"] div[data-baseweb="input"] > div,
         div[data-testid="stTextArea"] div[data-baseweb="textarea"] > div {
-            background: #ffffff !important;
+            background: #fbf1e4 !important;
             border: 1px solid #cbd5e0 !important;
             border-radius: 8px !important;
             box-shadow: none !important;
@@ -334,8 +488,8 @@ def inject_app_css() -> None:
         div[data-baseweb="input"] input,
         div[data-baseweb="select"] input,
         div[data-baseweb="textarea"] textarea {
-            background: #ffffff !important;
-            color: #1f2937 !important;
+            background: #fbf1e4 !important;
+            color: #3b3821 !important;
         }
         div[data-baseweb="input"] > div:focus-within,
         div[data-baseweb="select"] > div:focus-within,
@@ -344,7 +498,7 @@ def inject_app_css() -> None:
             box-shadow: 0 0 0 1px rgba(147, 197, 253, 0.35) !important;
         }
         div[data-testid="stDataEditor"] [data-testid="stDataFrameResizable"] div[role="gridcell"] {
-            background: #ffffff !important;
+            background: #fbf1e4 !important;
         }
         </style>
         """,
@@ -628,34 +782,34 @@ def _build_result_budget_view(
                 if profile_budget_target is not None
                 else remaining_profile_fee_base - deduction_amount
             )
-            deduction_label = f"Profile fee deduction / extra agency fee, {deduction_percent:.1f}%"
+            deduction_label = f"Profilavdrag / extra byråarvode, {deduction_percent:.1f}%"
             deduction_value = format_display_number(-deduction_amount)
         else:
             available_profile_fee_target = profile_budget_target
-            deduction_label = "Profile fee deduction / extra agency fee"
-            deduction_value = "unavailable"
+            deduction_label = "Profilavdrag / extra byråarvode"
+            deduction_value = "saknas"
         detailed_budget_rows = [
-            {"Item": "Total budget", "Value": format_display_number(budget)},
-            {"Item": "Agency fee", "Value": format_display_number(-float(agency_fee))},
-            {"Item": "Paid media included in target", "Value": format_display_number(-included_paid_media)},
-            {"Item": "Remaining profile-fee base", "Value": format_display_number(remaining_profile_fee_base)},
-            {"Item": deduction_label, "Value": deduction_value},
-            {"Item": "Available profile-fee target", "Value": format_display_number(available_profile_fee_target)},
+            {"Post": "Total budget", "Värde": format_display_number(budget)},
+            {"Post": "Byråarvode", "Värde": format_display_number(-float(agency_fee))},
+            {"Post": "Paid media inkluderad", "Värde": format_display_number(-included_paid_media)},
+            {"Post": "Kvar före profilavdrag", "Värde": format_display_number(remaining_profile_fee_base)},
+            {"Post": deduction_label, "Värde": deduction_value},
+            {"Post": "Tillgänglig profilbudget", "Värde": format_display_number(available_profile_fee_target)},
         ]
 
     caption = None
     if manual_context:
         caption = (
-            "Selected fee setup: agency fee "
+            "Vald arvodesmodell: byråarvode "
             + _format_amount_with_percent(agency_fee, agency_fee_percent)
             + ", paid media "
             + _format_amount_with_percent(paid_media, paid_media_percent)
-            + f", combinations evaluated: {manual_context.get('combinations_evaluated')}"
+            + f", testade kombinationer: {manual_context.get('combinations_evaluated')}"
         )
 
     return {
         "agency_fee_text": _format_amount_with_percent(agency_fee, agency_fee_percent),
-        "paid_media_text": "Not included"
+        "paid_media_text": "Ingår inte"
         if paid_media_included is False
         else _format_amount_with_percent(paid_media, paid_media_percent),
         "detailed_budget_rows": detailed_budget_rows,
@@ -665,7 +819,11 @@ def _build_result_budget_view(
 
 def _build_selectable_fill_view(result: dict, selected_option_label: str | None = None) -> dict:
     cards = build_option_quick_compare_cards(result)
-    option_labels = [str(card["option_label"]) for card in cards if card.get("option_label")]
+    option_labels = [
+        str(card["option_label"])
+        for card in cards
+        if card.get("option_label") and card.get("is_selectable", True)
+    ]
     if not option_labels:
         option_labels = [str(option.get("option_label")) for option in result.get("options", []) if option.get("option_label")]
     recommended_label = str(result.get("recommended_option_label", ""))
@@ -704,10 +862,10 @@ def _render_downloads(payload: dict, result: dict) -> None:
     json_text = json.dumps(payload, indent=2, ensure_ascii=False)
 
     with st.container(border=True, key="carddownloads"):
-        _section_header("Downloads", "Export fill instructions, JSON payload, and markdown report.", "soft-gray")
-        st.download_button("Download fill instructions CSV", data=fill_csv, file_name="fill_instructions.csv", mime="text/csv")
-        st.download_button("Download optimizer results JSON", data=json_text, file_name="optimizer_results.json", mime="application/json")
-        st.download_button("Download optimizer report Markdown", data=markdown, file_name="optimizer_results.md", mime="text/markdown")
+        _section_header("Nedladdningar", "Exportera ifyllnadsinstruktioner, JSON och rapport.", "soft-gray")
+        st.download_button("Ladda ner ifyllnadsinstruktioner CSV", data=fill_csv, file_name="fill_instructions.csv", mime="text/csv")
+        st.download_button("Ladda ner optimeringsresultat JSON", data=json_text, file_name="optimizer_results.json", mime="application/json")
+        st.download_button("Ladda ner rapport Markdown", data=markdown, file_name="optimizer_results.md", mime="text/markdown")
 
 
 def render_result(
@@ -717,58 +875,37 @@ def render_result(
     budget_inputs: dict | None = None,
 ) -> None:
     recommended = _recommended_option(result)
-    baseline = next((option for option in result["options"] if option["option_label"] == "current_workbook_mix"), None)
     budget_view = _build_result_budget_view(result, manual_context=manual_context, budget_inputs=budget_inputs)
     run_id = st.session_state.get("latest_run_data", {}).get("run_id", "current")
     fill_selector_key = _main_fill_selector_key(run_id)
     selected_from_state = st.session_state.get(fill_selector_key)
     fill_view = _build_selectable_fill_view(result, selected_from_state)
 
-    st.markdown("### 8. Results")
+    st.markdown("### 8. Resultat")
     with st.container(border=True, key="cardresultsrecommendation"):
-        _section_header("Recommendation", "Use this option unless business context requires another tradeoff.", "soft-blue")
+        _section_header("Rekommendation", "Använd detta förslag om inget annat i kundcaset väger tyngre.", "soft-blue")
         status_tone, status_text = build_diff_status(recommended.get("optimized_diff"))
         hero_class = {"positive": "hero-positive", "negative": "hero-negative", "neutral": "hero-neutral"}[status_tone]
         diff_value = format_display_number(recommended["optimized_diff"])
         diff_signed = diff_value if diff_value.startswith("-") else f"+{diff_value}"
-        main_reason = result.get("recommendation_reason") or "n/a"
-        main_note = main_option_note(recommended)
-        baseline_badge = "Baseline unavailable" if baseline is None else (
-            "Improves baseline" if recommended.get("improves_on_baseline") is True else "Matches/does not improve baseline"
-        )
-        closest_positive_label = result.get("closest_positive_diff_option_label")
-        closest_positive_badge = (
-            "Closest positive diff unavailable"
-            if closest_positive_label is None
-            else (
-                "Recommended is closest positive diff"
-                if str(closest_positive_label) == str(recommended.get("option_label"))
-                else "Closest positive diff available"
-            )
-        )
         st.markdown(
             f"""
             <div class="hero-card {hero_class}">
-              <div class="section-title">Recommended option</div>
+              <div class="section-title">Rekommenderat förslag</div>
               <div style="font-size:1.05rem;font-weight:700;">{format_option_label(str(recommended.get("option_label")))}</div>
               <div class="hero-kpi">Diff {diff_signed}</div>
               <div class="section-caption" style="margin-bottom:0.35rem;">{status_text}</div>
-              <div><strong>Profile fee sum:</strong> {format_display_number(recommended['profile_fee_sum'])}</div>
-              <div><strong>Profile budget target:</strong> {format_display_number(recommended['profile_budget_target'])}</div>
-              <div><strong>Agency fee:</strong> {budget_view['agency_fee_text']}</div>
+              <div><strong>Byråarvode:</strong> {budget_view['agency_fee_text']}</div>
               <div><strong>Paid media:</strong> {budget_view['paid_media_text']}</div>
-              <div><strong>Reason:</strong> {main_reason}</div>
-              <div><strong>Main note:</strong> {main_note}</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
         for line in tier_mix_by_channel_lines(recommended.get("fill_instructions", [])):
             st.write(line)
-        _render_badges([baseline_badge, closest_positive_badge])
 
     with st.container(border=True, key="cardresultscomparison"):
-        _section_header("Option quick compare", "", "soft-gray")
+        _section_header("Jämför förslag", "Tre möjliga upplägg att välja mellan.", "soft-gray")
         cards = fill_view["cards"]
         if cards:
             cols = st.columns(len(cards))
@@ -778,13 +915,19 @@ def render_result(
                     is_selected = option_label == str(fill_view["selected_label"])
                     delta = float(card["delta_vs_recommended"])
                     if delta > 0:
-                        delta_text = f"{format_display_number(delta)} more buffer than recommended"
+                        delta_text = f"{format_display_number(delta)} mer marginal än rekommenderat förslag"
                     elif delta < 0:
-                        delta_text = f"{format_display_number(abs(delta))} closer than recommended"
+                        delta_text = f"{format_display_number(abs(delta))} närmare än rekommenderat förslag"
+                    elif not is_selected:
+                        delta_text = "Samma diff som rekommenderat förslag"
                     else:
-                        delta_text = "Same diff as recommended"
+                        delta_text = ""
                     has_positive_buffer = _option_has_positive_buffer_above_recommended(card)
-                    if has_positive_buffer:
+                    is_selectable = bool(card.get("is_selectable", True))
+                    replacement_body_text = card.get("replacement_body_text")
+                    if not is_selectable:
+                        click_class = "option-click-muted"
+                    elif has_positive_buffer:
                         click_class = "option-click-positive-buffer"
                     elif is_selected:
                         click_class = "option-click-selected"
@@ -794,31 +937,30 @@ def render_result(
                         f'<div class="option-summary-line">{line}</div>'
                         for line in card["tier_mix_lines"]
                     )
-                    unique_warnings = [warning for warning in card["warnings"] if warning != card["main_note"]]
-                    warning_line = (
-                        f'<div class="option-summary-line"><strong>Risk:</strong> {unique_warnings[0]}</div>'
-                        if unique_warnings
-                        else ""
-                    )
+                    delta_line = f'<div class="option-summary-line">{delta_text}</div>' if delta_text else ""
                     with st.container(key=f"optionselect_{run_id}_{idx}"):
-                        if st.button(
-                            f"Select {card['title']}",
-                            key=f"{fill_selector_key}_{idx}_{option_label}",
-                            use_container_width=True,
-                            type="secondary",
-                        ):
-                            st.session_state[fill_selector_key] = option_label
-                            st.rerun()
+                        if is_selectable:
+                            if st.button(
+                                f"Välj {card['title']}",
+                                key=f"{fill_selector_key}_{idx}_{option_label}",
+                                use_container_width=True,
+                                type="secondary",
+                            ):
+                                st.session_state[fill_selector_key] = option_label
+                                st.rerun()
+                            card_body = f"""
+                              <div class="option-summary-line"><strong>Diff:</strong> {format_display_number(card['diff'])}</div>
+                              {delta_line}
+                              <div class="option-summary-line"><strong>Avvägning:</strong> {card['tradeoff']}</div>
+                              {tier_lines}
+                            """
+                        else:
+                            card_body = f'<div class="option-summary-line">{replacement_body_text}</div>'
                         st.markdown(
                             f"""
                             <div class="option-click-area {click_class}">
                               <div class="option-click-title">{card['title']}</div>
-                              <div class="option-summary-line"><strong>Diff:</strong> {format_display_number(card['diff'])}</div>
-                              <div class="option-summary-line">{delta_text}</div>
-                              <div class="option-summary-line"><strong>Tradeoff:</strong> {card['tradeoff']}</div>
-                              {tier_lines}
-                              <div class="option-summary-line"><strong>Why consider it:</strong> {card['main_note']}</div>
-                              {warning_line}
+                              {card_body}
                             </div>
                             """,
                             unsafe_allow_html=True,
@@ -827,26 +969,27 @@ def render_result(
     with st.container(border=True, key="cardresultsfill"):
         selected_display_label = format_option_label(fill_view["selected_label"])
         _section_header(
-            f"Fill instructions: {selected_display_label}",
-            "Profile sizes for the selected recommendation option.",
+            f"Ifyllnadsinstruktioner: {selected_display_label}",
+            "Rekommenderade profilval för kalkylen.",
             "soft-yellow",
         )
         st.dataframe(_format_table_rows(fill_view["simple_fill_rows"]), use_container_width=True)
 
     with st.container(border=True, key="cardresultsactions"):
-        _section_header("Actions & detailed review", "Downloads and expandable technical detail.", "soft-gray")
-        with st.expander("Actions & detailed review", expanded=False):
-            st.markdown("**Downloads**")
+        _section_header("Åtgärder och detaljer", "Nedladdningar och tekniska detaljer.", "soft-gray")
+        with st.expander("Åtgärder och detaljer", expanded=False):
+            st.markdown("**Nedladdningar**")
             _render_downloads(payload, result)
             if result.get("closest_positive_diff_option_label") is None:
-                st.caption("No non-negative diff option found in retained candidates.")
-            with st.expander("Detailed fill instructions", expanded=False):
+                st.caption("Inget alternativ med positiv diff hittades bland sparade kandidater.")
+            with st.expander("Detaljerade ifyllnadsinstruktioner", expanded=False):
                 option_labels = [str(option.get("option_label")) for option in result.get("options", []) if option.get("option_label")]
                 selected_default = select_option_label(option_labels, str(result.get("recommended_option_label", "")))
                 selected_fill_label = st.selectbox(
-                    "Option",
+                    "Förslag",
                     options=option_labels,
                     index=option_labels.index(selected_default) if selected_default in option_labels else 0,
+                    format_func=format_option_label,
                     key=f"detailed_fill_option_selector_{result.get('source', {}).get('workbook_name', 'manual')}_{result.get('source', {}).get('sheet_name', 'manual')}",
                 )
                 detailed_option = choose_option_for_fill_view(
@@ -858,63 +1001,63 @@ def render_result(
                 for row in detailed_option.get("fill_instructions", []):
                     fill_rows.append(
                         {
-                            "Cell": row.get("profile_size_cell") or "manual row",
-                            "Previous size": row.get("previous_profile_size"),
-                            "Recommended size (K)": profile_size_to_k_display(row.get("recommended_profile_size")),
-                            "Channel": row.get("channel"),
-                            "Market": row.get("market"),
+                            "Cell": row.get("profile_size_cell") or "manuell rad",
+                            "Tidigare storlek": row.get("previous_profile_size"),
+                            "Rekommenderad storlek (K)": profile_size_to_k_display(row.get("recommended_profile_size")),
+                            "Kanal": row.get("channel"),
+                            "Marknad": row.get("market"),
                             "CPM": row.get("cpm"),
-                            "Activations": row.get("activations"),
-                            "Row fee": row.get("row_fee"),
+                            "Aktiveringar": row.get("activations"),
+                            "Radkostnad": row.get("row_fee"),
                         }
                     )
                 st.dataframe(_format_table_rows(fill_rows), use_container_width=True)
 
-            with st.expander("Detailed option comparison", expanded=False):
+            with st.expander("Detaljerad jämförelse", expanded=False):
                 comparison_rows = []
                 for row in result["option_comparison"]:
                     comparison_rows.append(
                         {
-                            "Option": row.get("option_label"),
-                            "Recommendation rank": row.get("recommendation_rank"),
+                            "Förslag": format_option_label(str(row.get("option_label"))),
+                            "Rank": row.get("recommendation_rank"),
                             "Diff": row.get("optimized_diff"),
-                            "Profile fee sum": row.get("profile_fee_sum"),
-                            "Tier counts": row.get("tier_counts"),
-                            "Total impressions": row.get("total_impressions"),
-                            "Warnings": row.get("strategic_warnings"),
-                            "Improves baseline": row.get("improves_on_baseline"),
+                            "Profilkostnad totalt": row.get("profile_fee_sum"),
+                            "Storleksfördelning": row.get("tier_counts"),
+                            "Totala visningar": row.get("total_impressions"),
+                            "Varningar": [translate_result_note(item) for item in row.get("strategic_warnings", [])],
+                            "Förbättrar nuvarande upplägg": row.get("improves_on_baseline"),
                         }
                     )
                 st.dataframe(_format_table_rows(comparison_rows), use_container_width=True)
 
             if budget_view["detailed_budget_rows"]:
-                with st.expander("Detailed budget breakdown", expanded=False):
+                with st.expander("Detaljerad budgetfördelning", expanded=False):
                     st.table(budget_view["detailed_budget_rows"])
                     if budget_view["detailed_budget_caption"]:
                         st.caption(budget_view["detailed_budget_caption"])
 
-            with st.expander("Diagnostics", expanded=False):
+            with st.expander("Diagnostik", expanded=False):
                 diagnostics = result["search_diagnostics"]
                 st.write(
-                    f"Search strategy: {diagnostics['search_method']} "
+                    f"Sökstrategi: {diagnostics['search_method']} "
                     f"(bounded={diagnostics['bounded_search']}, approximate={diagnostics['approximate_search']}, "
                     f"global_optimality_guaranteed={diagnostics['global_optimality_guaranteed']})"
                 )
                 st.write(
-                    "Allowed profile sizes: "
+                    "Tillåtna profilstorlekar: "
                     + ", ".join(f"{int(value/1000)}K" for value in diagnostics.get("allowed_tiers", list(VALID_PROFILE_TIERS)))
                 )
                 st.write(
-                    f"Beam width: {diagnostics['beam_width']}, expanded states: {diagnostics['expanded_state_count']}, "
-                    f"retained states: {diagnostics['retained_state_count']}"
+                    f"Beam width: {diagnostics['beam_width']}, expanderade tillstånd: {diagnostics['expanded_state_count']}, "
+                    f"sparade tillstånd: {diagnostics['retained_state_count']}"
                 )
                 if diagnostics.get("search_method") == "exact_fee_sum_search":
-                    st.write(f"Exact states: {diagnostics.get('exact_state_count')} / {diagnostics.get('exact_state_limit')}")
+                    st.write(f"Exakta tillstånd: {diagnostics.get('exact_state_count')} / {diagnostics.get('exact_state_limit')}")
                 if not diagnostics.get("current_baseline_available", True):
                     st.warning(
-                        "Baseline unavailable because one or more current profile sizes were blank, invalid, or excluded by allowed profile sizes."
+                        "Nuvarande upplägg saknas eftersom en eller flera profilstorlekar var tomma, ogiltiga eller utanför tillåtna storlekar."
                     )
-            with st.expander("Recommendation score breakdown", expanded=False):
+            with st.expander("Poängfördelning för rekommendation", expanded=False):
                 st.json(result.get("recommendation_score_breakdown", {}))
 
 
@@ -929,6 +1072,7 @@ def run_and_render(
     allowed_tiers: list[int] | None = None,
     max_exact_states: int = DEFAULT_EXACT_MAX_STATES,
     manual_context: dict | None = None,
+    optimization_focus: str | None = None,
 ) -> tuple[dict, dict]:
     payload = run_optimizer_for_models(
         models=models,
@@ -940,6 +1084,7 @@ def run_and_render(
         optimization_method=optimization_method,
         allowed_tiers=allowed_tiers,
         max_exact_states=max_exact_states,
+        optimization_focus=optimization_focus,
     )
     result = payload["results"][0]
     return payload, result
@@ -1282,15 +1427,21 @@ def _render_approval_section() -> None:
     st.session_state.setdefault("approval_currency", run_data.get("default_currency", "SEK"))
 
     with st.container(border=True, key="cardapproval"):
-        _section_header("Approval", "Commit the chosen option into the local approved-calculation library.", "soft-blue")
-        calculation_name = st.text_input("Calculation name", key="approval_calculation_name")
-        approval_currency = st.selectbox("Currency", options=list(SUPPORTED_CURRENCIES), key="approval_currency")
-        comment = st.text_area("Optional comment", key="approval_comment")
-        approved_option_label = st.selectbox("Option to approve", options=options, index=default_index, key="approval_option_label")
+        _section_header("Klar att använda", "Spara valt förslag i det lokala biblioteket för godkända kalkyler.", "soft-blue")
+        calculation_name = st.text_input("Kalkylnamn", key="approval_calculation_name")
+        approval_currency = st.selectbox("Valuta", options=list(SUPPORTED_CURRENCIES), key="approval_currency")
+        comment = st.text_area("Valfri kommentar", key="approval_comment")
+        approved_option_label = st.selectbox(
+            "Förslag att godkänna",
+            options=options,
+            index=default_index,
+            key="approval_option_label",
+            format_func=format_option_label,
+        )
 
-        if st.button("Approve / commit calculation"):
+        if st.button("Godkänn / spara kalkyl"):
             if not calculation_name.strip():
-                st.error("Calculation name is required before approval.")
+                st.error("Kalkylnamn krävs innan kalkylen kan sparas.")
                 return
             try:
                 approval_result = approve_calculation(
@@ -1303,8 +1454,8 @@ def _render_approval_section() -> None:
                     budget_inputs=run_data["budget_inputs"],
                 )
                 st.success(
-                    f"Approved calculation '{approval_result['approved_record']['calculation_name']}'. "
-                    f"Added {approval_result['added_cpm_observation_count']} CPM observation(s)."
+                    f"Godkände kalkylen '{approval_result['approved_record']['calculation_name']}'. "
+                    f"Lade till {approval_result['added_cpm_observation_count']} CPM-observation(er)."
                 )
                 st.rerun()
             except ValueError as error:
@@ -1318,7 +1469,7 @@ def main() -> None:
     st.title(_ui_text(language, "page_title"))
     app_caption = _ui_text(language, "app_caption")
     if app_caption:
-        st.caption(app_caption)
+        st.markdown(f'<div class="app-caption">{app_caption}</div>', unsafe_allow_html=True)
 
     profile_fee_deduction_percent = float(DEFAULT_PROFILE_FEE_DEDUCTION_PERCENT)
     profile_budget_target_multiplier = deduction_percent_to_multiplier(profile_fee_deduction_percent)
@@ -1339,15 +1490,13 @@ def main() -> None:
             index=0,
             format_func=lambda value: f"{format_display_number(value)} SEK",
         )
-        if int(selected_budget) >= 200000:
-            optimization_focus = st.selectbox(
-                "Optimize for",
-                options=list(SIMPLIFIED_OPTIMIZATION_FOCUS_OPTIONS),
-                index=list(SIMPLIFIED_OPTIMIZATION_FOCUS_OPTIONS).index(SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES),
-                key="manual_optimization_focus",
-            )
-        else:
-            optimization_focus = SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES
+        optimization_focus = st.selectbox(
+            _ui_text(language, "optimization_focus_label"),
+            options=list(SIMPLIFIED_OPTIMIZATION_FOCUS_OPTIONS),
+            index=list(SIMPLIFIED_OPTIMIZATION_FOCUS_OPTIONS).index(SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES),
+            key="manual_optimization_focus",
+            format_func=lambda focus: _optimization_focus_display_label(language, str(focus)),
+        )
         paid_media_included = st.checkbox("Paid amplification included", value=DEFAULT_PAID_MEDIA_INCLUDED)
         budget_setup = build_simplified_budget_setup(
             selected_budget,
@@ -1466,7 +1615,7 @@ def main() -> None:
                 1,
                 {
                     "Field": "Optimize for",
-                    "Value": str(budget_setup["optimization_focus"]),
+                    "Value": _optimization_focus_display_label(language, str(budget_setup["optimization_focus"])),
                 },
             )
         setup_df = pd.DataFrame(setup_rows)
@@ -1505,6 +1654,7 @@ def main() -> None:
                     optimization_method="fast_closest_diff",
                     allowed_tiers=allowed_tiers,
                     max_exact_states=DEFAULT_EXACT_MAX_STATES,
+                    optimization_focus=str(budget_setup.get("optimization_focus") or ""),
                 )
             except ValueError as error:
                 st.error(str(error))

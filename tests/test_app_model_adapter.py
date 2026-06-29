@@ -104,8 +104,8 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         view = app._build_selectable_fill_view(result, selected_option_label="best_strategic_fit")
 
         self.assertEqual(view["selected_label"], "best_strategic_fit")
-        self.assertEqual(view["simple_fill_rows"][0]["Channel"], "TikTok")
-        self.assertEqual(view["simple_fill_rows"][0]["Size"], "75")
+        self.assertEqual(view["simple_fill_rows"][0]["Kanal"], "TikTok")
+        self.assertEqual(view["simple_fill_rows"][0]["Storlek"], "75")
 
     def test_selectable_fill_view_invalid_selection_falls_back_to_recommended(self) -> None:
         import app
@@ -133,8 +133,47 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         view = app._build_selectable_fill_view(result, selected_option_label="missing_option")
 
         self.assertEqual(view["selected_label"], "best_mathematical_fit")
-        self.assertEqual(view["simple_fill_rows"][0]["Channel"], "Instagram")
-        self.assertEqual(view["simple_fill_rows"][0]["Size"], "35")
+        self.assertEqual(view["simple_fill_rows"][0]["Kanal"], "Instagram")
+        self.assertEqual(view["simple_fill_rows"][0]["Storlek"], "35")
+
+    def test_selectable_fill_view_unavailable_selection_falls_back_to_recommended(self) -> None:
+        import app
+
+        result = {
+            "recommended_option_label": "best_mathematical_fit",
+            "options": [
+                {
+                    "option_label": "best_mathematical_fit",
+                    "optimized_diff": 100,
+                    "fill_instructions": [{"channel": "Instagram", "recommended_profile_size": 35000}],
+                    "main_note": "A",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "best_strategic_fit",
+                    "optimized_diff": 500,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 75000}],
+                    "main_note": "B",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "balanced_option",
+                    "optimized_diff": 800,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 125000}],
+                    "main_note": "C",
+                    "strategic_warnings": [],
+                },
+            ],
+        }
+
+        view = app._build_selectable_fill_view(result, selected_option_label="balanced_option")
+
+        self.assertEqual(view["selected_label"], "best_mathematical_fit")
+        self.assertNotIn("balanced_option", view["option_labels"])
+        balanced_card = next(card for card in view["cards"] if card["option_label"] == "balanced_option")
+        self.assertFalse(balanced_card["is_selectable"])
+        self.assertEqual(balanced_card["title"], "Ej tillgängligt")
+        self.assertEqual(view["simple_fill_rows"][0]["Kanal"], "Instagram")
 
     def test_selectable_fill_view_option_labels_are_derived_from_current_result(self) -> None:
         import app
@@ -179,6 +218,15 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertEqual(app._ui_text("sv", "page_title"), "Magisk kalkyl")
         self.assertEqual(app._ui_text("sv", "app_caption"), "Generera kalkyler för enklare kundprojekt")
         self.assertEqual(app._ui_text("en", "page_title"), "Magic Numbers")
+        self.assertEqual(app._ui_text("sv", "optimization_focus_label"), "Optimera kampanjen för")
+        self.assertEqual(
+            app._optimization_focus_display_label("sv", SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES),
+            "så många profiler som möjligt",
+        )
+        self.assertEqual(
+            app._optimization_focus_display_label("sv", SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES),
+            "så stora profiler som möjligt",
+        )
 
     def test_positive_buffer_above_recommended_gets_attention_highlight(self) -> None:
         import app
@@ -218,12 +266,12 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertEqual(
             view["detailed_budget_rows"],
             [
-                {"Item": "Total budget", "Value": "100 000"},
-                {"Item": "Agency fee", "Value": "-10 000"},
-                {"Item": "Paid media included in target", "Value": "-5 000"},
-                {"Item": "Remaining profile-fee base", "Value": "85 000"},
-                {"Item": "Profile fee deduction / extra agency fee, 7.5%", "Value": "-6 375"},
-                {"Item": "Available profile-fee target", "Value": "78 625"},
+                {"Post": "Total budget", "Värde": "100 000"},
+                {"Post": "Byråarvode", "Värde": "-10 000"},
+                {"Post": "Paid media inkluderad", "Värde": "-5 000"},
+                {"Post": "Kvar före profilavdrag", "Värde": "85 000"},
+                {"Post": "Profilavdrag / extra byråarvode, 7.5%", "Värde": "-6 375"},
+                {"Post": "Tillgänglig profilbudget", "Värde": "78 625"},
             ],
         )
 
@@ -290,7 +338,7 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertEqual(setup["available_after_deduction"], 44559.1)
         self.assertEqual(setup["total_profiles"], 2)
 
-    def test_simplified_budget_setup_100k_and_150k_fallback_to_many_profiles(self) -> None:
+    def test_simplified_budget_setup_100k_and_150k_support_larger_profile_focus(self) -> None:
         setup_100k = build_simplified_budget_setup(
             100000,
             paid_media_included=True,
@@ -301,12 +349,12 @@ class ManualCampaignAdapterTests(unittest.TestCase):
             paid_media_included=True,
             optimization_focus=SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES,
         )
-        self.assertEqual(setup_100k["optimization_focus"], SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES)
-        self.assertEqual(setup_100k["agency_fee"], 36828.0)
-        self.assertEqual(setup_100k["total_profiles"], 2)
-        self.assertEqual(setup_150k["optimization_focus"], SIMPLIFIED_OPTIMIZATION_FOCUS_MANY_PROFILES)
-        self.assertEqual(setup_150k["agency_fee"], 58806.0)
-        self.assertEqual(setup_150k["total_profiles"], 4)
+        self.assertEqual(setup_100k["optimization_focus"], SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES)
+        self.assertEqual(setup_100k["agency_fee"], 25839.0)
+        self.assertEqual(setup_100k["total_profiles"], 1)
+        self.assertEqual(setup_150k["optimization_focus"], SIMPLIFIED_OPTIMIZATION_FOCUS_LARGER_PROFILES)
+        self.assertEqual(setup_150k["agency_fee"], 36828.0)
+        self.assertEqual(setup_150k["total_profiles"], 2)
 
     def test_simplified_budget_setup_250k_uses_exact_preset_values(self) -> None:
         setup = build_simplified_budget_setup(250000, paid_media_included=True)

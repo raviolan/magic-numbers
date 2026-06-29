@@ -896,6 +896,7 @@ def build_option_main_note(option: dict[str, Any]) -> str:
 
 def _budget_guidance_for_option(
     budget: Any,
+    optimization_focus: str | None,
     count_75k: int,
     count_125k: int,
     count_175k: int,
@@ -906,6 +907,8 @@ def _budget_guidance_for_option(
     guidance = SIMPLIFIED_BUDGET_PROFILE_GUIDANCE.get(int(budget_decimal))
     if guidance is None:
         return [], []
+    if int(budget_decimal) == 100000 and optimization_focus == "Larger profile sizes":
+        guidance = {**guidance, "recommended_max_tier": 175000}
 
     warnings: list[str] = []
     notes: list[str] = []
@@ -941,6 +944,7 @@ def analyze_option_strategy(
     row_count: int,
     best_mathematical_label: str,
     budget: Any = None,
+    optimization_focus: str | None = None,
 ) -> dict[str, Any]:
     tier_counts = option["tier_counts"]
     count_15k = int(tier_counts.get("15000", 0))
@@ -973,6 +977,7 @@ def analyze_option_strategy(
         strategic_warnings.append("Low mid-tier representation")
     budget_guidance_warnings, budget_guidance_notes = _budget_guidance_for_option(
         budget=budget,
+        optimization_focus=optimization_focus,
         count_75k=count_75k,
         count_125k=count_125k,
         count_175k=count_175k,
@@ -1140,6 +1145,7 @@ def optimize_model(
     allowed_tiers: list[int] | tuple[int, ...] | None = None,
     optimization_method: str = "fast_closest_diff",
     max_exact_states: int = DEFAULT_EXACT_MAX_STATES,
+    optimization_focus: str | None = None,
 ) -> dict[str, Any]:
     warnings = list(model.warnings)
     normalized_allowed_tiers = normalize_allowed_tiers(allowed_tiers)
@@ -1173,7 +1179,14 @@ def optimize_model(
     baseline_option = next((option for option in options if option["option_label"] == "current_workbook_mix"), None)
     best_math_label = "best_mathematical_fit"
     analyzed_options = [
-        analyze_option_strategy(option, baseline_option, len(model.profile_rows), best_math_label, budget=model.budget)
+        analyze_option_strategy(
+            option,
+            baseline_option,
+            len(model.profile_rows),
+            best_math_label,
+            budget=model.budget,
+            optimization_focus=optimization_focus,
+        )
         for option in options
     ]
     for option in analyzed_options:
@@ -1247,6 +1260,7 @@ def build_optimizer_payload(
     allowed_tiers: list[int] | tuple[int, ...] | None = None,
     optimization_method: str = "fast_closest_diff",
     max_exact_states: int = DEFAULT_EXACT_MAX_STATES,
+    optimization_focus: str | None = None,
 ) -> dict[str, Any]:
     normalized_allowed_tiers = normalize_allowed_tiers(allowed_tiers)
     selected_formula = choose_selected_row_fee_formula(models) if models else SELECTED_ROW_FEE_FORMULA
@@ -1260,6 +1274,7 @@ def build_optimizer_payload(
             allowed_tiers=normalized_allowed_tiers,
             optimization_method=optimization_method,
             max_exact_states=max_exact_states,
+            optimization_focus=optimization_focus,
         )
         for model in models
     ]
@@ -1309,6 +1324,7 @@ def run_optimizer_for_models(
     allowed_tiers: list[int] | tuple[int, ...] | None = None,
     optimization_method: str = "fast_closest_diff",
     max_exact_states: int = DEFAULT_EXACT_MAX_STATES,
+    optimization_focus: str | None = None,
 ) -> dict[str, Any]:
     return build_optimizer_payload(
         Path(input_label),
@@ -1320,6 +1336,7 @@ def run_optimizer_for_models(
         allowed_tiers=allowed_tiers,
         optimization_method=optimization_method,
         max_exact_states=max_exact_states,
+        optimization_focus=optimization_focus,
     )
 
 

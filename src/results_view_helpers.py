@@ -2,26 +2,90 @@ from __future__ import annotations
 
 from typing import Any
 
+HIGH_DIFF_DISPLAY_THRESHOLD = 10000.0
+UNAVAILABLE_OPTION_BODY_TEXT = "Inga fler förslag finns för det här kampanjupplägget"
+
 
 _OPTION_UI_LABELS = {
-    "closest_positive_diff": "Closest positive diff",
-    "best_mathematical_fit": "Closest diff",
-    "best_strategic_fit": "Strategic mix",
-    "balanced_option": "Balanced option",
-    "larger_profile_alternative": "Larger-profile option",
-    "fallback_option": "Fallback",
-    "current_workbook_mix": "Current workbook mix",
+    "closest_positive_diff": "Närmast positiv diff",
+    "best_mathematical_fit": "Bästa matematiska träff",
+    "best_strategic_fit": "Strategiskt förslag",
+    "balanced_option": "Balanserat förslag",
+    "larger_profile_alternative": "Större profiler",
+    "fallback_option": "Alternativt förslag",
+    "current_workbook_mix": "Nuvarande upplägg",
+}
+
+_MAIN_NOTE_TRANSLATIONS = {
+    "No major warnings.": "Inga större varningar.",
+    "Recommended as best balance between diff fit and distribution.": "Rekommenderas som bästa balans mellan diff och profilfördelning.",
+    "Closest mathematical fit, but distribution has risk flags.": "Närmast matematisk träff, men profilfördelningen har riskflaggor.",
+    "Highly concentrated tier mix": "Mycket koncentrerad storleksmix",
+    "Polarized mix: heavy use of smallest and largest tiers": "Polariserad mix: många små och stora profiler",
+    "Low mid-tier representation": "Låg andel mellanstora profiler",
 }
 
 
 def option_ui_label(option_label: str, recommended_option_label: str) -> str:
     if option_label == recommended_option_label:
-        return "Recommended"
-    return _OPTION_UI_LABELS.get(option_label, "Fallback")
+        return "Rekommenderat förslag"
+    return _OPTION_UI_LABELS.get(option_label, "Alternativt förslag")
 
 
 def format_option_label(option_label: str) -> str:
-    return _OPTION_UI_LABELS.get(option_label, "Fallback")
+    return _OPTION_UI_LABELS.get(option_label, "Alternativt förslag")
+
+
+def _abs_diff(option: dict[str, Any] | None) -> float | None:
+    if not isinstance(option, dict):
+        return None
+    try:
+        return abs(float(option.get("optimized_diff", 0)))
+    except (TypeError, ValueError):
+        return None
+
+
+def build_option_display_metadata(
+    *,
+    option: dict[str, Any],
+    recommended_option: dict[str, Any],
+    strategic_option: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    option_label = str(option.get("option_label") or "")
+    recommended_label = str(recommended_option.get("option_label") or "")
+    recommended_abs_diff = _abs_diff(recommended_option) or 0.0
+    strategic_abs_diff = _abs_diff(strategic_option)
+    option_abs_diff = _abs_diff(option) or 0.0
+
+    if option_label == "balanced_option" and strategic_abs_diff is not None and option_abs_diff > strategic_abs_diff:
+        return {
+            "display_label": "Ej tillgängligt",
+            "is_selectable": False,
+            "replacement_body_text": UNAVAILABLE_OPTION_BODY_TEXT,
+        }
+
+    if (
+        option_label == "best_strategic_fit"
+        and option_abs_diff > recommended_abs_diff + HIGH_DIFF_DISPLAY_THRESHOLD
+    ):
+        return {
+            "display_label": "Alternativ 2 (ej rekommenderat)",
+            "is_selectable": True,
+            "replacement_body_text": None,
+        }
+
+    return {
+        "display_label": option_ui_label(option_label, recommended_label),
+        "is_selectable": True,
+        "replacement_body_text": None,
+    }
+
+
+def translate_result_note(text: Any) -> str:
+    value = str(text or "").strip()
+    if not value:
+        return ""
+    return _MAIN_NOTE_TRANSLATIONS.get(value, value)
 
 
 def tier_mix_summary(tier_counts: dict[str, Any] | None) -> str:
@@ -98,15 +162,15 @@ def option_diff_delta_vs_recommended(option: dict[str, Any], recommended_option:
 
 def option_tradeoff_summary(option: dict[str, Any], recommended_option: dict[str, Any]) -> str:
     if str(option.get("option_label")) == str(recommended_option.get("option_label")):
-        return "Best balance"
+        return "Bäst balans"
     delta = option_diff_delta_vs_recommended(option, recommended_option)
     if delta > 0:
-        return "More buffer"
+        return "Mer marginal"
     if delta < 0:
-        return "Closer diff"
+        return "Närmare diff"
     option_lines = tier_mix_by_channel_lines(option.get("fill_instructions", []))
     rec_lines = tier_mix_by_channel_lines(recommended_option.get("fill_instructions", []))
-    return "Different tier mix" if option_lines != rec_lines else "Similar mix"
+    return "Annan storleksmix" if option_lines != rec_lines else "Liknande mix"
 
 
 def build_option_quick_compare_cards(result: dict[str, Any]) -> list[dict[str, Any]]:
@@ -118,6 +182,7 @@ def build_option_quick_compare_cards(result: dict[str, Any]) -> list[dict[str, A
     recommended = by_label.get(recommended_label)
     if recommended is None:
         recommended = options[0]
+    strategic_option = by_label.get("best_strategic_fit")
 
     picked: list[dict[str, Any]] = []
     used_signatures: set[tuple[Any, ...]] = set()
@@ -149,16 +214,23 @@ def build_option_quick_compare_cards(result: dict[str, Any]) -> list[dict[str, A
     cards: list[dict[str, Any]] = []
     for option in picked[:3]:
         delta = option_diff_delta_vs_recommended(option, recommended)
+        display = build_option_display_metadata(
+            option=option,
+            recommended_option=recommended,
+            strategic_option=strategic_option,
+        )
         cards.append(
             {
                 "option_label": str(option.get("option_label")),
-                "title": option_ui_label(str(option.get("option_label")), str(recommended.get("option_label"))),
+                "title": display["display_label"],
+                "is_selectable": bool(display["is_selectable"]),
+                "replacement_body_text": display["replacement_body_text"],
                 "diff": option.get("optimized_diff"),
                 "delta_vs_recommended": delta,
                 "tradeoff": option_tradeoff_summary(option, recommended),
                 "tier_mix_lines": tier_mix_by_channel_lines(option.get("fill_instructions", [])),
                 "main_note": main_option_note(option),
-                "warnings": [str(item) for item in option.get("strategic_warnings", []) if str(item).strip()],
+                "warnings": [translate_result_note(item) for item in option.get("strategic_warnings", []) if str(item).strip()],
             }
         )
     return cards
@@ -192,15 +264,15 @@ def build_simplified_fill_rows(fill_instructions: list[dict[str, Any]]) -> tuple
         except (TypeError, ValueError):
             rec_display = ""
         item: dict[str, Any] = {
-            "Size": rec_display,
-            "Channel": row.get("channel"),
+            "Storlek": rec_display,
+            "Kanal": row.get("channel"),
             "CPM": row.get("cpm"),
-            "Fee": row.get("row_fee"),
+            "Kostnad": row.get("row_fee"),
         }
         if include_market:
-            item["Market"] = row.get("market")
+            item["Marknad"] = row.get("market")
         if include_activations:
-            item["Activations"] = row.get("activations")
+            item["Aktiveringar"] = row.get("activations")
         rows.append(item)
     return rows, include_market, include_activations
 
@@ -211,10 +283,10 @@ def build_diff_status(diff: Any) -> tuple[str, str]:
     except (TypeError, ValueError):
         return "neutral", "n/a"
     if value > 0:
-        return "positive", "Positive diff"
+        return "positive", "Positiv diff"
     if value < 0:
-        return "negative", "Negative diff"
-    return "neutral", "Exact match"
+        return "negative", "Negativ diff"
+    return "neutral", "Exakt matchning"
 
 
 def build_tier_mix_chips(tier_counts: dict[str, Any] | None, include_zero: bool = False) -> list[str]:
@@ -291,6 +363,6 @@ def tier_mix_by_channel_lines(fill_instructions: list[dict[str, Any]]) -> list[s
 def main_option_note(option: dict[str, Any]) -> str:
     warnings = [str(item) for item in option.get("strategic_warnings", []) if str(item).strip()]
     if warnings:
-        return warnings[0]
+        return translate_result_note(warnings[0])
     note = str(option.get("main_note") or "").strip()
-    return note if note else "No major warnings."
+    return translate_result_note(note) if note else "Inga större varningar."
