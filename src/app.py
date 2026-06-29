@@ -249,13 +249,23 @@ def inject_app_css() -> None:
         div[data-baseweb="textarea"] textarea {{
             color: #3b3821 !important;
         }}
-        .app-title {{
+        h1.app-title,
+        .stMarkdown h1.app-title,
+        div[data-testid="stMarkdownContainer"] h1.app-title {{
             font-family: 'Nine Gyst Kursiv', 'Nine Upgrade', Arial, sans-serif !important;
             color: #f0fc03 !important;
             font-style: italic;
             font-weight: 400;
             margin: 0 0 0.35rem 0;
             line-height: 1.05;
+        }}
+        h1.app-title *,
+        .stMarkdown h1.app-title *,
+        div[data-testid="stMarkdownContainer"] h1.app-title * {{
+            font-family: 'Nine Gyst Kursiv', 'Nine Upgrade', Arial, sans-serif !important;
+            color: #f0fc03 !important;
+            font-style: italic;
+            font-weight: 400;
         }}
         .app-caption {{
             color: #f9e9d4;
