@@ -81,6 +81,7 @@ from results_view_helpers import (
     tier_mix_by_channel_lines,
     translate_result_note,
 )
+from option_eligibility import is_option_diff_recommendable
 
 APP_ROOT = Path(__file__).resolve().parents[1]
 FONT_DIR = APP_ROOT / "assets" / "fonts"
@@ -354,19 +355,36 @@ def inject_app_css() -> None:
             color: #3b3821;
         }
         .option-click-positive-buffer {
-            border: 1px solid #f59e0b;
-            background: #fffbeb;
+            border: 1px solid #d1d5db;
+            background: #fbf1e4;
             color: #3b3821;
         }
-        .option-click-muted {
+        .option-click-unselected {
+            border: 1px solid #d1d5db;
+            background: #fbf1e4;
+            color: #3b3821;
+        }
+        .option-click-disabled {
             border: 1px solid transparent;
             background: #f3f4f6;
             color: #6b7280;
-            opacity: 0.78;
+            opacity: 0.72;
         }
-        .option-click-area:hover {
-            background: #f8fafc;
+        .option-click-unselected:hover {
+            background: #fff7ed;
             cursor: pointer;
+        }
+        .option-click-positive-buffer:hover {
+            background: #fff7ed;
+            cursor: pointer;
+        }
+        .option-click-selected:hover {
+            background: #dcfce7;
+            cursor: pointer;
+        }
+        .option-click-disabled:hover {
+            background: #f3f4f6;
+            cursor: default;
         }
         .option-click-title {
             font-weight: 700;
@@ -382,22 +400,31 @@ def inject_app_css() -> None:
             margin-bottom: 0.22rem;
         }
         div[class*="st-key-optionselect_"] {
-            position: relative;
             min-width: 0;
             width: 100%;
             box-sizing: border-box;
         }
-        div[class*="st-key-optionselect_"] div[data-testid="stButton"] {
-            position: absolute;
-            inset: 0;
-            z-index: 5;
+        div[class*="st-key-optionselect_selected_"] div[data-testid="stButton"] button {
+            background: #f0fc03 !important;
+            border-color: #f0fc03 !important;
+            color: #3b3821 !important;
         }
-        div[class*="st-key-optionselect_"] div[data-testid="stButton"] button {
-            width: 100%;
-            height: 100%;
-            min-height: 100%;
-            opacity: 0;
-            border: 0;
+        div[class*="st-key-optionselect_selected_"] div[data-testid="stButton"] button:hover,
+        div[class*="st-key-optionselect_selected_"] div[data-testid="stButton"] button:focus {
+            background: #e1eb00 !important;
+            border-color: #e1eb00 !important;
+            color: #3b3821 !important;
+        }
+        div[class*="st-key-optionselect_unselected_"] div[data-testid="stButton"] button {
+            background: #fbf1e4 !important;
+            border-color: #d1d5db !important;
+            color: #3b3821 !important;
+        }
+        div[class*="st-key-optionselect_unselected_"] div[data-testid="stButton"] button:hover,
+        div[class*="st-key-optionselect_unselected_"] div[data-testid="stButton"] button:focus {
+            background: #fff7ed !important;
+            border-color: #cbd5e0 !important;
+            color: #3b3821 !important;
         }
         .st-key-cardresultscomparison div[data-testid="column"] {
             min-width: 0;
@@ -831,8 +858,14 @@ def _build_selectable_fill_view(result: dict, selected_option_label: str | None 
         if card.get("option_label") and card.get("is_selectable", True)
     ]
     if not option_labels:
-        option_labels = [str(option.get("option_label")) for option in result.get("options", []) if option.get("option_label")]
+        option_labels = [
+            str(option.get("option_label"))
+            for option in result.get("options", [])
+            if option.get("option_label") and is_option_diff_recommendable(option)
+        ]
     recommended_label = str(result.get("recommended_option_label", ""))
+    if not option_labels and recommended_label:
+        option_labels = [recommended_label]
     selected_label = select_option_label(option_labels, recommended_label, selected=selected_option_label)
     selected_option = choose_option_for_fill_view(
         options=result.get("options", []),
@@ -858,8 +891,22 @@ def _main_fill_selector_key(run_id: object) -> str:
     return f"main_fill_option_selector_{run_id}"
 
 
+def _set_main_fill_option(selector_key: str, option_label: str) -> None:
+    st.session_state[selector_key] = option_label
+
+
 def _option_has_positive_buffer_above_recommended(card: dict) -> bool:
     return float(card.get("diff", 0)) > 0 and float(card.get("delta_vs_recommended", 0)) > 0
+
+
+def _option_card_click_class(card: dict, is_selected: bool) -> str:
+    if not bool(card.get("is_selectable", True)):
+        return "option-click-disabled"
+    if is_selected:
+        return "option-click-selected"
+    if _option_has_positive_buffer_above_recommended(card):
+        return "option-click-unselected"
+    return "option-click-unselected"
 
 
 def _render_downloads(payload: dict, result: dict) -> None:
@@ -928,32 +975,17 @@ def render_result(
                         delta_text = "Samma diff som rekommenderat förslag"
                     else:
                         delta_text = ""
-                    has_positive_buffer = _option_has_positive_buffer_above_recommended(card)
                     is_selectable = bool(card.get("is_selectable", True))
                     replacement_body_text = card.get("replacement_body_text")
-                    if not is_selectable:
-                        click_class = "option-click-muted"
-                    elif has_positive_buffer:
-                        click_class = "option-click-positive-buffer"
-                    elif is_selected:
-                        click_class = "option-click-selected"
-                    else:
-                        click_class = "option-click-muted"
+                    click_class = _option_card_click_class(card, is_selected)
                     tier_lines = "".join(
                         f'<div class="option-summary-line">{line}</div>'
                         for line in card["tier_mix_lines"]
                     )
                     delta_line = f'<div class="option-summary-line">{delta_text}</div>' if delta_text else ""
-                    with st.container(key=f"optionselect_{run_id}_{idx}"):
+                    option_select_key_prefix = "optionselect_selected" if is_selected else "optionselect_unselected"
+                    with st.container(key=f"{option_select_key_prefix}_{run_id}_{idx}"):
                         if is_selectable:
-                            if st.button(
-                                f"Välj {card['title']}",
-                                key=f"{fill_selector_key}_{idx}_{option_label}",
-                                use_container_width=True,
-                                type="secondary",
-                            ):
-                                st.session_state[fill_selector_key] = option_label
-                                st.rerun()
                             card_body = f"""
                               <div class="option-summary-line"><strong>Diff:</strong> {format_display_number(card['diff'])}</div>
                               {delta_line}
@@ -971,6 +1003,15 @@ def render_result(
                             """,
                             unsafe_allow_html=True,
                         )
+                        if is_selectable:
+                            st.button(
+                                "Välj förslag",
+                                key=f"{fill_selector_key}_{idx}_{option_label}",
+                                use_container_width=True,
+                                type="secondary",
+                                on_click=_set_main_fill_option,
+                                args=(fill_selector_key, option_label),
+                            )
 
     with st.container(border=True, key="cardresultsfill"):
         selected_display_label = format_option_label(fill_view["selected_label"])

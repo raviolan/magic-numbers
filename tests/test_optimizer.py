@@ -30,6 +30,7 @@ from optimizer import (
     select_recommended_option,
     search_best_assignments,
 )
+from option_eligibility import MAX_RECOMMENDABLE_POSITIVE_DIFF
 
 
 def build_row(
@@ -517,6 +518,50 @@ class OptimizerTests(unittest.TestCase):
         selected_label, _ = select_recommended_option([negative, positive])
 
         self.assertEqual(selected_label, "positive_buffer")
+
+    def test_recommendation_selector_allows_positive_diff_at_threshold(self) -> None:
+        at_threshold = self._build_manual_option(
+            "at_threshold",
+            MAX_RECOMMENDABLE_POSITIVE_DIFF,
+            {"15000": 0, "35000": 1, "75000": 0, "125000": 0, "175000": 0},
+        )
+        negative = self._build_manual_option(
+            "negative_closer",
+            -1,
+            {"15000": 1, "35000": 0, "75000": 0, "125000": 0, "175000": 0},
+        )
+        at_threshold["strategic_warning_count"] = 0
+        at_threshold["strategic_warnings"] = []
+        at_threshold["recommendation_score_breakdown"] = {"total_score": 1}
+        negative["strategic_warning_count"] = 0
+        negative["strategic_warnings"] = []
+        negative["recommendation_score_breakdown"] = {"total_score": 100000}
+
+        selected_label, _ = select_recommended_option([negative, at_threshold])
+
+        self.assertEqual(selected_label, "at_threshold")
+
+    def test_recommendation_selector_skips_positive_diff_above_threshold(self) -> None:
+        over_threshold = self._build_manual_option(
+            "over_threshold",
+            MAX_RECOMMENDABLE_POSITIVE_DIFF + 1,
+            {"15000": 0, "35000": 1, "75000": 0, "125000": 0, "175000": 0},
+        )
+        eligible = self._build_manual_option(
+            "eligible_option",
+            1000,
+            {"15000": 1, "35000": 0, "75000": 0, "125000": 0, "175000": 0},
+        )
+        over_threshold["strategic_warning_count"] = 0
+        over_threshold["strategic_warnings"] = []
+        over_threshold["recommendation_score_breakdown"] = {"total_score": 100000}
+        eligible["strategic_warning_count"] = 0
+        eligible["strategic_warnings"] = []
+        eligible["recommendation_score_breakdown"] = {"total_score": 1}
+
+        selected_label, _ = select_recommended_option([over_threshold, eligible])
+
+        self.assertEqual(selected_label, "eligible_option")
 
     def test_strategic_warning_rules_are_neutral_and_structural(self) -> None:
         baseline = self._build_manual_option(

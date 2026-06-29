@@ -18,6 +18,7 @@ from calculation_engine import (
     to_decimal,
 )
 from models import CanonicalCampaignModel, CanonicalProfileRow
+from option_eligibility import is_option_diff_recommendable
 
 
 INPUT_PATH = Path("data/normalized/canonical_normalized_models.json")
@@ -1071,12 +1072,19 @@ def recommendation_sort_key(option: dict[str, Any]) -> tuple[Any, ...]:
 def select_recommended_option(options: list[dict[str, Any]]) -> tuple[str, str]:
     if not options:
         raise ValueError("Cannot select a recommended option from an empty option list.")
-    non_negative = [option for option in options if option["diagnostics"]["non_negative_diff"]]
-    candidates = non_negative if non_negative else options
+    recommendable = [option for option in options if is_option_diff_recommendable(option)]
+    if recommendable:
+        non_negative = [option for option in recommendable if option["diagnostics"]["non_negative_diff"]]
+        candidates = non_negative if non_negative else recommendable
+    else:
+        non_negative = [option for option in options if option["diagnostics"]["non_negative_diff"]]
+        candidates = non_negative if non_negative else options
     sorted_candidates = sorted(candidates, key=recommendation_sort_key)
     recommended = sorted_candidates[0]
     best_math = next((option for option in options if option["option_label"] == "best_mathematical_fit"), None)
-    if best_math and recommended["option_label"] != "best_mathematical_fit":
+    if not recommendable:
+        reason = "No option was within the positive-diff recommendation threshold; selected deterministic fallback."
+    elif best_math and recommended["option_label"] != "best_mathematical_fit":
         reason = "Recommended as best balance between diff fit and distribution."
     elif recommended["strategic_warning_count"] > 0:
         reason = "Closest mathematical fit."

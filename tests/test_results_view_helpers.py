@@ -25,9 +25,13 @@ from results_view_helpers import (
     tier_mix_by_channel_lines,
     tier_mix_summary,
 )
+from option_eligibility import MAX_RECOMMENDABLE_POSITIVE_DIFF, is_option_diff_recommendable
 
 
 class ResultsViewHelpersTests(unittest.TestCase):
+    def test_positive_diff_threshold_value_is_current_product_default(self) -> None:
+        self.assertEqual(MAX_RECOMMENDABLE_POSITIVE_DIFF, 10000.0)
+
     def test_tier_mix_summary_uses_expected_display(self) -> None:
         summary = tier_mix_summary({"15000": 2, "35000": 4, "75000": 1, "125000": 0, "175000": 0})
         self.assertEqual(summary, "15K x 2 · 35K x 4 · 75K x 1")
@@ -108,36 +112,81 @@ class ResultsViewHelpersTests(unittest.TestCase):
         self.assertEqual(format_option_label("best_mathematical_fit"), "Bästa matematiska träff")
         self.assertEqual(format_option_label("balanced_option"), "Balanserat förslag")
 
-    def test_strategic_within_high_diff_threshold_keeps_display_label(self) -> None:
+    def test_positive_diff_at_threshold_is_selectable(self) -> None:
         display = build_option_display_metadata(
-            option={"option_label": "best_strategic_fit", "optimized_diff": 10099},
+            option={"option_label": "best_strategic_fit", "optimized_diff": MAX_RECOMMENDABLE_POSITIVE_DIFF},
             recommended_option={"option_label": "best_mathematical_fit", "optimized_diff": 100},
-            strategic_option={"option_label": "best_strategic_fit", "optimized_diff": 10099},
+            strategic_option={"option_label": "best_strategic_fit", "optimized_diff": MAX_RECOMMENDABLE_POSITIVE_DIFF},
         )
         self.assertEqual(display["display_label"], "Strategiskt förslag")
         self.assertTrue(display["is_selectable"])
+        self.assertIsNone(display["disabled_reason"])
+        self.assertIsNone(display["replacement_body_text"])
 
-    def test_high_diff_strategic_gets_non_recommended_display_label(self) -> None:
+    def test_positive_diff_above_threshold_is_not_selectable(self) -> None:
         display = build_option_display_metadata(
-            option={"option_label": "best_strategic_fit", "optimized_diff": 10101},
+            option={"option_label": "best_strategic_fit", "optimized_diff": MAX_RECOMMENDABLE_POSITIVE_DIFF + 1},
             recommended_option={"option_label": "best_mathematical_fit", "optimized_diff": 100},
-            strategic_option={"option_label": "best_strategic_fit", "optimized_diff": 10101},
+            strategic_option={"option_label": "best_strategic_fit", "optimized_diff": MAX_RECOMMENDABLE_POSITIVE_DIFF + 1},
         )
-        self.assertEqual(display["display_label"], "Alternativ 2 (ej rekommenderat)")
-        self.assertTrue(display["is_selectable"])
+        self.assertEqual(display["display_label"], "Strategiskt förslag")
+        self.assertFalse(display["is_selectable"])
+        self.assertEqual(display["disabled_reason"], "positive_diff_above_threshold")
+        self.assertEqual(
+            display["replacement_body_text"],
+            "Det här alternativet visas inte i ifyllnadsinstruktioner.",
+        )
 
-    def test_balanced_worse_than_strategic_is_unavailable(self) -> None:
+    def test_large_negative_diff_is_not_disabled_by_positive_diff_threshold(self) -> None:
+        self.assertTrue(is_option_diff_recommendable(-100000))
         display = build_option_display_metadata(
-            option={"option_label": "balanced_option", "optimized_diff": 20000},
+            option={"option_label": "balanced_option", "optimized_diff": -100000},
+            recommended_option={"option_label": "best_mathematical_fit", "optimized_diff": 100},
+            strategic_option={"option_label": "best_strategic_fit", "optimized_diff": 1500},
+        )
+        self.assertEqual(display["display_label"], "Balanserat förslag")
+        self.assertTrue(display["is_selectable"])
+        self.assertIsNone(display["disabled_reason"])
+        self.assertIsNone(display["replacement_body_text"])
+
+    def test_best_mathematical_fit_with_acceptable_positive_diff_remains_selectable(self) -> None:
+        display = build_option_display_metadata(
+            option={"option_label": "best_mathematical_fit", "optimized_diff": 4500},
             recommended_option={"option_label": "best_mathematical_fit", "optimized_diff": 100},
             strategic_option={"option_label": "best_strategic_fit", "optimized_diff": 15000},
         )
-        self.assertEqual(display["display_label"], "Ej tillgängligt")
-        self.assertFalse(display["is_selectable"])
-        self.assertEqual(
-            display["replacement_body_text"],
-            "Inga fler förslag finns för det här kampanjupplägget",
-        )
+        self.assertEqual(display["display_label"], "Rekommenderat förslag")
+        self.assertTrue(display["is_selectable"])
+        self.assertIsNone(display["disabled_reason"])
+        self.assertIsNone(display["replacement_body_text"])
+
+    def test_quick_compare_cards_include_disabled_reason(self) -> None:
+        result = {
+            "recommended_option_label": "best_mathematical_fit",
+            "closest_positive_diff_option_label": "best_strategic_fit",
+            "options": [
+                {
+                    "option_label": "best_mathematical_fit",
+                    "optimized_diff": 100,
+                    "fill_instructions": [{"channel": "Instagram", "recommended_profile_size": 35000}],
+                    "main_note": "A",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "best_strategic_fit",
+                    "optimized_diff": MAX_RECOMMENDABLE_POSITIVE_DIFF + 1,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 75000}],
+                    "main_note": "B",
+                    "strategic_warnings": [],
+                },
+            ],
+        }
+
+        cards = build_option_quick_compare_cards(result)
+        strategic_card = next(card for card in cards if card["option_label"] == "best_strategic_fit")
+
+        self.assertFalse(strategic_card["is_selectable"])
+        self.assertEqual(strategic_card["disabled_reason"], "positive_diff_above_threshold")
 
     def test_build_tier_mix_chips_omits_zero_by_default(self) -> None:
         chips = build_tier_mix_chips({"15000": 1, "35000": 0, "75000": 2})

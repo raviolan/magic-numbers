@@ -43,6 +43,7 @@ from ui_model_adapter import (
     validate_project_cpms_for_rows,
     validate_manual_campaign_input,
 )
+from option_eligibility import MAX_RECOMMENDABLE_POSITIVE_DIFF
 
 
 class ManualCampaignAdapterTests(unittest.TestCase):
@@ -136,7 +137,7 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertEqual(view["simple_fill_rows"][0]["Kanal"], "Instagram")
         self.assertEqual(view["simple_fill_rows"][0]["Storlek"], "35")
 
-    def test_selectable_fill_view_unavailable_selection_falls_back_to_recommended(self) -> None:
+    def test_selectable_fill_view_uses_balanced_option_when_diff_is_below_5k(self) -> None:
         import app
 
         result = {
@@ -168,12 +169,43 @@ class ManualCampaignAdapterTests(unittest.TestCase):
 
         view = app._build_selectable_fill_view(result, selected_option_label="balanced_option")
 
-        self.assertEqual(view["selected_label"], "best_mathematical_fit")
-        self.assertNotIn("balanced_option", view["option_labels"])
+        self.assertEqual(view["selected_label"], "balanced_option")
+        self.assertIn("balanced_option", view["option_labels"])
         balanced_card = next(card for card in view["cards"] if card["option_label"] == "balanced_option")
-        self.assertFalse(balanced_card["is_selectable"])
-        self.assertEqual(balanced_card["title"], "Ej tillgängligt")
-        self.assertEqual(view["simple_fill_rows"][0]["Kanal"], "Instagram")
+        self.assertTrue(balanced_card["is_selectable"])
+        self.assertEqual(balanced_card["title"], "Balanserat förslag")
+        self.assertEqual(view["simple_fill_rows"][0]["Kanal"], "TikTok")
+
+    def test_selectable_fill_view_non_recommended_strategic_is_not_selectable(self) -> None:
+        import app
+
+        result = {
+            "recommended_option_label": "best_mathematical_fit",
+            "options": [
+                {
+                    "option_label": "best_mathematical_fit",
+                    "optimized_diff": 100,
+                    "fill_instructions": [{"channel": "Instagram", "recommended_profile_size": 35000}],
+                    "main_note": "A",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "best_strategic_fit",
+                    "optimized_diff": 10101,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 75000}],
+                    "main_note": "B",
+                    "strategic_warnings": [],
+                },
+            ],
+        }
+
+        view = app._build_selectable_fill_view(result, selected_option_label="best_strategic_fit")
+
+        self.assertEqual(view["selected_label"], "best_mathematical_fit")
+        self.assertNotIn("best_strategic_fit", view["option_labels"])
+        strategic_card = next(card for card in view["cards"] if card["option_label"] == "best_strategic_fit")
+        self.assertFalse(strategic_card["is_selectable"])
+        self.assertEqual(strategic_card["title"], "Strategiskt förslag")
 
     def test_selectable_fill_view_option_labels_are_derived_from_current_result(self) -> None:
         import app
@@ -208,6 +240,13 @@ class ManualCampaignAdapterTests(unittest.TestCase):
 
         self.assertNotEqual(app._main_fill_selector_key(1), app._main_fill_selector_key(2))
 
+    def test_set_main_fill_option_updates_session_state(self) -> None:
+        import app
+
+        with mock.patch.object(app.st, "session_state", {}):
+            app._set_main_fill_option("main_fill_option_selector_1", "best_strategic_fit")
+            self.assertEqual(app.st.session_state["main_fill_option_selector_1"], "best_strategic_fit")
+
     def test_ui_language_defaults_to_swedish_and_supports_en_path(self) -> None:
         import app
 
@@ -235,6 +274,90 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertFalse(app._option_has_positive_buffer_above_recommended({"diff": -50, "delta_vs_recommended": 100}))
         self.assertFalse(app._option_has_positive_buffer_above_recommended({"diff": 250, "delta_vs_recommended": 0}))
         self.assertFalse(app._option_has_positive_buffer_above_recommended({"diff": 100, "delta_vs_recommended": -50}))
+
+    def test_option_card_click_class_separates_disabled_from_unselected(self) -> None:
+        import app
+
+        self.assertEqual(
+            app._option_card_click_class({"is_selectable": False, "diff": 100, "delta_vs_recommended": 100}, False),
+            "option-click-disabled",
+        )
+        self.assertEqual(
+            app._option_card_click_class({"is_selectable": True, "diff": 100, "delta_vs_recommended": 0}, False),
+            "option-click-unselected",
+        )
+        self.assertEqual(
+            app._option_card_click_class({"is_selectable": True, "diff": 100, "delta_vs_recommended": 100}, False),
+            "option-click-unselected",
+        )
+        self.assertEqual(
+            app._option_card_click_class({"is_selectable": True, "diff": 100, "delta_vs_recommended": 100}, True),
+            "option-click-selected",
+        )
+
+    def test_realistic_positive_diff_above_old_threshold_remains_eligible(self) -> None:
+        import app
+
+        result = {
+            "recommended_option_label": "best_mathematical_fit",
+            "closest_positive_diff_option_label": "best_strategic_fit",
+            "options": [
+                {
+                    "option_label": "best_mathematical_fit",
+                    "optimized_diff": 100,
+                    "fill_instructions": [{"channel": "Instagram", "recommended_profile_size": 35000}],
+                    "main_note": "A",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "best_strategic_fit",
+                    "optimized_diff": 7600.5,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 75000}],
+                    "main_note": "B",
+                    "strategic_warnings": [],
+                },
+            ],
+        }
+
+        view = app._build_selectable_fill_view(result)
+        strategic_card = next(card for card in view["cards"] if card["option_label"] == "best_strategic_fit")
+
+        self.assertTrue(strategic_card["is_selectable"])
+        self.assertIn("best_strategic_fit", view["option_labels"])
+        self.assertEqual(app._option_card_click_class(strategic_card, False), "option-click-unselected")
+
+    def test_over_threshold_card_is_disabled_and_excluded_from_fill_options(self) -> None:
+        import app
+
+        result = {
+            "recommended_option_label": "best_mathematical_fit",
+            "closest_positive_diff_option_label": "best_strategic_fit",
+            "options": [
+                {
+                    "option_label": "best_mathematical_fit",
+                    "optimized_diff": 100,
+                    "fill_instructions": [{"channel": "Instagram", "recommended_profile_size": 35000}],
+                    "main_note": "A",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "best_strategic_fit",
+                    "optimized_diff": MAX_RECOMMENDABLE_POSITIVE_DIFF + 1,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 75000}],
+                    "main_note": "B",
+                    "strategic_warnings": [],
+                },
+            ],
+        }
+
+        view = app._build_selectable_fill_view(result, selected_option_label="best_strategic_fit")
+        strategic_card = next(card for card in view["cards"] if card["option_label"] == "best_strategic_fit")
+
+        self.assertFalse(strategic_card["is_selectable"])
+        self.assertEqual(strategic_card["disabled_reason"], "positive_diff_above_threshold")
+        self.assertNotIn("best_strategic_fit", view["option_labels"])
+        self.assertEqual(view["selected_label"], "best_mathematical_fit")
+        self.assertEqual(app._option_card_click_class(strategic_card, False), "option-click-disabled")
 
     def test_result_budget_view_prefers_result_breakdown_and_formats_agency_fee(self) -> None:
         import app

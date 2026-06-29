@@ -2,9 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-HIGH_DIFF_DISPLAY_THRESHOLD = 10000.0
-UNAVAILABLE_OPTION_BODY_TEXT = "Inga fler förslag finns för det här kampanjupplägget"
-
+from option_eligibility import is_option_diff_recommendable, option_diff_disabled_reason
 
 _OPTION_UI_LABELS = {
     "closest_positive_diff": "Närmast positiv diff",
@@ -36,15 +34,6 @@ def format_option_label(option_label: str) -> str:
     return _OPTION_UI_LABELS.get(option_label, "Alternativt förslag")
 
 
-def _abs_diff(option: dict[str, Any] | None) -> float | None:
-    if not isinstance(option, dict):
-        return None
-    try:
-        return abs(float(option.get("optimized_diff", 0)))
-    except (TypeError, ValueError):
-        return None
-
-
 def build_option_display_metadata(
     *,
     option: dict[str, Any],
@@ -53,31 +42,16 @@ def build_option_display_metadata(
 ) -> dict[str, Any]:
     option_label = str(option.get("option_label") or "")
     recommended_label = str(recommended_option.get("option_label") or "")
-    recommended_abs_diff = _abs_diff(recommended_option) or 0.0
-    strategic_abs_diff = _abs_diff(strategic_option)
-    option_abs_diff = _abs_diff(option) or 0.0
-
-    if option_label == "balanced_option" and strategic_abs_diff is not None and option_abs_diff > strategic_abs_diff:
-        return {
-            "display_label": "Ej tillgängligt",
-            "is_selectable": False,
-            "replacement_body_text": UNAVAILABLE_OPTION_BODY_TEXT,
-        }
-
-    if (
-        option_label == "best_strategic_fit"
-        and option_abs_diff > recommended_abs_diff + HIGH_DIFF_DISPLAY_THRESHOLD
-    ):
-        return {
-            "display_label": "Alternativ 2 (ej rekommenderat)",
-            "is_selectable": True,
-            "replacement_body_text": None,
-        }
+    is_selectable = is_option_diff_recommendable(option)
+    disabled_reason = option_diff_disabled_reason(option)
 
     return {
         "display_label": option_ui_label(option_label, recommended_label),
-        "is_selectable": True,
-        "replacement_body_text": None,
+        "is_selectable": is_selectable,
+        "disabled_reason": disabled_reason,
+        "replacement_body_text": None
+        if is_selectable
+        else "Det här alternativet visas inte i ifyllnadsinstruktioner.",
     }
 
 
@@ -224,6 +198,7 @@ def build_option_quick_compare_cards(result: dict[str, Any]) -> list[dict[str, A
                 "option_label": str(option.get("option_label")),
                 "title": display["display_label"],
                 "is_selectable": bool(display["is_selectable"]),
+                "disabled_reason": display["disabled_reason"],
                 "replacement_body_text": display["replacement_body_text"],
                 "diff": option.get("optimized_diff"),
                 "delta_vs_recommended": delta,
