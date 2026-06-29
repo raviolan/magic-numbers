@@ -18,6 +18,7 @@ from optimizer import (
     choose_output_paths,
     compute_profile_budget_target,
     compute_recommendation_score,
+    format_zero_decimal_number,
     generate_row_candidates,
     group_recommended_options,
     normalize_allowed_tiers,
@@ -161,6 +162,85 @@ class OptimizerTests(unittest.TestCase):
         best_math = next(option for option in result["options"] if option["option_label"] == "best_mathematical_fit")
         self.assertEqual(best_math["profile_budget_target"], 78625)
         self.assertEqual(best_math["optimized_diff"], best_math["profile_budget_target"] - best_math["profile_fee_sum"])
+        self.assertIn("organic_impressions", best_math["fill_instructions"][0])
+
+    def test_paid_media_disabled_reports_zero_paid_impressions(self) -> None:
+        model = build_model(
+            [build_row(2, channel="Instagram", current_profile_size=15000)],
+            budget=100000,
+            agency_fee=10000,
+            paid_media=45000,
+            paid_media_included=False,
+        )
+        result = optimize_model(model, allowed_tiers=[15000], beam_width=10, top_n=2)
+        option = result["options"][0]
+
+        self.assertEqual(option["organic_impressions_total"], 10)
+        self.assertEqual(option["paid_impressions_total"], 0)
+        self.assertEqual(option["paid_amplification_breakdown"]["paid_media_included"], False)
+        self.assertEqual(option["paid_amplification_breakdown"]["remaining_paid_budget"], 0)
+
+    def test_organic_impression_reporting_uses_spreadsheet_k_units(self) -> None:
+        rows = [
+            build_row(2, channel="Instagram", current_profile_size=75000),
+            build_row(3, channel="TikTok", current_profile_size=75000),
+        ]
+        model = build_model(rows, budget=100000, agency_fee=10000, paid_media=0, paid_media_included=False)
+        result = optimize_model(model, allowed_tiers=[75000], beam_width=10, top_n=2)
+        option = result["options"][0]
+
+        self.assertEqual(option["fill_instructions"][0]["organic_impressions"], 55)
+        self.assertEqual(option["fill_instructions"][1]["organic_impressions"], 60)
+        self.assertEqual(option["organic_impressions_by_channel"]["Instagram"], 55)
+        self.assertEqual(option["organic_impressions_by_channel"]["TikTok"], 60)
+        self.assertEqual(option["organic_impressions_total"], 115)
+
+    def test_paid_amplification_splits_remaining_budget_by_instagram_tiktok_profile_count(self) -> None:
+        rows = [
+            build_row(2, channel="Instagram", current_profile_size=15000),
+            build_row(3, channel="Instagram", current_profile_size=15000),
+            build_row(4, channel="TikTok", current_profile_size=15000),
+            build_row(5, channel="TikTok", current_profile_size=15000),
+        ]
+        model = build_model(rows, budget=100000, agency_fee=10000, paid_media=45000, paid_media_included=True)
+        result = optimize_model(model, allowed_tiers=[15000], beam_width=10, top_n=2)
+        option = result["options"][0]
+        breakdown = option["paid_amplification_breakdown"]
+
+        expected_instagram_paid = ((18500 * 1000) / 20 * 0.85) / 1000
+        expected_tiktok_paid = ((18500 * 1000) / 15 * 0.85) / 1000
+        expected_paid_total = expected_instagram_paid + expected_tiktok_paid
+        expected_total_project = option["organic_impressions_total"] + expected_paid_total
+        expected_project_cpm = 100000 / expected_total_project
+
+        self.assertEqual(breakdown["ad_count"], 4)
+        self.assertEqual(breakdown["ad_cost"], 8000)
+        self.assertEqual(breakdown["remaining_paid_budget"], 37000)
+        self.assertEqual(breakdown["channel_profile_counts"], {"Instagram": 2, "TikTok": 2})
+        self.assertEqual(breakdown["channel_budget"], {"Instagram": 18500, "TikTok": 18500})
+        self.assertAlmostEqual(breakdown["channel_paid_impressions"]["Instagram"], expected_instagram_paid)
+        self.assertAlmostEqual(breakdown["channel_paid_impressions"]["TikTok"], expected_tiktok_paid)
+        self.assertAlmostEqual(option["paid_impressions_total"], expected_paid_total)
+        self.assertAlmostEqual(option["total_project_impressions"], expected_total_project)
+        self.assertAlmostEqual(option["project_cpm"], expected_project_cpm)
+
+    def test_youtube_contributes_organic_impressions_but_not_paid_budget(self) -> None:
+        rows = [
+            build_row(2, channel="YouTube", current_profile_size=15000),
+            build_row(3, channel="Instagram", current_profile_size=15000),
+        ]
+        model = build_model(rows, budget=100000, agency_fee=10000, paid_media=45000, paid_media_included=True)
+        result = optimize_model(model, allowed_tiers=[15000], beam_width=10, top_n=2)
+        option = result["options"][0]
+        breakdown = option["paid_amplification_breakdown"]
+
+        self.assertEqual(option["organic_impressions_by_channel"]["YouTube"], 10)
+        self.assertEqual(option["organic_impressions_by_channel"]["Instagram"], 10)
+        self.assertEqual(option["organic_impressions_total"], 20)
+        self.assertEqual(breakdown["ad_count"], 1)
+        self.assertEqual(breakdown["channel_profile_counts"], {"Instagram": 1, "TikTok": 0})
+        self.assertEqual(breakdown["channel_budget"], {"Instagram": 43000, "TikTok": 0})
+        self.assertNotIn("YouTube", breakdown["channel_budget"])
 
     def test_markdown_report_includes_budget_breakdown_agency_fee(self) -> None:
         model = build_model([build_row(2, cpm=800)], budget=100000, agency_fee=10000, paid_media=5000, paid_media_included=True)
@@ -191,6 +271,10 @@ class OptimizerTests(unittest.TestCase):
         self.assertIn("- Agency fee: 10000", markdown)
         self.assertIn("- Paid media included in target: yes", markdown)
         self.assertIn("- Available profile-fee target: 78625", markdown)
+
+    def test_zero_decimal_markdown_reporting_format_rounds_without_decimals(self) -> None:
+        self.assertEqual(format_zero_decimal_number(1834583.333), "1834583")
+        self.assertEqual(format_zero_decimal_number(53.5), "54")
 
     def test_group_recommended_options_prefers_non_negative_fit_when_abs_diff_matches(self) -> None:
         baseline = {

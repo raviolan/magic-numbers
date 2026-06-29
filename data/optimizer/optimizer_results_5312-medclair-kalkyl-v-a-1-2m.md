@@ -30,44 +30,48 @@ Recommended as best balance between diff fit and distribution.
 - Paid media included in target: yes
 - Profile fee deduction / extra agency fee: 7.5%
 - Available profile-fee target: 491207.375
+- Recommended organic impressions (K): 520
+- Recommended paid impressions (K): 8528
+- Recommended total project impressions (K): 9048
+- Recommended project CPM: 133
 
 ### Option Comparison
-| Option | Rec Rank | Diff | Fee Sum | 15K Count | 75K+ Count | Total Impressions | Warning Count | Improves Baseline | Main Note |
-|---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| best_strategic_fit | 1 | 207.375 | 491000 | 11 | 2 | 520 | 0 | no | Balanced tier distribution. |
-| current_workbook_mix | 2 | 207.375 | 491000 | 9 | 1 | 520 | 1 | no | Highly concentrated tier mix |
-| larger_profile_alternative | 3 | 1207.375 | 490000 | 11 | 3 | 560 | 0 | no | Balanced tier distribution. |
-| best_mathematical_fit | 4 | 207.375 | 491000 | 15 | 2 | 520 | 1 | no | Highly concentrated tier mix |
-| fallback_option | 5 | 207.375 | 491000 | 13 | 2 | 520 | 1 | no | Highly concentrated tier mix |
-| balanced_option | 6 | 5707.375 | 485500 | 11 | 2 | 515 | 0 | no | Balanced tier distribution. |
+| Option | Rec Rank | Diff | Fee Sum | 15K Count | 75K+ Count | Organic Impressions (K) | Paid Impressions (K) | Total Project Impressions (K) | Project CPM | Warning Count | Improves Baseline | Main Note |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
+| best_strategic_fit | 1 | 207.375 | 491000 | 11 | 2 | 520 | 8528 | 9048 | 133 | 0 | no | Balanced tier distribution. |
+| current_workbook_mix | 2 | 207.375 | 491000 | 9 | 1 | 520 | 8528 | 9048 | 133 | 1 | no | Highly concentrated tier mix |
+| larger_profile_alternative | 3 | 1207.375 | 490000 | 11 | 3 | 560 | 8528 | 9088 | 132 | 0 | no | Balanced tier distribution. |
+| best_mathematical_fit | 4 | 207.375 | 491000 | 15 | 2 | 520 | 8528 | 9048 | 133 | 1 | no | Highly concentrated tier mix |
+| fallback_option | 5 | 207.375 | 491000 | 13 | 2 | 520 | 8528 | 9048 | 133 | 1 | no | Highly concentrated tier mix |
+| balanced_option | 6 | 5707.375 | 485500 | 11 | 2 | 515 | 8528 | 9043 | 133 | 0 | no | Balanced tier distribution. |
 
 ### Fill Instructions for Recommended Option
-| Cell | Previous Size | Recommended Size | Channel | Market | CPM | Activations | Row Fee |
-|---|---:|---:|---|---|---:|---:|---:|
-| B20 | 15000 | 15000 | TikTok | UK | 800 | 1 | 8000 |
-| B21 | 15000 | 15000 | TikTok | UK | 800 | 1 | 8000 |
-| B22 | 15000 | 15000 | TikTok | UK | 800 | 1 | 8000 |
-| B23 | 35000 | 35000 | TikTok | UK | 800 | 1 | 24000 |
-| B24 | 35000 | 35000 | TikTok | UK | 800 | 1 | 24000 |
-| B25 | 35000 | 35000 | TikTok | UK | 800 | 1 | 24000 |
-| B26 | 15000 | 15000 | Instagram | UK | 800 | 1 | 8000 |
-| B27 | 15000 | 15000 | Instagram | UK | 800 | 1 | 8000 |
-| B28 | 35000 | 35000 | Instagram | UK | 800 | 1 | 20000 |
-| B29 | 35000 | 35000 | Instagram | UK | 800 | 1 | 20000 |
-| B30 | 35000 | 35000 | Instagram | UK | 800 | 1 | 20000 |
-| B31 | 75000 | 75000 | Instagram | UK | 800 | 1 | 44000 |
-| B32 | 15000 | 15000 | TikTok | US | 1100 | 1 | 11000 |
-| B33 | 15000 | 15000 | TikTok | US | 1100 | 1 | 11000 |
-| B34 | 15000 | 15000 | TikTok | US | 1100 | 1 | 11000 |
-| B35 | 15000 | 15000 | TikTok | US | 1100 | 1 | 11000 |
-| B36 | 35000 | 35000 | TikTok | US | 1100 | 1 | 33000 |
-| B37 | 35000 | 35000 | TikTok | US | 1100 | 1 | 33000 |
-| B38 | 35000 | 15000 | Instagram | US | 1100 | 1 | 11000 |
-| B39 | 35000 | 35000 | Instagram | US | 1100 | 1 | 27500 |
-| B40 | 35000 | 15000 | Instagram | US | 1100 | 1 | 11000 |
-| B41 | 35000 | 35000 | Instagram | US | 1100 | 1 | 27500 |
-| B42 | 35000 | 75000 | Instagram | US | 1100 | 1 | 60500 |
-| B43 | 35000 | 35000 | Instagram | US | 1100 | 1 | 27500 |
+| Cell | Previous Size | Recommended Size | Channel | Market | Organic Impressions (K) | CPM | Activations | Row Fee |
+|---|---:|---:|---|---|---:|---:|---:|---:|
+| B20 | 15000 | 15000 | TikTok | UK | 10 | 800 | 1 | 8000 |
+| B21 | 15000 | 15000 | TikTok | UK | 10 | 800 | 1 | 8000 |
+| B22 | 15000 | 15000 | TikTok | UK | 10 | 800 | 1 | 8000 |
+| B23 | 35000 | 35000 | TikTok | UK | 30 | 800 | 1 | 24000 |
+| B24 | 35000 | 35000 | TikTok | UK | 30 | 800 | 1 | 24000 |
+| B25 | 35000 | 35000 | TikTok | UK | 30 | 800 | 1 | 24000 |
+| B26 | 15000 | 15000 | Instagram | UK | 10 | 800 | 1 | 8000 |
+| B27 | 15000 | 15000 | Instagram | UK | 10 | 800 | 1 | 8000 |
+| B28 | 35000 | 35000 | Instagram | UK | 25 | 800 | 1 | 20000 |
+| B29 | 35000 | 35000 | Instagram | UK | 25 | 800 | 1 | 20000 |
+| B30 | 35000 | 35000 | Instagram | UK | 25 | 800 | 1 | 20000 |
+| B31 | 75000 | 75000 | Instagram | UK | 55 | 800 | 1 | 44000 |
+| B32 | 15000 | 15000 | TikTok | US | 10 | 1100 | 1 | 11000 |
+| B33 | 15000 | 15000 | TikTok | US | 10 | 1100 | 1 | 11000 |
+| B34 | 15000 | 15000 | TikTok | US | 10 | 1100 | 1 | 11000 |
+| B35 | 15000 | 15000 | TikTok | US | 10 | 1100 | 1 | 11000 |
+| B36 | 35000 | 35000 | TikTok | US | 30 | 1100 | 1 | 33000 |
+| B37 | 35000 | 35000 | TikTok | US | 30 | 1100 | 1 | 33000 |
+| B38 | 35000 | 15000 | Instagram | US | 10 | 1100 | 1 | 11000 |
+| B39 | 35000 | 35000 | Instagram | US | 25 | 1100 | 1 | 27500 |
+| B40 | 35000 | 15000 | Instagram | US | 10 | 1100 | 1 | 11000 |
+| B41 | 35000 | 35000 | Instagram | US | 25 | 1100 | 1 | 27500 |
+| B42 | 35000 | 75000 | Instagram | US | 55 | 1100 | 1 | 60500 |
+| B43 | 35000 | 35000 | Instagram | US | 25 | 1100 | 1 | 27500 |
 
 ### Other Options
 - current_workbook_mix: diff=207.375, warnings=1, note=Highly concentrated tier mix

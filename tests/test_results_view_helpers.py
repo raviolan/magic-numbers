@@ -76,6 +76,7 @@ class ResultsViewHelpersTests(unittest.TestCase):
                     "recommended_profile_size": 15000,
                     "channel": "TikTok",
                     "market": None,
+                    "organic_impressions": 10,
                     "cpm": 35,
                     "activations": 1,
                     "row_fee": 350,
@@ -85,6 +86,8 @@ class ResultsViewHelpersTests(unittest.TestCase):
         self.assertFalse(include_market)
         self.assertFalse(include_activations)
         self.assertEqual(rows[0]["Storlek"], "15")
+        self.assertEqual(list(rows[0].keys()), ["Storlek", "Kanal", "Impressions (K)", "CPM", "Kostnad"])
+        self.assertEqual(rows[0]["Impressions (K)"], 10)
         self.assertNotIn("Row", rows[0])
         self.assertNotIn("previous_profile_size", rows[0])
         self.assertNotIn("Aktiveringar", rows[0])
@@ -92,10 +95,27 @@ class ResultsViewHelpersTests(unittest.TestCase):
 
     def test_build_simplified_fill_rows_shows_market_when_present(self) -> None:
         rows, include_market, _ = build_simplified_fill_rows(
-            [{"profile_size_cell": "B9", "recommended_profile_size": 35000, "channel": "Instagram", "market": "SE", "cpm": 100, "activations": 1, "row_fee": 1000}]
+            [{"profile_size_cell": "B9", "recommended_profile_size": 35000, "channel": "Instagram", "market": "SE", "organic_impressions": 24500, "cpm": 100, "activations": 1, "row_fee": 1000}]
         )
         self.assertTrue(include_market)
         self.assertIn("Marknad", rows[0])
+        self.assertLess(list(rows[0].keys()).index("Impressions (K)"), list(rows[0].keys()).index("CPM"))
+
+    def test_build_simplified_fill_rows_uses_reported_impression_k_units(self) -> None:
+        rows, _, _ = build_simplified_fill_rows(
+            [
+                {
+                    "profile_size_cell": "B9",
+                    "recommended_profile_size": 15000,
+                    "channel": "TikTok",
+                    "organic_impressions": 12,
+                    "cpm": 35,
+                    "activations": 1,
+                    "row_fee": 350,
+                }
+            ]
+        )
+        self.assertEqual(rows[0]["Impressions (K)"], 12)
 
     def test_build_simplified_fill_rows_shows_activations_when_needed(self) -> None:
         rows, _, include_activations = build_simplified_fill_rows(

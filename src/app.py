@@ -5,6 +5,7 @@ import csv
 import io
 import json
 import math
+from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -150,6 +151,16 @@ def _format_cpm(value: float | int | None) -> str:
     return format_display_number(value)
 
 
+def _format_zero_decimal_number(value) -> str:
+    if value is None:
+        return format_display_number(value)
+    try:
+        rounded = Decimal(str(value)).quantize(Decimal("1"), rounding=ROUND_HALF_UP)
+    except Exception:
+        return str(value)
+    return format_display_number(int(rounded))
+
+
 def _mround_to_5(value: float | int | None) -> float | int | None:
     if value is None:
         return None
@@ -163,7 +174,9 @@ def _format_table_rows(rows: list[dict]) -> list[dict]:
         formatted_rows.append(
             {
                 key: (
-                    format_display_number(value)
+                    _format_zero_decimal_number(value)
+                    if key in {"Impressions", "Impressions (K)"}
+                    else format_display_number(value)
                     if isinstance(value, (int, float)) and not isinstance(value, bool)
                     else value
                 )
@@ -909,6 +922,98 @@ def _option_card_click_class(card: dict, is_selected: bool) -> str:
     return "option-click-unselected"
 
 
+def _build_selected_option_impression_summary(option: dict) -> list[dict[str, object]]:
+    return [
+        {"label": "Organiska impressions (K)", "value": option.get("organic_impressions_total")},
+        {"label": "Paid impressions (K)", "value": option.get("paid_impressions_total")},
+        {"label": "Totala impressions (K)", "value": option.get("total_project_impressions")},
+        {"label": "Project CPM", "value": option.get("project_cpm")},
+    ]
+
+
+_PITCH_PROFILE_DESCRIPTIONS = {
+    "Instagram": {
+        15000: "Profil á 10-20K följare / 10K snittvisningar",
+        35000: "Profil á 20-50K följare / 25K snittvisningar",
+        75000: "Profil á 50-100K följare / 55K snittvisningar",
+        125000: "Profil á 100-150K följare / 90K snittvisningar",
+        175000: "Profil á 150-200K följare / 125K snittvisningar",
+    },
+    "TikTok": {
+        15000: "Profil á 10-20K följare / 10K snittvisningar",
+        35000: "Profil á 20-50K följare / 30K snittvisningar",
+        75000: "Profil á 50-100K följare / 60K snittvisningar",
+        125000: "Profil á 100-150K följare / 100K snittvisningar",
+        175000: "Profil á 150-200K följare / 140K snittvisningar",
+    },
+}
+
+
+def _pitch_tier_key(value) -> int | None:
+    try:
+        numeric = int(float(value))
+    except (TypeError, ValueError):
+        return None
+    if numeric in VALID_PROFILE_TIERS:
+        return numeric
+    scaled = numeric * 1000
+    if scaled in VALID_PROFILE_TIERS:
+        return scaled
+    return None
+
+
+def _build_pitch_profile_lines(fill_instructions: list[dict], channel: str) -> str:
+    descriptions = _PITCH_PROFILE_DESCRIPTIONS.get(channel, {})
+    counts: dict[int, int] = {}
+    for row in fill_instructions:
+        if not isinstance(row, dict):
+            continue
+        if str(row.get("channel") or "").strip() != channel:
+            continue
+        tier = _pitch_tier_key(row.get("recommended_profile_size"))
+        if tier is None:
+            continue
+        counts[tier] = counts.get(tier, 0) + 1
+
+    lines = [
+        f"{counts[tier]}x {descriptions[tier]}"
+        for tier in VALID_PROFILE_TIERS
+        if counts.get(tier, 0) > 0 and tier in descriptions
+    ]
+    return " | ".join(lines) if lines else "-"
+
+
+def _build_pitch_table_rows(result: dict, selected_option: dict) -> list[dict[str, str]]:
+    budget_breakdown = result.get("budget_breakdown") or {}
+    paid_media_included = budget_breakdown.get("paid_media_included", True)
+    paid_media = budget_breakdown.get("paid_media") if paid_media_included is not False else 0
+    budget = budget_breakdown.get("budget")
+
+    fill_instructions = selected_option.get("fill_instructions", [])
+    if not isinstance(fill_instructions, list):
+        fill_instructions = []
+
+    return [
+        {
+            "Post": "Influencer Marketing Instagram",
+            "Värde": _build_pitch_profile_lines(fill_instructions, "Instagram"),
+        },
+        {
+            "Post": "Influencer Marketing TikTok",
+            "Värde": _build_pitch_profile_lines(fill_instructions, "TikTok"),
+        },
+        {"Post": "Innehållsrättigheter", "Värde": "7-30 dagar"},
+        {"Post": "Antal aktiveringar", "Värde": "1x Instagram Reel / TikTok video per profil"},
+        {"Post": "Paid", "Värde": f"{format_display_number(paid_media)} SEK"},
+        {
+            "Post": "Antal exponeringar",
+            "Värde": f"{_format_zero_decimal_number(selected_option.get('total_project_impressions'))}K",
+        },
+        {"Post": "Total", "Värde": f"{format_display_number(budget)} SEK"},
+        {"Post": "CPM", "Värde": f"{_format_zero_decimal_number(selected_option.get('project_cpm'))} SEK"},
+    ]
+
+
 def _render_downloads(payload: dict, result: dict) -> None:
     markdown = render_optimizer_markdown(payload)
     fill_csv = result_to_fill_csv(result)
@@ -1021,6 +1126,20 @@ def render_result(
             "soft-yellow",
         )
         st.dataframe(_format_table_rows(fill_view["simple_fill_rows"]), use_container_width=True)
+        summary_items = _build_selected_option_impression_summary(fill_view["selected_option"])
+        summary_cols = st.columns(len(summary_items))
+        for col, item in zip(summary_cols, summary_items):
+            with col:
+                _render_metric_card(str(item["label"]), _format_zero_decimal_number(item["value"]))
+        pitch_table_key = f"show_pitch_table_{run_id}"
+        if st.button("Generera tabell för Pitch", key=f"generate_pitch_table_{run_id}", type="secondary"):
+            st.session_state[pitch_table_key] = True
+        if st.session_state.get(pitch_table_key, False):
+            st.dataframe(
+                _build_pitch_table_rows(result, fill_view["selected_option"]),
+                use_container_width=True,
+                hide_index=True,
+            )
 
     with st.container(border=True, key="cardresultsactions"):
         _section_header("Åtgärder och detaljer", "Nedladdningar och tekniska detaljer.", "soft-gray")
@@ -1053,6 +1172,7 @@ def render_result(
                             "Rekommenderad storlek (K)": profile_size_to_k_display(row.get("recommended_profile_size")),
                             "Kanal": row.get("channel"),
                             "Marknad": row.get("market"),
+                            "Impressions (K)": row.get("organic_impressions"),
                             "CPM": row.get("cpm"),
                             "Aktiveringar": row.get("activations"),
                             "Radkostnad": row.get("row_fee"),

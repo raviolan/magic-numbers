@@ -247,6 +247,95 @@ class ManualCampaignAdapterTests(unittest.TestCase):
             app._set_main_fill_option("main_fill_option_selector_1", "best_strategic_fit")
             self.assertEqual(app.st.session_state["main_fill_option_selector_1"], "best_strategic_fit")
 
+    def test_selected_option_impression_summary_uses_reporting_fields(self) -> None:
+        import app
+
+        summary = app._build_selected_option_impression_summary(
+            {
+                "organic_impressions_total": 45000,
+                "paid_impressions_total": 1834583.333,
+                "total_project_impressions": 1879583.333,
+                "project_cpm": 53.203,
+            }
+        )
+
+        self.assertEqual(
+            summary,
+            [
+                {"label": "Organiska impressions (K)", "value": 45000},
+                {"label": "Paid impressions (K)", "value": 1834583.333},
+                {"label": "Totala impressions (K)", "value": 1879583.333},
+                {"label": "Project CPM", "value": 53.203},
+            ],
+        )
+
+    def test_pitch_profile_lines_group_instagram_tiers(self) -> None:
+        import app
+
+        lines = app._build_pitch_profile_lines(
+            [
+                {"channel": "Instagram", "recommended_profile_size": 15000},
+                {"channel": "Instagram", "recommended_profile_size": 15000},
+                {"channel": "TikTok", "recommended_profile_size": 15000},
+            ],
+            "Instagram",
+        )
+
+        self.assertEqual(lines, "2x Profil á 10-20K följare / 10K snittvisningar")
+
+    def test_pitch_profile_lines_group_tiktok_tiers(self) -> None:
+        import app
+
+        lines = app._build_pitch_profile_lines(
+            [
+                {"channel": "TikTok", "recommended_profile_size": 75000},
+                {"channel": "TikTok", "recommended_profile_size": 75000},
+                {"channel": "TikTok", "recommended_profile_size": 75000},
+                {"channel": "Instagram", "recommended_profile_size": 75000},
+            ],
+            "TikTok",
+        )
+
+        self.assertEqual(lines, "3x Profil á 50-100K följare / 60K snittvisningar")
+
+    def test_pitch_table_rows_include_instagram_and_tiktok_lines(self) -> None:
+        import app
+
+        rows = app._build_pitch_table_rows(
+            {"budget_breakdown": {"budget": 100000, "paid_media": 15000, "paid_media_included": True}},
+            {
+                "fill_instructions": [
+                    {"channel": "Instagram", "recommended_profile_size": 15000},
+                    {"channel": "TikTok", "recommended_profile_size": 75000},
+                ],
+                "total_project_impressions": 1880,
+                "project_cpm": 53.2,
+            },
+        )
+
+        self.assertEqual(rows[0]["Post"], "Influencer Marketing Instagram")
+        self.assertEqual(rows[0]["Värde"], "1x Profil á 10-20K följare / 10K snittvisningar")
+        self.assertEqual(rows[1]["Post"], "Influencer Marketing TikTok")
+        self.assertEqual(rows[1]["Värde"], "1x Profil á 50-100K följare / 60K snittvisningar")
+
+    def test_pitch_table_rows_use_selected_option_and_full_budget_breakdown_values(self) -> None:
+        import app
+
+        rows = app._build_pitch_table_rows(
+            {"budget_breakdown": {"budget": 100000, "paid_media": 15000, "paid_media_included": True}},
+            {
+                "fill_instructions": [],
+                "total_project_impressions": 1880,
+                "project_cpm": 53.2,
+            },
+        )
+        by_post = {row["Post"]: row["Värde"] for row in rows}
+
+        self.assertEqual(by_post["Paid"], "15 000 SEK")
+        self.assertEqual(by_post["Antal exponeringar"], "1 880K")
+        self.assertEqual(by_post["Total"], "100 000 SEK")
+        self.assertEqual(by_post["CPM"], "53 SEK")
+
     def test_ui_language_defaults_to_swedish_and_supports_en_path(self) -> None:
         import app
 
@@ -425,6 +514,12 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertEqual(format_display_number(1_000_000.0), "1 000 000")
         self.assertEqual(format_display_number(1_000_000.25), "1 000 000.25")
         self.assertEqual(format_display_number(950), "950")
+
+    def test_zero_decimal_reporting_format_rounds_without_decimals(self) -> None:
+        import app
+
+        self.assertEqual(app._format_zero_decimal_number(1834583.333), "1 834 583")
+        self.assertEqual(app._format_zero_decimal_number(53.5), "54")
 
     def test_parse_friendly_amount_accepts_common_human_formats(self) -> None:
         self.assertEqual(parse_friendly_amount("1000000", "budget"), 1_000_000.0)

@@ -95,6 +95,33 @@
             "UK": 270,
             "US": 250
           },
+          "organic_impressions_total": 520,
+          "organic_impressions_by_channel": {
+            "Instagram": 300,
+            "TikTok": 220
+          },
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9048.333333333332,
+          "project_cpm": 132.62110885982685,
+          "paid_amplification_breakdown": {
+            "paid_media_included": true,
+            "paid_budget": 220000,
+            "ad_count": 24,
+            "ad_cost": 48000,
+            "remaining_paid_budget": 172000,
+            "channel_profile_counts": {
+              "Instagram": 12,
+              "TikTok": 12
+            },
+            "channel_budget": {
+              "Instagram": 86000,
+              "TikTok": 86000
+            },
+            "channel_paid_impressions": {
+              "Instagram": 3655,
+              "TikTok": 4873.333333333333
+            }
+          },
           "fill_instructions": [
             {
               "profile_size_cell": "B20",
@@ -102,6 +129,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -112,6 +140,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -122,6 +151,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -132,6 +162,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -142,6 +173,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -152,6 +184,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -162,6 +195,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -172,6 +206,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -182,6 +217,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -192,6 +228,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -202,6 +239,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -212,6 +250,7 @@
               "previous_profile_size": 75000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 55,
               "cpm": 800,
               "activations": 1,
               "row_fee": 44000
@@ -222,6 +261,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -232,6 +272,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -242,6 +283,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -252,6 +294,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -262,6 +305,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 30,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 33000
@@ -272,6 +316,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 30,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 33000
@@ -282,6 +327,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -292,6 +338,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -302,6 +349,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -312,6 +360,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -322,6 +371,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 55,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 60500
@@ -332,6 +382,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -409,6 +460,33 @@
             "UK": 270,
             "US": 250
           },
+          "organic_impressions_total": 520,
+          "organic_impressions_by_channel": {
+            "Instagram": 300,
+            "TikTok": 220
+          },
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9048.333333333332,
+          "project_cpm": 132.62110885982685,
+          "paid_amplification_breakdown": {
+            "paid_media_included": true,
+            "paid_budget": 220000,
+            "ad_count": 24,
+            "ad_cost": 48000,
+            "remaining_paid_budget": 172000,
+            "channel_profile_counts": {
+              "Instagram": 12,
+              "TikTok": 12
+            },
+            "channel_budget": {
+              "Instagram": 86000,
+              "TikTok": 86000
+            },
+            "channel_paid_impressions": {
+              "Instagram": 3655,
+              "TikTok": 4873.333333333333
+            }
+          },
           "fill_instructions": [
             {
               "profile_size_cell": "B20",
@@ -416,6 +494,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -426,6 +505,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -436,6 +516,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -446,6 +527,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -456,6 +538,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -466,6 +549,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -476,6 +560,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -486,6 +571,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -496,6 +582,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -506,6 +593,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -516,6 +604,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -526,6 +615,7 @@
               "previous_profile_size": 75000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 55,
               "cpm": 800,
               "activations": 1,
               "row_fee": 44000
@@ -536,6 +626,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -546,6 +637,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -556,6 +648,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -566,6 +659,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -576,6 +670,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 30,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 33000
@@ -586,6 +681,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 30,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 33000
@@ -596,6 +692,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -606,6 +703,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -616,6 +714,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -626,6 +725,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -636,6 +736,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -646,6 +747,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -727,6 +829,33 @@
             "UK": 420,
             "US": 140
           },
+          "organic_impressions_total": 560,
+          "organic_impressions_by_channel": {
+            "Instagram": 300,
+            "TikTok": 260
+          },
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9088.333333333332,
+          "project_cpm": 132.0374105996699,
+          "paid_amplification_breakdown": {
+            "paid_media_included": true,
+            "paid_budget": 220000,
+            "ad_count": 24,
+            "ad_cost": 48000,
+            "remaining_paid_budget": 172000,
+            "channel_profile_counts": {
+              "Instagram": 12,
+              "TikTok": 12
+            },
+            "channel_budget": {
+              "Instagram": 86000,
+              "TikTok": 86000
+            },
+            "channel_paid_impressions": {
+              "Instagram": 3655,
+              "TikTok": 4873.333333333333
+            }
+          },
           "fill_instructions": [
             {
               "profile_size_cell": "B20",
@@ -734,6 +863,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -744,6 +874,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -754,6 +885,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -764,6 +896,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -774,6 +907,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -784,6 +918,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -794,6 +929,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 55,
               "cpm": 800,
               "activations": 1,
               "row_fee": 44000
@@ -804,6 +940,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 55,
               "cpm": 800,
               "activations": 1,
               "row_fee": 44000
@@ -814,6 +951,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 55,
               "cpm": 800,
               "activations": 1,
               "row_fee": 44000
@@ -824,6 +962,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -834,6 +973,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -844,6 +984,7 @@
               "previous_profile_size": 75000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -854,6 +995,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -864,6 +1006,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -874,6 +1017,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -884,6 +1028,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -894,6 +1039,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -904,6 +1050,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 30,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 33000
@@ -914,6 +1061,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -924,6 +1072,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -934,6 +1083,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -944,6 +1094,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -954,6 +1105,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -964,6 +1116,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1040,6 +1193,33 @@
             "UK": 270,
             "US": 250
           },
+          "organic_impressions_total": 520,
+          "organic_impressions_by_channel": {
+            "Instagram": 340,
+            "TikTok": 180
+          },
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9048.333333333332,
+          "project_cpm": 132.62110885982685,
+          "paid_amplification_breakdown": {
+            "paid_media_included": true,
+            "paid_budget": 220000,
+            "ad_count": 24,
+            "ad_cost": 48000,
+            "remaining_paid_budget": 172000,
+            "channel_profile_counts": {
+              "Instagram": 12,
+              "TikTok": 12
+            },
+            "channel_budget": {
+              "Instagram": 86000,
+              "TikTok": 86000
+            },
+            "channel_paid_impressions": {
+              "Instagram": 3655,
+              "TikTok": 4873.333333333333
+            }
+          },
           "fill_instructions": [
             {
               "profile_size_cell": "B20",
@@ -1047,6 +1227,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1057,6 +1238,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1067,6 +1249,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1077,6 +1260,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -1087,6 +1271,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -1097,6 +1282,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -1107,6 +1293,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1117,6 +1304,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1127,6 +1315,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -1137,6 +1326,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -1147,6 +1337,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -1157,6 +1348,7 @@
               "previous_profile_size": 75000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 55,
               "cpm": 800,
               "activations": 1,
               "row_fee": 44000
@@ -1167,6 +1359,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1177,6 +1370,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1187,6 +1381,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1197,6 +1392,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1207,6 +1403,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1217,6 +1414,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1227,6 +1425,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1237,6 +1436,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 125,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 137500
@@ -1247,6 +1447,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1257,6 +1458,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1267,6 +1469,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1277,6 +1480,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -1360,6 +1564,33 @@
             "UK": 270,
             "US": 250
           },
+          "organic_impressions_total": 520,
+          "organic_impressions_by_channel": {
+            "Instagram": 320,
+            "TikTok": 200
+          },
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9048.333333333332,
+          "project_cpm": 132.62110885982685,
+          "paid_amplification_breakdown": {
+            "paid_media_included": true,
+            "paid_budget": 220000,
+            "ad_count": 24,
+            "ad_cost": 48000,
+            "remaining_paid_budget": 172000,
+            "channel_profile_counts": {
+              "Instagram": 12,
+              "TikTok": 12
+            },
+            "channel_budget": {
+              "Instagram": 86000,
+              "TikTok": 86000
+            },
+            "channel_paid_impressions": {
+              "Instagram": 3655,
+              "TikTok": 4873.333333333333
+            }
+          },
           "fill_instructions": [
             {
               "profile_size_cell": "B20",
@@ -1367,6 +1598,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1377,6 +1609,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1387,6 +1620,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1397,6 +1631,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -1407,6 +1642,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -1417,6 +1653,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -1427,6 +1664,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1437,6 +1675,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1447,6 +1686,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -1457,6 +1697,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -1467,6 +1708,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -1477,6 +1719,7 @@
               "previous_profile_size": 75000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 55,
               "cpm": 800,
               "activations": 1,
               "row_fee": 44000
@@ -1487,6 +1730,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1497,6 +1741,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1507,6 +1752,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1517,6 +1763,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1527,6 +1774,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1537,6 +1785,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 30,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 33000
@@ -1547,6 +1796,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1557,6 +1807,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 90,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 99000
@@ -1567,6 +1818,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1577,6 +1829,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1587,6 +1840,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -1597,6 +1851,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -1679,6 +1934,33 @@
             "UK": 270,
             "US": 245
           },
+          "organic_impressions_total": 515,
+          "organic_impressions_by_channel": {
+            "Instagram": 315,
+            "TikTok": 200
+          },
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9043.333333333332,
+          "project_cpm": 132.69443420567637,
+          "paid_amplification_breakdown": {
+            "paid_media_included": true,
+            "paid_budget": 220000,
+            "ad_count": 24,
+            "ad_cost": 48000,
+            "remaining_paid_budget": 172000,
+            "channel_profile_counts": {
+              "Instagram": 12,
+              "TikTok": 12
+            },
+            "channel_budget": {
+              "Instagram": 86000,
+              "TikTok": 86000
+            },
+            "channel_paid_impressions": {
+              "Instagram": 3655,
+              "TikTok": 4873.333333333333
+            }
+          },
           "fill_instructions": [
             {
               "profile_size_cell": "B20",
@@ -1686,6 +1968,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1696,6 +1979,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1706,6 +1990,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1716,6 +2001,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -1726,6 +2012,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -1736,6 +2023,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "UK",
+              "organic_impressions": 30,
               "cpm": 800,
               "activations": 1,
               "row_fee": 24000
@@ -1746,6 +2034,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1756,6 +2045,7 @@
               "previous_profile_size": 15000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 10,
               "cpm": 800,
               "activations": 1,
               "row_fee": 8000
@@ -1766,6 +2056,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -1776,6 +2067,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -1786,6 +2078,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 25,
               "cpm": 800,
               "activations": 1,
               "row_fee": 20000
@@ -1796,6 +2089,7 @@
               "previous_profile_size": 75000,
               "channel": "Instagram",
               "market": "UK",
+              "organic_impressions": 55,
               "cpm": 800,
               "activations": 1,
               "row_fee": 44000
@@ -1806,6 +2100,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1816,6 +2111,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1826,6 +2122,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1836,6 +2133,7 @@
               "previous_profile_size": 15000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1846,6 +2144,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1856,6 +2155,7 @@
               "previous_profile_size": 35000,
               "channel": "TikTok",
               "market": "US",
+              "organic_impressions": 30,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 33000
@@ -1866,6 +2166,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 10,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 11000
@@ -1876,6 +2177,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 55,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 60500
@@ -1886,6 +2188,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -1896,6 +2199,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -1906,6 +2210,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -1916,6 +2221,7 @@
               "previous_profile_size": 35000,
               "channel": "Instagram",
               "market": "US",
+              "organic_impressions": 25,
               "cpm": 1100,
               "activations": 1,
               "row_fee": 27500
@@ -1987,6 +2293,10 @@
           "count_15k": 11,
           "count_75k_plus": 2,
           "total_impressions": 520,
+          "organic_impressions_total": 520,
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9048.333333333332,
+          "project_cpm": 132.62110885982685,
           "strategic_warning_count": 0,
           "improves_on_baseline": false,
           "main_note": "Balanced tier distribution."
@@ -2006,6 +2316,10 @@
           "count_15k": 9,
           "count_75k_plus": 1,
           "total_impressions": 520,
+          "organic_impressions_total": 520,
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9048.333333333332,
+          "project_cpm": 132.62110885982685,
           "strategic_warning_count": 1,
           "improves_on_baseline": false,
           "main_note": "Highly concentrated tier mix"
@@ -2025,6 +2339,10 @@
           "count_15k": 11,
           "count_75k_plus": 3,
           "total_impressions": 560,
+          "organic_impressions_total": 560,
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9088.333333333332,
+          "project_cpm": 132.0374105996699,
           "strategic_warning_count": 0,
           "improves_on_baseline": false,
           "main_note": "Balanced tier distribution."
@@ -2044,6 +2362,10 @@
           "count_15k": 15,
           "count_75k_plus": 2,
           "total_impressions": 520,
+          "organic_impressions_total": 520,
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9048.333333333332,
+          "project_cpm": 132.62110885982685,
           "strategic_warning_count": 1,
           "improves_on_baseline": false,
           "main_note": "Highly concentrated tier mix"
@@ -2063,6 +2385,10 @@
           "count_15k": 13,
           "count_75k_plus": 2,
           "total_impressions": 520,
+          "organic_impressions_total": 520,
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9048.333333333332,
+          "project_cpm": 132.62110885982685,
           "strategic_warning_count": 1,
           "improves_on_baseline": false,
           "main_note": "Highly concentrated tier mix"
@@ -2082,6 +2408,10 @@
           "count_15k": 11,
           "count_75k_plus": 2,
           "total_impressions": 515,
+          "organic_impressions_total": 515,
+          "paid_impressions_total": 8528.333333333332,
+          "total_project_impressions": 9043.333333333332,
+          "project_cpm": 132.69443420567637,
           "strategic_warning_count": 0,
           "improves_on_baseline": false,
           "main_note": "Balanced tier distribution."

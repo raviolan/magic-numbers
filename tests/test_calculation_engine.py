@@ -38,6 +38,7 @@ class CalculationEngineTests(unittest.TestCase):
         self.assertEqual(mround_nearest_5(24500), 24500)
 
     def test_impression_calculations_for_supported_channels(self) -> None:
+        self.assertEqual(calculate_row_impressions(15000, "TikTok"), 12000)
         self.assertEqual(calculate_row_impressions(35000, "Instagram"), 24500)
         self.assertEqual(calculate_row_impressions(35000, "TikTok"), 28000)
         self.assertEqual(calculate_row_impressions(35000, "YouTube"), 17500)

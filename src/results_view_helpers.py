@@ -241,11 +241,12 @@ def build_simplified_fill_rows(fill_instructions: list[dict[str, Any]]) -> tuple
         item: dict[str, Any] = {
             "Storlek": rec_display,
             "Kanal": row.get("channel"),
-            "CPM": row.get("cpm"),
-            "Kostnad": row.get("row_fee"),
         }
         if include_market:
             item["Marknad"] = row.get("market")
+        item["Impressions (K)"] = row.get("organic_impressions")
+        item["CPM"] = row.get("cpm")
+        item["Kostnad"] = row.get("row_fee")
         if include_activations:
             item["Aktiveringar"] = row.get("activations")
         rows.append(item)

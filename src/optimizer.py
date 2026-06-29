@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass, field
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 import json
 import re
 from pathlib import Path
@@ -10,6 +10,7 @@ import subprocess
 from typing import Any
 
 from calculation_engine import (
+    calculate_row_impressions,
     calculate_thousands_rounded_impressions,
     calculate_thousands_rounded_row_fee,
     choose_selected_row_fee_formula,
@@ -44,6 +45,12 @@ PARTIAL_IMPRESSIONS_BUCKET_SIZE = Decimal("25")
 STRATEGIC_ABS_DIFF_TOLERANCE = Decimal("5000")
 BASELINE_COMPARISON_TOLERANCE = Decimal("0.01")
 OPTIMIZATION_METHODS = ("fast_closest_diff", "exact_closest_diff")
+PAID_AD_PRICE = Decimal("2000")
+PAID_CPM_BY_CHANNEL = {
+    "Instagram": Decimal("20"),
+    "TikTok": Decimal("15"),
+}
+PAID_DELIVERY_MULTIPLIER = Decimal("0.85")
 
 
 class ExactSearchStateLimitError(ValueError):
@@ -118,6 +125,13 @@ def format_money(value: Any) -> str:
             return str(int(value))
         return format_money(float(value))
     return str(value)
+
+
+def format_zero_decimal_number(value: Any) -> str:
+    decimal_value = to_decimal(value)
+    if decimal_value is None:
+        return "null"
+    return str(int(decimal_value.quantize(Decimal("1"), rounding=ROUND_HALF_UP)))
 
 
 def compare_against_baseline(best_diff: Any, baseline_diff: Any, tolerance: Decimal = BASELINE_COMPARISON_TOLERANCE) -> str:
@@ -279,6 +293,67 @@ def calculate_candidate_row_fee(profile_size: int, channel: str | None, cpm: Any
             f"Could not calculate row fee for profile_size={profile_size}, channel={channel!r}, cpm={cpm!r}, activations={activations!r}."
         )
     return row_fee
+
+
+def calculate_paid_amplification_breakdown(
+    *,
+    paid_media_included: bool,
+    paid_budget: Any,
+    assignments: list[RowCandidate],
+) -> dict[str, Any]:
+    paid_budget_decimal = to_decimal(paid_budget) or Decimal("0")
+    paid_channels = tuple(PAID_CPM_BY_CHANNEL.keys())
+    channel_profile_counts = {
+        channel: sum(1 for candidate in assignments if candidate.channel == channel)
+        for channel in paid_channels
+    }
+    ad_count = sum(channel_profile_counts.values()) if paid_media_included else 0
+    ad_cost = PAID_AD_PRICE * Decimal(ad_count)
+    remaining_paid_budget = max(Decimal("0"), paid_budget_decimal - ad_cost) if paid_media_included else Decimal("0")
+    eligible_profile_count = sum(channel_profile_counts.values())
+
+    channel_budget: dict[str, Decimal] = {}
+    channel_paid_impressions: dict[str, Decimal] = {}
+    for channel in paid_channels:
+        count = channel_profile_counts[channel]
+        if paid_media_included and eligible_profile_count > 0:
+            budget_share = remaining_paid_budget * Decimal(count) / Decimal(eligible_profile_count)
+        else:
+            budget_share = Decimal("0")
+        channel_budget[channel] = budget_share
+        full_paid_impressions = (
+            budget_share * Decimal("1000") / PAID_CPM_BY_CHANNEL[channel] * PAID_DELIVERY_MULTIPLIER
+            if budget_share > 0
+            else Decimal("0")
+        )
+        channel_paid_impressions[channel] = full_paid_impressions / Decimal("1000")
+
+    return {
+        "paid_media_included": bool(paid_media_included),
+        "paid_budget": json_number(paid_budget_decimal if paid_media_included else Decimal("0")),
+        "ad_count": int(ad_count),
+        "ad_cost": json_number(ad_cost if paid_media_included else Decimal("0")),
+        "remaining_paid_budget": json_number(remaining_paid_budget),
+        "channel_profile_counts": {channel: int(count) for channel, count in channel_profile_counts.items()},
+        "channel_budget": {channel: json_number(value) for channel, value in channel_budget.items()},
+        "channel_paid_impressions": {channel: json_number(value) for channel, value in channel_paid_impressions.items()},
+    }
+
+
+def paid_impressions_total_from_breakdown(breakdown: dict[str, Any]) -> Decimal:
+    total = Decimal("0")
+    for value in breakdown.get("channel_paid_impressions", {}).values():
+        parsed = to_decimal(value)
+        if parsed is not None:
+            total += parsed
+    return total
+
+
+def calculate_project_cpm(total_budget: Any, total_project_impressions: Decimal) -> Decimal | None:
+    budget = to_decimal(total_budget)
+    if budget is None or total_project_impressions <= 0:
+        return None
+    return budget / total_project_impressions
 
 
 def generate_row_candidates(row: CanonicalProfileRow, allowed_tiers: tuple[int, ...] = VALID_PROFILE_TIERS) -> list[RowCandidate]:
@@ -482,7 +557,16 @@ def build_option_from_assignment(
     optimized_diff = target - state.profile_fee_sum
     tier_counts = {str(tier): state.tier_counts[tier] for tier in VALID_PROFILE_TIERS}
     fill_instructions = []
+    organic_impressions_total = Decimal("0")
+    organic_impressions_by_channel: dict[str, Decimal] = {}
     for candidate in state.assignments:
+        organic_impressions = calculate_thousands_rounded_impressions(candidate.recommended_profile_size, candidate.channel)
+        if organic_impressions is not None:
+            organic_impressions_total += organic_impressions
+            if candidate.channel:
+                organic_impressions_by_channel[candidate.channel] = (
+                    organic_impressions_by_channel.get(candidate.channel, Decimal("0")) + organic_impressions
+                )
         fill_instructions.append(
             {
                 "profile_size_cell": candidate.profile_size_cell,
@@ -490,11 +574,20 @@ def build_option_from_assignment(
                 "previous_profile_size": candidate.previous_profile_size,
                 "channel": candidate.channel,
                 "market": candidate.market,
+                "organic_impressions": json_number(organic_impressions),
                 "cpm": candidate.cpm,
                 "activations": candidate.activations,
                 "row_fee": json_number(candidate.row_fee),
             }
         )
+    paid_breakdown = calculate_paid_amplification_breakdown(
+        paid_media_included=model.paid_media_included is True,
+        paid_budget=model.paid_media,
+        assignments=state.assignments,
+    )
+    paid_impressions_total = paid_impressions_total_from_breakdown(paid_breakdown)
+    total_project_impressions = organic_impressions_total + paid_impressions_total
+    project_cpm = calculate_project_cpm(model.budget, total_project_impressions)
 
     avg_profile_size = sum(candidate.recommended_profile_size for candidate in state.assignments) / max(1, len(state.assignments))
     strategic_metrics = {
@@ -516,6 +609,14 @@ def build_option_from_assignment(
         "total_impressions": json_number(state.total_impressions),
         "impressions_by_channel": {channel: json_number(value) for channel, value in sorted(state.impressions_by_channel.items())},
         "impressions_by_market": {market: json_number(value) for market, value in sorted(state.impressions_by_market.items())},
+        "organic_impressions_total": json_number(organic_impressions_total),
+        "organic_impressions_by_channel": {
+            channel: json_number(value) for channel, value in sorted(organic_impressions_by_channel.items())
+        },
+        "paid_impressions_total": json_number(paid_impressions_total),
+        "total_project_impressions": json_number(total_project_impressions),
+        "project_cpm": json_number(project_cpm),
+        "paid_amplification_breakdown": paid_breakdown,
         "fill_instructions": fill_instructions,
         "diagnostics": {
             "non_negative_diff": optimized_diff >= 0,
@@ -1120,6 +1221,10 @@ def build_option_comparison(options: list[dict[str, Any]]) -> list[dict[str, Any
                 "count_15k": option["count_15k"],
                 "count_75k_plus": option["count_75k_plus"],
                 "total_impressions": option["total_impressions"],
+                "organic_impressions_total": option.get("organic_impressions_total"),
+                "paid_impressions_total": option.get("paid_impressions_total"),
+                "total_project_impressions": option.get("total_project_impressions"),
+                "project_cpm": option.get("project_cpm"),
                 "strategic_warning_count": option["strategic_warning_count"],
                 "improves_on_baseline": option["improves_on_baseline"],
                 "main_note": option["main_note"],
@@ -1420,23 +1525,30 @@ def render_optimizer_markdown(payload: dict[str, Any]) -> str:
                 f"- Paid media included in target: {'yes' if budget_breakdown.get('paid_media_included') is True else 'no'}",
                 f"- Profile fee deduction / extra agency fee: {deduction_percent:.1f}%" if deduction_percent is not None else "- Profile fee deduction / extra agency fee: unavailable",
                 f"- Available profile-fee target: {format_money(budget_breakdown.get('profile_budget_target'))}",
+                f"- Recommended organic impressions (K): {format_zero_decimal_number(recommended_option.get('organic_impressions_total'))}",
+                f"- Recommended paid impressions (K): {format_zero_decimal_number(recommended_option.get('paid_impressions_total'))}",
+                f"- Recommended total project impressions (K): {format_zero_decimal_number(recommended_option.get('total_project_impressions'))}",
+                f"- Recommended project CPM: {format_zero_decimal_number(recommended_option.get('project_cpm'))}",
                 "",
                 "### Option Comparison",
-                "| Option | Rec Rank | Diff | Fee Sum | 15K Count | 75K+ Count | Total Impressions | Warning Count | Improves Baseline | Main Note |",
-                "|---|---:|---:|---:|---:|---:|---:|---:|---|---|",
+                "| Option | Rec Rank | Diff | Fee Sum | 15K Count | 75K+ Count | Organic Impressions (K) | Paid Impressions (K) | Total Project Impressions (K) | Project CPM | Warning Count | Improves Baseline | Main Note |",
+                "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|",
             ]
         )
         for comparison in result["option_comparison"]:
             lines.extend(
                 [
-                    "| {option_label} | {rank} | {diff} | {fee_sum} | {count_15k} | {count_75k_plus} | {impressions} | {warning_count} | {improves} | {main_note} |".format(
+                    "| {option_label} | {rank} | {diff} | {fee_sum} | {count_15k} | {count_75k_plus} | {organic_impressions} | {paid_impressions} | {total_project_impressions} | {project_cpm} | {warning_count} | {improves} | {main_note} |".format(
                         option_label=comparison["option_label"],
                         rank=comparison["recommendation_rank"],
                         diff=format_money(comparison["optimized_diff"]),
                         fee_sum=format_money(comparison["profile_fee_sum"]),
                         count_15k=comparison["count_15k"],
                         count_75k_plus=comparison["count_75k_plus"],
-                        impressions=format_money(comparison["total_impressions"]),
+                        organic_impressions=format_zero_decimal_number(comparison.get("organic_impressions_total")),
+                        paid_impressions=format_zero_decimal_number(comparison.get("paid_impressions_total")),
+                        total_project_impressions=format_zero_decimal_number(comparison.get("total_project_impressions")),
+                        project_cpm=format_zero_decimal_number(comparison.get("project_cpm")),
                         warning_count=comparison["strategic_warning_count"],
                         improves=(
                             "yes"
@@ -1451,18 +1563,19 @@ def render_optimizer_markdown(payload: dict[str, Any]) -> str:
             [
                 "",
                 "### Fill Instructions for Recommended Option",
-                "| Cell | Previous Size | Recommended Size | Channel | Market | CPM | Activations | Row Fee |",
-                "|---|---:|---:|---|---|---:|---:|---:|",
+                "| Cell | Previous Size | Recommended Size | Channel | Market | Organic Impressions (K) | CPM | Activations | Row Fee |",
+                "|---|---:|---:|---|---|---:|---:|---:|---:|",
             ]
         )
         for instruction in recommended_option["fill_instructions"]:
             lines.append(
-                "| {cell} | {previous_size} | {recommended_size} | {channel} | {market} | {cpm} | {activations} | {row_fee} |".format(
+                "| {cell} | {previous_size} | {recommended_size} | {channel} | {market} | {organic_impressions} | {cpm} | {activations} | {row_fee} |".format(
                     cell=instruction["profile_size_cell"] or "manual row",
                     previous_size=instruction["previous_profile_size"] or "null",
                     recommended_size=instruction["recommended_profile_size"],
                     channel=instruction["channel"] or "null",
                     market=instruction["market"] or "null",
+                    organic_impressions=format_zero_decimal_number(instruction.get("organic_impressions")),
                     cpm=format_money(instruction["cpm"]),
                     activations=format_money(instruction["activations"]),
                     row_fee=format_money(instruction["row_fee"]),
