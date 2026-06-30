@@ -413,6 +413,10 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         html_arg = component_html.call_args.args[0]
         self.assertIn("navigator.clipboard.writeText", html_arg)
         self.assertIn("pitch-output-table", html_arg)
+        self.assertIn("table-layout: fixed", html_arg)
+        self.assertIn("border: 1px solid", html_arg)
+        self.assertIn("td:first-child { width: 36%; }", html_arg)
+        self.assertIn("td:nth-child(2) { width: 64%; }", html_arg)
         self.assertEqual(component_html.call_args.kwargs["height"], 420)
         self.assertFalse(component_html.call_args.kwargs["scrolling"])
 
