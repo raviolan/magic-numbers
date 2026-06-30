@@ -12,6 +12,7 @@ from urllib.parse import urlparse
 
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
 from calculation_engine import load_normalized_models
 from cpm_library import (
@@ -1171,6 +1172,13 @@ def _build_pitch_table_rows(result: dict, selected_option: dict) -> list[dict[st
     ]
 
 
+def _pitch_table_clipboard_text(rows: list[dict[str, str]]) -> str:
+    return "\n".join(
+        f"{str(row.get('Post', ''))}\t{str(row.get('Värde', ''))}"
+        for row in rows
+    )
+
+
 def _pitch_table_html(rows: list[dict[str, str]]) -> str:
     body_rows: list[str] = []
     for row in rows:
@@ -1178,42 +1186,49 @@ def _pitch_table_html(rows: list[dict[str, str]]) -> str:
         value = html.escape(str(row.get("Värde", ""))).replace("\n", "<br>")
         body_rows.append(f"<tr><td>{post}</td><td>{value}</td></tr>")
     body = "".join(body_rows)
-    return f"""
-    <table class="pitch-output-table">
-      <thead>
-        <tr><th>Post</th><th>Värde</th></tr>
-      </thead>
-      <tbody>{body}</tbody>
-    </table>
-    """
+    clipboard_text = html.escape(json.dumps(_pitch_table_clipboard_text(rows), ensure_ascii=False))
+    return (
+        '<div class="pitch-table-toolbar">\n'
+        '<button\n'
+        'class="pitch-copy-button"\n'
+        'type="button"\n'
+        'aria-label="Kopiera tabell"\n'
+        'title="Kopiera tabell"\n'
+        f'data-copy-text="{clipboard_text}"\n'
+        'onclick="const status = this.closest(\'.pitch-table-toolbar\').querySelector(\'.pitch-copy-status\'); navigator.clipboard.writeText(JSON.parse(this.dataset.copyText)).then(() => { status.textContent = \'Kopierad!\'; status.classList.add(\'is-visible\'); setTimeout(() => { status.classList.remove(\'is-visible\'); status.textContent = \'\'; }, 1800); }).catch(() => { status.textContent = \'Kunde inte kopiera\'; status.classList.add(\'is-visible\'); setTimeout(() => { status.classList.remove(\'is-visible\'); status.textContent = \'\'; }, 1800); });"\n'
+        '>⧉</button>\n'
+        '<span class="pitch-copy-status" aria-live="polite"></span>\n'
+        '</div>\n'
+        '<table class="pitch-output-table">\n'
+        '<thead>\n'
+        '<tr><th aria-label="Post"></th><th aria-label="Värde"></th></tr>\n'
+        '</thead>\n'
+        f'<tbody>{body}</tbody>\n'
+        '</table>'
+    )
 
 
 def _render_pitch_table(rows: list[dict[str, str]]) -> None:
-    st.markdown(
-        """
-        <style>
-        .pitch-output-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #ffffff;
-        }
-        .pitch-output-table th,
-        .pitch-output-table td {
-            border-bottom: 1px solid rgba(59, 56, 33, 0.18);
-            padding: 0.55rem 0.65rem;
-            text-align: left;
-            vertical-align: top;
-        }
-        .pitch-output-table th {
-            font-weight: 700;
-        }
-        .pitch-output-table td:nth-child(2) {
-            font-weight: 400;
-        }
-        </style>
-        """
-        + _pitch_table_html(rows),
-        unsafe_allow_html=True,
+    components.html(
+        "\n".join(
+            [
+                "<style>",
+                "body { margin: 0; font-family: 'Nine Upgrade', Arial, sans-serif; color: #3b3821; }",
+                ".pitch-table-toolbar { display: flex; align-items: center; gap: 0.45rem; justify-content: flex-end; margin-bottom: 0.25rem; }",
+                ".pitch-copy-button { border: 1px solid rgba(59, 56, 33, 0.24); border-radius: 6px; background: #ffffff; color: #3b3821; cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 0.28rem 0.42rem; }",
+                ".pitch-copy-button:hover { background: #f0fc03; }",
+                ".pitch-copy-status { color: #3b3821; font-size: 0.82rem; opacity: 0; transition: opacity 120ms ease-in-out; }",
+                ".pitch-copy-status.is-visible { opacity: 1; }",
+                ".pitch-output-table { width: 100%; border-collapse: collapse; background: #ffffff; }",
+                ".pitch-output-table th, .pitch-output-table td { border-bottom: 1px solid rgba(59, 56, 33, 0.18); padding: 0.55rem 0.65rem; text-align: left; vertical-align: top; }",
+                ".pitch-output-table th { font-weight: 700; }",
+                ".pitch-output-table td:nth-child(2) { font-weight: 400; }",
+                "</style>",
+                _pitch_table_html(rows),
+            ]
+        ),
+        height=420,
+        scrolling=False,
     )
 
 

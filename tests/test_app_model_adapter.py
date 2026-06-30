@@ -374,6 +374,47 @@ class ManualCampaignAdapterTests(unittest.TestCase):
 
         self.assertIn("1x Profil á 10-20K följare<br>2x Profil á 20-50K följare", rendered)
         self.assertNotIn("följare\n2x", rendered)
+        self.assertIn('<tr><th aria-label="Post"></th><th aria-label="Värde"></th></tr>', rendered)
+        self.assertNotIn(">Post<", rendered)
+        self.assertNotIn(">Värde<", rendered)
+        self.assertEqual(rendered.count("<th "), 2)
+        self.assertIn("pitch-copy-status", rendered)
+        self.assertIn('aria-live="polite"', rendered)
+        self.assertIn("Kopierad!", rendered)
+        self.assertIn("is-visible", rendered)
+        self.assertIn("setTimeout", rendered)
+        self.assertTrue(rendered.startswith('<div class="pitch-table-toolbar">'))
+        self.assertNotRegex(rendered, r"(?m)^[ \t]+<(?:div|table|thead|tbody|tr)")
+
+    def test_pitch_table_clipboard_text_uses_tabs_and_preserves_value_line_breaks(self) -> None:
+        import app
+
+        copied = app._pitch_table_clipboard_text(
+            [
+                {
+                    "Post": "Influencer Marketing Instagram",
+                    "Värde": "1x Profil á 10-20K följare\n2x Profil á 20-50K följare",
+                },
+                {"Post": "CPM", "Värde": "53 SEK"},
+            ]
+        )
+
+        self.assertIn("Influencer Marketing Instagram\t1x Profil á 10-20K följare\n2x Profil á 20-50K följare", copied)
+        self.assertIn("\nCPM\t53 SEK", copied)
+
+    def test_render_pitch_table_uses_html_component_for_clipboard_javascript(self) -> None:
+        import app
+
+        rows = [{"Post": "CPM", "Värde": "53 SEK"}]
+
+        with mock.patch.object(app.components, "html") as component_html:
+            app._render_pitch_table(rows)
+
+        html_arg = component_html.call_args.args[0]
+        self.assertIn("navigator.clipboard.writeText", html_arg)
+        self.assertIn("pitch-output-table", html_arg)
+        self.assertEqual(component_html.call_args.kwargs["height"], 420)
+        self.assertFalse(component_html.call_args.kwargs["scrolling"])
 
     def test_option_pitch_profile_summary_uses_pitch_channel_lines(self) -> None:
         import app
