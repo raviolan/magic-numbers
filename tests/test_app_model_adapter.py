@@ -375,6 +375,53 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertIn("1x Profil á 10-20K följare<br>2x Profil á 20-50K följare", rendered)
         self.assertNotIn("följare\n2x", rendered)
 
+    def test_option_pitch_profile_summary_uses_pitch_channel_lines(self) -> None:
+        import app
+
+        summary = app._build_option_pitch_profile_summary(
+            {
+                "fill_instructions": [
+                    {"channel": "Instagram", "recommended_profile_size": 15000},
+                    {"channel": "Instagram", "recommended_profile_size": 15000},
+                    {"channel": "TikTok", "recommended_profile_size": 75000},
+                ]
+            }
+        )
+
+        self.assertEqual(
+            summary,
+            [
+                ("Instagram", "2x Profil á 10-20K följare / 10K snittvisningar"),
+                ("TikTok", "1x Profil á 50-100K följare / 60K snittvisningar"),
+            ],
+        )
+
+    def test_option_card_body_orders_profiles_cpm_impressions_and_diff(self) -> None:
+        import app
+
+        rendered = app._build_option_card_body_html(
+            {
+                "fill_instructions": [
+                    {"channel": "Instagram", "recommended_profile_size": 15000},
+                    {"channel": "TikTok", "recommended_profile_size": 75000},
+                ],
+                "project_cpm": 53.2,
+                "total_project_impressions": 1880,
+                "optimized_diff": 1500,
+            }
+        )
+
+        profile_position = rendered.index("Profil á 10-20K följare")
+        cpm_position = rendered.index("Total CPM:")
+        impressions_position = rendered.index("Totala impressions:")
+        diff_position = rendered.index("Diff:")
+        self.assertLess(profile_position, cpm_position)
+        self.assertLess(cpm_position, impressions_position)
+        self.assertLess(impressions_position, diff_position)
+        self.assertIn("53 SEK", rendered)
+        self.assertIn("1 880 000", rendered)
+        self.assertIn("+1 500", rendered)
+
     def test_ui_language_defaults_to_swedish_and_supports_en_path(self) -> None:
         import app
 

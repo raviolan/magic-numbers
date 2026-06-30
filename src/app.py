@@ -76,11 +76,9 @@ from ui_model_adapter import (
 )
 from results_view_helpers import (
     build_option_quick_compare_cards,
-    build_diff_status,
     build_simplified_fill_rows,
     format_option_label,
     select_option_label,
-    tier_mix_by_channel_lines,
     translate_result_note,
 )
 from option_eligibility import is_option_diff_recommendable
@@ -354,11 +352,11 @@ def inject_app_css() -> None:
         .option-click-area {
             position: relative;
             border-radius: 8px;
-            padding: 0.65rem 0.7rem;
+            padding: 0.85rem 0.9rem;
             width: 100%;
             box-sizing: border-box;
-            min-height: 215px;
-            margin-bottom: 0.45rem;
+            min-height: 235px;
+            margin-bottom: 0.6rem;
             overflow: visible;
             overflow-wrap: anywhere;
             word-break: normal;
@@ -402,7 +400,7 @@ def inject_app_css() -> None:
         }
         .option-click-title {
             font-weight: 700;
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.5rem;
             padding-right: 0.25rem;
         }
         .option-summary-title {
@@ -412,6 +410,26 @@ def inject_app_css() -> None:
         .option-summary-line {
             font-size: 0.9rem;
             margin-bottom: 0.22rem;
+        }
+        .option-detail-block {
+            margin-top: 0.55rem;
+            font-size: 0.92rem;
+            line-height: 1.38;
+        }
+        .option-profile-channel {
+            font-weight: 700;
+            margin-top: 0.55rem;
+            margin-bottom: 0.18rem;
+        }
+        .option-profile-line {
+            margin-bottom: 0.42rem;
+        }
+        .option-stat-line {
+            margin-top: 0.34rem;
+        }
+        .option-diff-line {
+            margin-top: 0.58rem;
+            font-weight: 700;
         }
         div[class*="st-key-optionselect_"] {
             min-width: 0;
@@ -1082,6 +1100,46 @@ def _format_pitch_total_impressions(value) -> str:
     return format_display_number(int(rounded))
 
 
+def _build_option_pitch_profile_summary(option: dict) -> list[tuple[str, str]]:
+    fill_instructions = option.get("fill_instructions", [])
+    if not isinstance(fill_instructions, list):
+        fill_instructions = []
+    summaries: list[tuple[str, str]] = []
+    for channel in ("Instagram", "TikTok"):
+        profile_lines = _build_pitch_profile_lines(fill_instructions, channel)
+        if profile_lines != "-":
+            summaries.append((channel, profile_lines))
+    return summaries
+
+
+def _signed_display_number(value) -> str:
+    formatted = format_display_number(value)
+    return formatted if formatted.startswith("-") else f"+{formatted}"
+
+
+def _build_option_card_body_html(option: dict, diff_label: str | None = None) -> str:
+    parts = ['<div class="option-detail-block">']
+    for channel, profile_lines in _build_option_pitch_profile_summary(option):
+        escaped_lines = html.escape(profile_lines).replace("\n", "<br>")
+        parts.append(f'<div class="option-profile-channel">{html.escape(channel)}</div>')
+        parts.append(f'<div class="option-profile-line">{escaped_lines}</div>')
+    parts.append(
+        '<div class="option-stat-line"><strong>Total CPM:</strong> '
+        f'{html.escape(_format_zero_decimal_number(option.get("project_cpm")))} SEK</div>'
+    )
+    parts.append(
+        '<div class="option-stat-line"><strong>Totala impressions:</strong> '
+        f'{html.escape(_format_pitch_total_impressions(option.get("total_project_impressions")))}</div>'
+    )
+    label = diff_label or "Diff"
+    parts.append(
+        f'<div class="option-diff-line">{html.escape(label)}: '
+        f'{html.escape(_signed_display_number(option.get("optimized_diff")))}</div>'
+    )
+    parts.append("</div>")
+    return "".join(parts)
+
+
 def _build_pitch_table_rows(result: dict, selected_option: dict) -> list[dict[str, str]]:
     budget_breakdown = result.get("budget_breakdown") or {}
     paid_media_included = budget_breakdown.get("paid_media_included", True)
@@ -1183,29 +1241,25 @@ def render_result(
     fill_selector_key = _main_fill_selector_key(run_id)
     selected_from_state = st.session_state.get(fill_selector_key)
     fill_view = _build_selectable_fill_view(result, selected_from_state)
+    options_by_label = {
+        str(option.get("option_label")): option
+        for option in result.get("options", [])
+        if option.get("option_label")
+    }
 
     st.markdown('<div class="results-title">8. Resultat</div>', unsafe_allow_html=True)
     with st.container(border=True, key="cardresultsrecommendation"):
         _section_header("Rekommendation", "Använd detta förslag om inget annat i kundcaset väger tyngre.", "soft-blue")
-        status_tone, status_text = build_diff_status(recommended.get("optimized_diff"))
-        hero_class = {"positive": "hero-positive", "negative": "hero-negative", "neutral": "hero-neutral"}[status_tone]
-        diff_value = format_display_number(recommended["optimized_diff"])
-        diff_signed = diff_value if diff_value.startswith("-") else f"+{diff_value}"
         st.markdown(
             f"""
-            <div class="hero-card {hero_class}">
+            <div class="hero-card">
               <div class="section-title">Rekommenderat förslag</div>
-              <div style="font-size:1.05rem;font-weight:700;">{format_option_label(str(recommended.get("option_label")))}</div>
-              <div class="hero-kpi">Diff {diff_signed}</div>
-              <div class="section-caption" style="margin-bottom:0.35rem;">{status_text}</div>
-              <div><strong>Byråarvode:</strong> {budget_view['agency_fee_text']}</div>
-              <div><strong>Paid media:</strong> {budget_view['paid_media_text']}</div>
+              <div style="font-size:1.05rem;font-weight:700;">{html.escape(format_option_label(str(recommended.get("option_label"))))}</div>
+              {_build_option_card_body_html(recommended)}
             </div>
             """,
             unsafe_allow_html=True,
         )
-        for line in tier_mix_by_channel_lines(recommended.get("fill_instructions", [])):
-            st.write(line)
 
     with st.container(border=True, key="cardresultscomparison"):
         _section_header("Jämför förslag", "Tre möjliga upplägg att välja mellan.", "soft-gray")
@@ -1216,38 +1270,22 @@ def render_result(
                 with cols[idx]:
                     option_label = str(card.get("option_label"))
                     is_selected = option_label == str(fill_view["selected_label"])
-                    delta = float(card["delta_vs_recommended"])
-                    if delta > 0:
-                        delta_text = f"{format_display_number(delta)} mer marginal än rekommenderat förslag"
-                    elif delta < 0:
-                        delta_text = f"{format_display_number(abs(delta))} närmare än rekommenderat förslag"
-                    elif not is_selected:
-                        delta_text = "Samma diff som rekommenderat förslag"
-                    else:
-                        delta_text = ""
                     is_selectable = bool(card.get("is_selectable", True))
                     replacement_body_text = card.get("replacement_body_text")
                     click_class = _option_card_click_class(card, is_selected)
-                    tier_lines = "".join(
-                        f'<div class="option-summary-line">{line}</div>'
-                        for line in card["tier_mix_lines"]
-                    )
-                    delta_line = f'<div class="option-summary-line">{delta_text}</div>' if delta_text else ""
+                    full_option = dict(options_by_label.get(option_label, {}))
+                    if "optimized_diff" not in full_option:
+                        full_option["optimized_diff"] = card.get("diff")
                     option_select_key_prefix = "optionselect_selected" if is_selected else "optionselect_unselected"
                     with st.container(key=f"{option_select_key_prefix}_{run_id}_{idx}"):
                         if is_selectable:
-                            card_body = f"""
-                              <div class="option-summary-line"><strong>Diff:</strong> {format_display_number(card['diff'])}</div>
-                              {delta_line}
-                              <div class="option-summary-line"><strong>Avvägning:</strong> {card['tradeoff']}</div>
-                              {tier_lines}
-                            """
+                            card_body = _build_option_card_body_html(full_option)
                         else:
-                            card_body = f'<div class="option-summary-line">{replacement_body_text}</div>'
+                            card_body = f'<div class="option-summary-line">{html.escape(str(replacement_body_text or ""))}</div>'
                         st.markdown(
                             f"""
                             <div class="option-click-area {click_class}">
-                              <div class="option-click-title">{card['title']}</div>
+                              <div class="option-click-title">{html.escape(str(card['title']))}</div>
                               {card_body}
                             </div>
                             """,
