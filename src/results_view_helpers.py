@@ -147,6 +147,12 @@ def option_tradeoff_summary(option: dict[str, Any], recommended_option: dict[str
     return "Annan storleksmix" if option_lines != rec_lines else "Liknande mix"
 
 
+def comparison_card_title(index: int) -> str:
+    if index == 0:
+        return "Rekommenderat förslag"
+    return f"Alternativ {index + 1}"
+
+
 def build_option_quick_compare_cards(result: dict[str, Any]) -> list[dict[str, Any]]:
     options = [option for option in result.get("options", []) if option.get("option_label")]
     if not options:
@@ -186,7 +192,7 @@ def build_option_quick_compare_cards(result: dict[str, Any]) -> list[dict[str, A
                 break
 
     cards: list[dict[str, Any]] = []
-    for option in picked[:3]:
+    for index, option in enumerate(picked[:3]):
         delta = option_diff_delta_vs_recommended(option, recommended)
         display = build_option_display_metadata(
             option=option,
@@ -196,7 +202,7 @@ def build_option_quick_compare_cards(result: dict[str, Any]) -> list[dict[str, A
         cards.append(
             {
                 "option_label": str(option.get("option_label")),
-                "title": display["display_label"],
+                "title": comparison_card_title(index),
                 "is_selectable": bool(display["is_selectable"]),
                 "disabled_reason": display["disabled_reason"],
                 "replacement_body_text": display["replacement_body_text"],

@@ -173,7 +173,7 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertIn("balanced_option", view["option_labels"])
         balanced_card = next(card for card in view["cards"] if card["option_label"] == "balanced_option")
         self.assertTrue(balanced_card["is_selectable"])
-        self.assertEqual(balanced_card["title"], "Balanserat förslag")
+        self.assertEqual(balanced_card["title"], "Alternativ 3")
         self.assertEqual(view["simple_fill_rows"][0]["Kanal"], "TikTok")
 
     def test_selectable_fill_view_non_recommended_strategic_is_not_selectable(self) -> None:
@@ -205,7 +205,7 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertNotIn("best_strategic_fit", view["option_labels"])
         strategic_card = next(card for card in view["cards"] if card["option_label"] == "best_strategic_fit")
         self.assertFalse(strategic_card["is_selectable"])
-        self.assertEqual(strategic_card["title"], "Strategiskt förslag")
+        self.assertEqual(strategic_card["title"], "Alternativ 2")
 
     def test_selectable_fill_view_option_labels_are_derived_from_current_result(self) -> None:
         import app

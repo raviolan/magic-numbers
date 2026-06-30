@@ -31,7 +31,7 @@ from optimizer import (
     select_recommended_option,
     search_best_assignments,
 )
-from option_eligibility import MAX_RECOMMENDABLE_POSITIVE_DIFF
+from option_eligibility import MAX_RECOMMENDABLE_POSITIVE_DIFF, is_option_diff_recommendable
 
 
 def build_row(
@@ -579,7 +579,29 @@ class OptimizerTests(unittest.TestCase):
         first_pick = select_recommended_option(analyzed)
         second_pick = select_recommended_option(analyzed)
         self.assertEqual(first_pick, second_pick)
-        self.assertEqual(first_pick[0], "balanced_option")
+        self.assertEqual(first_pick[0], "best_mathematical_fit")
+
+    def test_recommendation_selector_prefers_smallest_non_negative_diff_over_higher_score(self) -> None:
+        closest_positive = self._build_manual_option(
+            "best_mathematical_fit",
+            100,
+            {"15000": 8, "35000": 0, "75000": 0, "125000": 0, "175000": 2},
+        )
+        higher_score_positive = self._build_manual_option(
+            "balanced_option",
+            500,
+            {"15000": 0, "35000": 4, "75000": 4, "125000": 2, "175000": 0},
+        )
+        closest_positive["strategic_warning_count"] = 3
+        closest_positive["strategic_warnings"] = ["Highly concentrated tier mix"]
+        closest_positive["recommendation_score_breakdown"] = {"total_score": 1}
+        higher_score_positive["strategic_warning_count"] = 0
+        higher_score_positive["strategic_warnings"] = []
+        higher_score_positive["recommendation_score_breakdown"] = {"total_score": 100000}
+
+        selected_label, _ = select_recommended_option([higher_score_positive, closest_positive])
+
+        self.assertEqual(selected_label, "best_mathematical_fit")
 
     def test_recommendation_selector_prefers_positive_over_closer_negative(self) -> None:
         negative = self._build_manual_option(
@@ -795,7 +817,6 @@ class OptimizerTests(unittest.TestCase):
         summary_rows = json_payload.get("executive_summary", [])
         self.assertEqual(len(summary_rows), 6)
 
-        recommended_differs_somewhere = False
         for result in json_payload["results"]:
             self.assertGreaterEqual(len(result["options"]), 2)
             self.assertEqual(result["row_count"], len(result["options"][0]["fill_instructions"]))
@@ -814,8 +835,15 @@ class OptimizerTests(unittest.TestCase):
             self.assertLessEqual(abs(best_math["optimized_diff"]), abs(baseline["optimized_diff"]))
             self.assertIn("recommendation_rank", recommended)
             self.assertEqual(recommended["recommendation_rank"], 1)
-            if result["recommended_option_label"] != "best_mathematical_fit":
-                recommended_differs_somewhere = True
+            eligible_non_negative = [
+                option
+                for option in result["options"]
+                if option.get("diagnostics", {}).get("non_negative_diff") is True
+                and is_option_diff_recommendable(option)
+            ]
+            if eligible_non_negative:
+                closest_non_negative = min(eligible_non_negative, key=lambda option: abs(option["optimized_diff"]))
+                self.assertEqual(recommended["option_label"], closest_non_negative["option_label"])
             self.assertIn(
                 result["search_diagnostics"]["best_mathematical_fit_baseline_comparison"],
                 {"improves", "equals", "worse"},
@@ -830,7 +858,6 @@ class OptimizerTests(unittest.TestCase):
                 self.assertIn("strategic_warnings", option)
                 self.assertIn("recommendation_score_breakdown", option)
                 self.assertIn("improves_on_baseline", option)
-        self.assertTrue(recommended_differs_somewhere)
 
     def test_slugify_result_name(self) -> None:
         slug = slugify_result_name("5312 Medclair Kalkyl (V.A)-1.2M")

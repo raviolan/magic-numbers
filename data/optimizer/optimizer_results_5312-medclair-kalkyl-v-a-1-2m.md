@@ -16,12 +16,12 @@
 
 | Workbook | Sheet | Recommended Option | Recommended Diff | Baseline Diff | Improvement vs Baseline | Main Note |
 |---|---|---|---:|---:|---:|---|
-| 5312 Medclair Kalkyl (V.A).xlsx | 1.2M | best_strategic_fit | 207.375 | 207.375 | 0 | Recommended as best balance between diff fit and distribution. |
+| 5312 Medclair Kalkyl (V.A).xlsx | 1.2M | best_mathematical_fit | 207.375 | 207.375 | 0 | Closest mathematical fit. |
 
 ## Sheet: 5312 Medclair Kalkyl (V.A).xlsx / 1.2M
 
 ### Recommendation
-Recommended as best balance between diff fit and distribution.
+Closest mathematical fit.
 
 ### Budget Breakdown
 - Total budget: 1200000
@@ -38,10 +38,10 @@ Recommended as best balance between diff fit and distribution.
 ### Option Comparison
 | Option | Rec Rank | Diff | Fee Sum | 15K Count | 75K+ Count | Organic Impressions (K) | Paid Impressions (K) | Total Project Impressions (K) | Project CPM | Warning Count | Improves Baseline | Main Note |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|
-| best_strategic_fit | 1 | 207.375 | 491000 | 11 | 2 | 520 | 8528 | 9048 | 133 | 0 | no | Balanced tier distribution. |
-| current_workbook_mix | 2 | 207.375 | 491000 | 9 | 1 | 520 | 8528 | 9048 | 133 | 1 | no | Highly concentrated tier mix |
-| larger_profile_alternative | 3 | 1207.375 | 490000 | 11 | 3 | 560 | 8528 | 9088 | 132 | 0 | no | Balanced tier distribution. |
-| best_mathematical_fit | 4 | 207.375 | 491000 | 15 | 2 | 520 | 8528 | 9048 | 133 | 1 | no | Highly concentrated tier mix |
+| best_mathematical_fit | 1 | 207.375 | 491000 | 15 | 2 | 520 | 8528 | 9048 | 133 | 1 | no | Highly concentrated tier mix |
+| best_strategic_fit | 2 | 207.375 | 491000 | 11 | 2 | 520 | 8528 | 9048 | 133 | 0 | no | Balanced tier distribution. |
+| current_workbook_mix | 3 | 207.375 | 491000 | 9 | 1 | 520 | 8528 | 9048 | 133 | 1 | no | Highly concentrated tier mix |
+| larger_profile_alternative | 4 | 1207.375 | 490000 | 11 | 3 | 560 | 8528 | 9088 | 132 | 0 | no | Balanced tier distribution. |
 | fallback_option | 5 | 207.375 | 491000 | 13 | 2 | 520 | 8528 | 9048 | 133 | 1 | no | Highly concentrated tier mix |
 | balanced_option | 6 | 5707.375 | 485500 | 11 | 2 | 515 | 8528 | 9043 | 133 | 0 | no | Balanced tier distribution. |
 
@@ -64,19 +64,19 @@ Recommended as best balance between diff fit and distribution.
 | B33 | 15000 | 15000 | TikTok | US | 10 | 1100 | 1 | 11000 |
 | B34 | 15000 | 15000 | TikTok | US | 10 | 1100 | 1 | 11000 |
 | B35 | 15000 | 15000 | TikTok | US | 10 | 1100 | 1 | 11000 |
-| B36 | 35000 | 35000 | TikTok | US | 30 | 1100 | 1 | 33000 |
-| B37 | 35000 | 35000 | TikTok | US | 30 | 1100 | 1 | 33000 |
+| B36 | 35000 | 15000 | TikTok | US | 10 | 1100 | 1 | 11000 |
+| B37 | 35000 | 15000 | TikTok | US | 10 | 1100 | 1 | 11000 |
 | B38 | 35000 | 15000 | Instagram | US | 10 | 1100 | 1 | 11000 |
-| B39 | 35000 | 35000 | Instagram | US | 25 | 1100 | 1 | 27500 |
+| B39 | 35000 | 175000 | Instagram | US | 125 | 1100 | 1 | 137500 |
 | B40 | 35000 | 15000 | Instagram | US | 10 | 1100 | 1 | 11000 |
-| B41 | 35000 | 35000 | Instagram | US | 25 | 1100 | 1 | 27500 |
-| B42 | 35000 | 75000 | Instagram | US | 55 | 1100 | 1 | 60500 |
+| B41 | 35000 | 15000 | Instagram | US | 10 | 1100 | 1 | 11000 |
+| B42 | 35000 | 15000 | Instagram | US | 10 | 1100 | 1 | 11000 |
 | B43 | 35000 | 35000 | Instagram | US | 25 | 1100 | 1 | 27500 |
 
 ### Other Options
+- best_strategic_fit: diff=207.375, warnings=0, note=Balanced tier distribution.
 - current_workbook_mix: diff=207.375, warnings=1, note=Highly concentrated tier mix
 - larger_profile_alternative: diff=1207.375, warnings=0, note=Balanced tier distribution.
-- best_mathematical_fit: diff=207.375, warnings=1, note=Highly concentrated tier mix
 - fallback_option: diff=207.375, warnings=1, note=Highly concentrated tier mix
 - balanced_option: diff=5707.375, warnings=0, note=Balanced tier distribution.
 
@@ -85,6 +85,6 @@ Recommended as best balance between diff fit and distribution.
 - Allowed profile sizes: 15000, 35000, 75000, 125000, 175000
 - Beam width: 300; expanded=27810; retained=300
 - Baseline comparison for best mathematical fit: equals
-- Recommended differs from best mathematical fit: yes
-- Strategic warnings: current_workbook_mix: Highly concentrated tier mix; best_mathematical_fit: Highly concentrated tier mix; fallback_option: Highly concentrated tier mix
+- Recommended differs from best mathematical fit: no
+- Strategic warnings: best_mathematical_fit: Highly concentrated tier mix; current_workbook_mix: Highly concentrated tier mix; fallback_option: Highly concentrated tier mix
 - Result warnings: none

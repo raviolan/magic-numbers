@@ -208,6 +208,41 @@ class ResultsViewHelpersTests(unittest.TestCase):
         self.assertFalse(strategic_card["is_selectable"])
         self.assertEqual(strategic_card["disabled_reason"], "positive_diff_above_threshold")
 
+    def test_quick_compare_cards_use_generic_visible_titles_by_position(self) -> None:
+        result = {
+            "recommended_option_label": "best_mathematical_fit",
+            "closest_positive_diff_option_label": "best_strategic_fit",
+            "options": [
+                {
+                    "option_label": "best_mathematical_fit",
+                    "optimized_diff": 100,
+                    "fill_instructions": [{"channel": "Instagram", "recommended_profile_size": 15000}],
+                    "main_note": "A",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "best_strategic_fit",
+                    "optimized_diff": 500,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 35000}],
+                    "main_note": "B",
+                    "strategic_warnings": [],
+                },
+                {
+                    "option_label": "balanced_option",
+                    "optimized_diff": 800,
+                    "fill_instructions": [{"channel": "TikTok", "recommended_profile_size": 75000}],
+                    "main_note": "C",
+                    "strategic_warnings": [],
+                },
+            ],
+        }
+
+        cards = build_option_quick_compare_cards(result)
+
+        self.assertEqual([card["title"] for card in cards], ["Rekommenderat förslag", "Alternativ 2", "Alternativ 3"])
+        self.assertNotIn("Strategiskt förslag", [card["title"] for card in cards])
+        self.assertNotIn("Balanserat förslag", [card["title"] for card in cards])
+
     def test_build_tier_mix_chips_omits_zero_by_default(self) -> None:
         chips = build_tier_mix_chips({"15000": 1, "35000": 0, "75000": 2})
         self.assertEqual(chips, ["15K × 1", "75K × 2"])
