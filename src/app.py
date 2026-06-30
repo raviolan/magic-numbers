@@ -442,6 +442,7 @@ def inject_app_css() -> None:
         }
         .st-key-cardresultscomparison div[data-testid="column"] {
             min-width: 0;
+            min-height: 100%;
         }
         .section-banner {
             border-radius: 10px;
@@ -506,7 +507,34 @@ def inject_app_css() -> None:
             border: 3px solid #f0fc03;
             border-radius: 14px;
             padding: 0.75rem 0.85rem 0.85rem 0.85rem;
-            margin-bottom: 0.9rem;
+            margin-bottom: 0.35rem;
+        }
+        .results-title {
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin: 0.25rem 0 0.45rem 0;
+            line-height: 1.2;
+        }
+        .run-feedback {
+            display: inline-block;
+            margin-top: 0.45rem;
+            padding: 0.28rem 0.55rem;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            line-height: 1.2;
+            color: #3b3821;
+        }
+        .run-feedback-loading {
+            background: #fbf1e4;
+            border: 1px solid #d1d5db;
+        }
+        .run-feedback-ready {
+            background: #f0fc03;
+            border: 1px solid #d9e300;
+        }
+        .run-feedback-error {
+            background: #fff8f1;
+            border: 1px solid #f6ad55;
         }
         div[data-baseweb="input"] > div,
         div[data-baseweb="select"] > div,
@@ -909,6 +937,65 @@ def _set_main_fill_option(selector_key: str, option_label: str) -> None:
     st.session_state[selector_key] = option_label
 
 
+def _manual_split_percent_key(channel: str) -> str:
+    return f"manual_split_percent_{str(channel).strip().lower()}"
+
+
+def _coerce_percent(value: object, default: int = 50) -> int:
+    try:
+        percent = int(float(value))
+    except (TypeError, ValueError):
+        percent = int(default)
+    return max(0, min(100, percent))
+
+
+def _ensure_two_channel_percentage_split_state(selected_channels: list[str] | tuple[str, ...]) -> None:
+    if len(selected_channels) != 2:
+        return
+    first_channel, second_channel = selected_channels
+    first_key = _manual_split_percent_key(first_channel)
+    second_key = _manual_split_percent_key(second_channel)
+    first_exists = first_key in st.session_state
+    second_exists = second_key in st.session_state
+
+    if not first_exists and not second_exists:
+        st.session_state[first_key] = 50
+        st.session_state[second_key] = 50
+        return
+
+    if first_exists and not second_exists:
+        first_value = _coerce_percent(st.session_state.get(first_key))
+        st.session_state[first_key] = first_value
+        st.session_state[second_key] = 100 - first_value
+        return
+
+    if second_exists and not first_exists:
+        second_value = _coerce_percent(st.session_state.get(second_key))
+        st.session_state[second_key] = second_value
+        st.session_state[first_key] = 100 - second_value
+        return
+
+    first_value = _coerce_percent(st.session_state.get(first_key))
+    second_value = _coerce_percent(st.session_state.get(second_key))
+    st.session_state[first_key] = first_value
+    st.session_state[second_key] = second_value if first_value + second_value == 100 else 100 - first_value
+
+
+def _sync_two_channel_percentage_split(
+    changed_channel: str,
+    selected_channels: list[str] | tuple[str, ...],
+) -> None:
+    if len(selected_channels) != 2 or changed_channel not in selected_channels:
+        return
+    changed_key = _manual_split_percent_key(changed_channel)
+    changed_value = _coerce_percent(st.session_state.get(changed_key))
+    st.session_state[changed_key] = changed_value
+    for channel in selected_channels:
+        if channel != changed_channel:
+            st.session_state[_manual_split_percent_key(channel)] = 100 - changed_value
+            break
+
+
 def _option_has_positive_buffer_above_recommended(card: dict) -> bool:
     return float(card.get("diff", 0)) > 0 and float(card.get("delta_vs_recommended", 0)) > 0
 
@@ -1097,7 +1184,7 @@ def render_result(
     selected_from_state = st.session_state.get(fill_selector_key)
     fill_view = _build_selectable_fill_view(result, selected_from_state)
 
-    st.markdown("### 8. Resultat")
+    st.markdown('<div class="results-title">8. Resultat</div>', unsafe_allow_html=True)
     with st.container(border=True, key="cardresultsrecommendation"):
         _section_header("Rekommendation", "Använd detta förslag om inget annat i kundcaset väger tyngre.", "soft-blue")
         status_tone, status_text = build_diff_status(recommended.get("optimized_diff"))
@@ -1753,22 +1840,28 @@ def main() -> None:
             st.error("At least one channel must be selected.")
 
         total_profiles = int(budget_setup["total_profiles"])
-        percentage_inputs = {channel: 100 if len(selected_channels) == 1 else 50 for channel in selected_channels}
+        percentage_inputs = {channel: 100 for channel in selected_channels} if len(selected_channels) == 1 else {}
         if len(selected_channels) == 1:
             st.caption(f"{selected_channels[0]} receives all {total_profiles} profiles.")
         elif selected_channels:
+            _ensure_two_channel_percentage_split_state(selected_channels)
             with st.expander(_ui_text(language, "optional_split"), expanded=False):
                 split_cols = st.columns(len(selected_channels))
                 for index, channel in enumerate(selected_channels):
                     with split_cols[index]:
-                        percentage_inputs[channel] = st.number_input(
+                        st.number_input(
                             f"{channel} %",
                             min_value=0,
                             max_value=100,
-                            value=50,
                             step=5,
-                            key=f"manual_split_percent_{channel.lower()}",
+                            key=_manual_split_percent_key(channel),
+                            on_change=_sync_two_channel_percentage_split,
+                            args=(channel, selected_channels),
                         )
+            percentage_inputs = {
+                channel: _coerce_percent(st.session_state.get(_manual_split_percent_key(channel)))
+                for channel in selected_channels
+            }
 
         split_error: str | None = None
         try:
@@ -1849,7 +1942,12 @@ def main() -> None:
             _ui_text(language, "run_optimizer_description"),
             "soft-blue",
         )
+        feedback_slot = st.empty()
         if st.button(_ui_text(language, "run_optimizer_button")):
+            feedback_slot.markdown(
+                '<div class="run-feedback run-feedback-loading">Kalkylen körs...</div>',
+                unsafe_allow_html=True,
+            )
             try:
                 if not selected_channels:
                     raise ValueError("At least one channel must be selected.")
@@ -1879,8 +1977,16 @@ def main() -> None:
                     optimization_focus=str(budget_setup.get("optimization_focus") or ""),
                 )
             except ValueError as error:
+                feedback_slot.markdown(
+                    '<div class="run-feedback run-feedback-error">Kalkylen kunde inte köras.</div>',
+                    unsafe_allow_html=True,
+                )
                 st.error(str(error))
                 return
+            feedback_slot.markdown(
+                '<div class="run-feedback run-feedback-ready">Check! Scrolla ner för att se dina förslag</div>',
+                unsafe_allow_html=True,
+            )
 
             manual_context = {
                 "budget": budget_setup["budget"],

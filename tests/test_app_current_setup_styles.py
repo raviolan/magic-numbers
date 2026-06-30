@@ -79,6 +79,12 @@ class CurrentSetupRowStyleTests(unittest.TestCase):
         self.assertIn("min-height: 100%;", css)
         self.assertIn("margin-bottom: 0.45rem;", css)
         self.assertIn("padding: 0.75rem 0.85rem 1.75rem 0.85rem;", css)
+        self.assertIn(".results-title", css)
+        self.assertIn("margin: 0.25rem 0 0.45rem 0;", css)
+        self.assertIn("margin-bottom: 0.35rem;", css)
+        self.assertIn(".run-feedback", css)
+        self.assertIn(".run-feedback-ready", css)
+        self.assertIn("background: #f0fc03;", css)
 
 
 if __name__ == "__main__":

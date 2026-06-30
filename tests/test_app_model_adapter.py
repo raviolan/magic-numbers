@@ -1002,6 +1002,79 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         )
         self.assertEqual(split, {"Instagram": 0, "TikTok": 8, "YouTube": 0})
 
+    def test_sync_two_channel_split_changing_instagram_sets_tiktok_remainder(self) -> None:
+        import app
+
+        with mock.patch.object(
+            app.st,
+            "session_state",
+            {
+                "manual_split_percent_instagram": 70,
+                "manual_split_percent_tiktok": 50,
+            },
+        ):
+            app._sync_two_channel_percentage_split("Instagram", ["Instagram", "TikTok"])
+            self.assertEqual(app.st.session_state["manual_split_percent_instagram"], 70)
+            self.assertEqual(app.st.session_state["manual_split_percent_tiktok"], 30)
+
+    def test_sync_two_channel_split_changing_tiktok_sets_instagram_remainder(self) -> None:
+        import app
+
+        with mock.patch.object(
+            app.st,
+            "session_state",
+            {
+                "manual_split_percent_instagram": 50,
+                "manual_split_percent_tiktok": 25,
+            },
+        ):
+            app._sync_two_channel_percentage_split("TikTok", ["Instagram", "TikTok"])
+            self.assertEqual(app.st.session_state["manual_split_percent_instagram"], 75)
+            self.assertEqual(app.st.session_state["manual_split_percent_tiktok"], 25)
+
+    def test_ensure_two_channel_split_preserves_existing_valid_state(self) -> None:
+        import app
+
+        with mock.patch.object(
+            app.st,
+            "session_state",
+            {
+                "manual_split_percent_instagram": 70,
+                "manual_split_percent_tiktok": 30,
+            },
+        ):
+            app._ensure_two_channel_percentage_split_state(["Instagram", "TikTok"])
+            self.assertEqual(app.st.session_state["manual_split_percent_instagram"], 70)
+            self.assertEqual(app.st.session_state["manual_split_percent_tiktok"], 30)
+
+    def test_ensure_two_channel_split_normalizes_stale_state_from_first_channel(self) -> None:
+        import app
+
+        with mock.patch.object(
+            app.st,
+            "session_state",
+            {
+                "manual_split_percent_instagram": 70,
+                "manual_split_percent_tiktok": 50,
+            },
+        ):
+            app._ensure_two_channel_percentage_split_state(["Instagram", "TikTok"])
+            self.assertEqual(app.st.session_state["manual_split_percent_instagram"], 70)
+            self.assertEqual(app.st.session_state["manual_split_percent_tiktok"], 30)
+
+    def test_single_channel_percentage_split_does_not_require_ui_sync(self) -> None:
+        import app
+
+        with mock.patch.object(app.st, "session_state", {}):
+            app._ensure_two_channel_percentage_split_state(["TikTok"])
+            split = parse_channel_percentage_split(
+                total_profiles=8,
+                percentages={"TikTok": app.st.session_state.get("manual_split_percent_tiktok")},
+                selected_channels=["TikTok"],
+            )
+            self.assertEqual(app.st.session_state, {})
+            self.assertEqual(split, {"Instagram": 0, "TikTok": 8, "YouTube": 0})
+
     def test_generate_profile_rows_respects_selected_channels(self) -> None:
         project_cpms = resolve_project_cpms(instagram_cpm=1000, tiktok_cpm=900, youtube_cpm="")
         rows = generate_profile_rows(
