@@ -1038,20 +1038,52 @@ def _build_selected_option_impression_summary(option: dict) -> list[dict[str, ob
     ]
 
 
-_PITCH_PROFILE_DESCRIPTIONS = {
+_PITCH_TABLE_TRANSLATIONS = {
+    "sv": {
+        "profile_description": "Profil á {range} följare / {views} snittvisningar",
+        "content_rights": "Innehållsrättigheter",
+        "content_rights_duration": "7-30 dagar",
+        "activations": "Antal aktiveringar",
+        "activation_description": "1x Instagram Reel / TikTok video per profil",
+        "paid": "Paid",
+        "impressions": "Antal exponeringar",
+        "item_aria_label": "Post",
+        "value_aria_label": "Värde",
+        "copy_button_label": "Kopiera tabell",
+        "copy_success_message": "Kopierad!",
+        "copy_failure_message": "Kunde inte kopiera",
+    },
+    "en": {
+        "profile_description": "Profile with {range} followers / {views} avg. views",
+        "content_rights": "Content rights",
+        "content_rights_duration": "7-30 days",
+        "activations": "Activations",
+        "activation_description": "1x Instagram Reel / TikTok video per profile",
+        "paid": "Paid Amplification",
+        "impressions": "Impressions",
+        "item_aria_label": "Item",
+        "value_aria_label": "Value",
+        "copy_button_label": "Copy table",
+        "copy_success_message": "Copied!",
+        "copy_failure_message": "Could not copy",
+    },
+}
+
+
+_PITCH_PROFILE_METRICS = {
     "Instagram": {
-        15000: "Profil á 10-20K följare / 10K snittvisningar",
-        35000: "Profil á 20-50K följare / 25K snittvisningar",
-        75000: "Profil á 50-100K följare / 55K snittvisningar",
-        125000: "Profil á 100-150K följare / 90K snittvisningar",
-        175000: "Profil á 150-200K följare / 125K snittvisningar",
+        15000: {"range": "10-20K", "views": "10K"},
+        35000: {"range": "20-50K", "views": "25K"},
+        75000: {"range": "50-100K", "views": "55K"},
+        125000: {"range": "100-150K", "views": "90K"},
+        175000: {"range": "150-200K", "views": "125K"},
     },
     "TikTok": {
-        15000: "Profil á 10-20K följare / 10K snittvisningar",
-        35000: "Profil á 20-50K följare / 30K snittvisningar",
-        75000: "Profil á 50-100K följare / 60K snittvisningar",
-        125000: "Profil á 100-150K följare / 100K snittvisningar",
-        175000: "Profil á 150-200K följare / 140K snittvisningar",
+        15000: {"range": "10-20K", "views": "10K"},
+        35000: {"range": "20-50K", "views": "30K"},
+        75000: {"range": "50-100K", "views": "60K"},
+        125000: {"range": "100-150K", "views": "100K"},
+        175000: {"range": "150-200K", "views": "140K"},
     },
 }
 
@@ -1069,8 +1101,15 @@ def _pitch_tier_key(value) -> int | None:
     return None
 
 
-def _build_pitch_profile_lines(fill_instructions: list[dict], channel: str) -> str:
-    descriptions = _PITCH_PROFILE_DESCRIPTIONS.get(channel, {})
+def _pitch_table_translation(language: str = "sv") -> dict[str, str]:
+    return _PITCH_TABLE_TRANSLATIONS.get(language, _PITCH_TABLE_TRANSLATIONS["sv"])
+
+
+def _build_pitch_profile_lines(
+    fill_instructions: list[dict], channel: str, language: str = "sv"
+) -> str:
+    descriptions = _PITCH_PROFILE_METRICS.get(channel, {})
+    translation = _pitch_table_translation(language)
     counts: dict[int, int] = {}
     for row in fill_instructions:
         if not isinstance(row, dict):
@@ -1083,7 +1122,7 @@ def _build_pitch_profile_lines(fill_instructions: list[dict], channel: str) -> s
         counts[tier] = counts.get(tier, 0) + 1
 
     lines = [
-        f"{counts[tier]}x {descriptions[tier]}"
+        f"{counts[tier]}x {translation['profile_description'].format(**descriptions[tier])}"
         for tier in VALID_PROFILE_TIERS
         if counts.get(tier, 0) > 0 and tier in descriptions
     ]
@@ -1141,7 +1180,10 @@ def _build_option_card_body_html(option: dict, diff_label: str | None = None) ->
     return "".join(parts)
 
 
-def _build_pitch_table_rows(result: dict, selected_option: dict) -> list[dict[str, str]]:
+def _build_pitch_table_rows(
+    result: dict, selected_option: dict, language: str = "sv"
+) -> list[dict[str, str]]:
+    translation = _pitch_table_translation(language)
     budget_breakdown = result.get("budget_breakdown") or {}
     paid_media_included = budget_breakdown.get("paid_media_included", True)
     paid_media = budget_breakdown.get("paid_media") if paid_media_included is not False else 0
@@ -1154,17 +1196,17 @@ def _build_pitch_table_rows(result: dict, selected_option: dict) -> list[dict[st
     return [
         {
             "Post": "Influencer Marketing Instagram",
-            "Värde": _build_pitch_profile_lines(fill_instructions, "Instagram"),
+            "Värde": _build_pitch_profile_lines(fill_instructions, "Instagram", language),
         },
         {
             "Post": "Influencer Marketing TikTok",
-            "Värde": _build_pitch_profile_lines(fill_instructions, "TikTok"),
+            "Värde": _build_pitch_profile_lines(fill_instructions, "TikTok", language),
         },
-        {"Post": "Innehållsrättigheter", "Värde": "7-30 dagar"},
-        {"Post": "Antal aktiveringar", "Värde": "1x Instagram Reel / TikTok video per profil"},
-        {"Post": "Paid", "Värde": f"{format_display_number(paid_media)} SEK"},
+        {"Post": translation["content_rights"], "Värde": translation["content_rights_duration"]},
+        {"Post": translation["activations"], "Värde": translation["activation_description"]},
+        {"Post": translation["paid"], "Värde": f"{format_display_number(paid_media)} SEK"},
         {
-            "Post": "Antal exponeringar",
+            "Post": translation["impressions"],
             "Värde": _format_pitch_total_impressions(selected_option.get("total_project_impressions")),
         },
         {"Post": "Total", "Värde": f"{format_display_number(budget)} SEK"},
@@ -1179,7 +1221,8 @@ def _pitch_table_clipboard_text(rows: list[dict[str, str]]) -> str:
     )
 
 
-def _pitch_table_html(rows: list[dict[str, str]]) -> str:
+def _pitch_table_html(rows: list[dict[str, str]], language: str = "sv") -> str:
+    translation = _pitch_table_translation(language)
     body_rows: list[str] = []
     for row in rows:
         post = html.escape(str(row.get("Post", "")))
@@ -1192,23 +1235,24 @@ def _pitch_table_html(rows: list[dict[str, str]]) -> str:
         '<button\n'
         'class="pitch-copy-button"\n'
         'type="button"\n'
-        'aria-label="Kopiera tabell"\n'
-        'title="Kopiera tabell"\n'
+        f'aria-label="{translation["copy_button_label"]}"\n'
+        f'title="{translation["copy_button_label"]}"\n'
         f'data-copy-text="{clipboard_text}"\n'
-        'onclick="const status = this.closest(\'.pitch-table-toolbar\').querySelector(\'.pitch-copy-status\'); navigator.clipboard.writeText(JSON.parse(this.dataset.copyText)).then(() => { status.textContent = \'Kopierad!\'; status.classList.add(\'is-visible\'); setTimeout(() => { status.classList.remove(\'is-visible\'); status.textContent = \'\'; }, 1800); }).catch(() => { status.textContent = \'Kunde inte kopiera\'; status.classList.add(\'is-visible\'); setTimeout(() => { status.classList.remove(\'is-visible\'); status.textContent = \'\'; }, 1800); });"\n'
+        'onclick="const status = this.closest(\'.pitch-table-toolbar\').querySelector(\'.pitch-copy-status\'); '
+        f'navigator.clipboard.writeText(JSON.parse(this.dataset.copyText)).then(() => {{ status.textContent = \'{translation["copy_success_message"]}\'; status.classList.add(\'is-visible\'); setTimeout(() => {{ status.classList.remove(\'is-visible\'); status.textContent = \'\'; }}, 1800); }}).catch(() => {{ status.textContent = \'{translation["copy_failure_message"]}\'; status.classList.add(\'is-visible\'); setTimeout(() => {{ status.classList.remove(\'is-visible\'); status.textContent = \'\'; }}, 1800); }});"\n'
         '>⧉</button>\n'
         '<span class="pitch-copy-status" aria-live="polite"></span>\n'
         '</div>\n'
         '<table class="pitch-output-table">\n'
         '<thead>\n'
-        '<tr><th aria-label="Post"></th><th aria-label="Värde"></th></tr>\n'
+        f'<tr><th aria-label="{translation["item_aria_label"]}"></th><th aria-label="{translation["value_aria_label"]}"></th></tr>\n'
         '</thead>\n'
         f'<tbody>{body}</tbody>\n'
         '</table>'
     )
 
 
-def _render_pitch_table(rows: list[dict[str, str]]) -> None:
+def _render_pitch_table(rows: list[dict[str, str]], language: str = "sv") -> None:
     components.html(
         "\n".join(
             [
@@ -1226,7 +1270,7 @@ def _render_pitch_table(rows: list[dict[str, str]]) -> None:
                 ".pitch-output-table th:nth-child(2), .pitch-output-table td:nth-child(2) { width: 64%; }",
                 ".pitch-output-table td:nth-child(2) { font-weight: 400; }",
                 "</style>",
-                _pitch_table_html(rows),
+                _pitch_table_html(rows, language),
             ]
         ),
         height=420,
@@ -1336,7 +1380,18 @@ def render_result(
         if st.button("Generera tabell för Pitch", key=f"generate_pitch_table_{run_id}", type="secondary"):
             st.session_state[pitch_table_key] = True
         if st.session_state.get(pitch_table_key, False):
-            _render_pitch_table(_build_pitch_table_rows(result, fill_view["selected_option"]))
+            pitch_language_choice = st.radio(
+                "Språk för pitchtabell",
+                options=("Svenska", "English"),
+                index=0,
+                horizontal=True,
+                key=f"pitch_table_language_{run_id}",
+            )
+            pitch_language = "en" if pitch_language_choice == "English" else "sv"
+            _render_pitch_table(
+                _build_pitch_table_rows(result, fill_view["selected_option"], pitch_language),
+                pitch_language,
+            )
 
     with st.container(border=True, key="cardresultsactions"):
         _section_header("Åtgärder och detaljer", "Nedladdningar och tekniska detaljer.", "soft-gray")

@@ -336,6 +336,45 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertEqual(rows[1]["Post"], "Influencer Marketing TikTok")
         self.assertEqual(rows[1]["Värde"], "1x Profil á 50-100K följare / 60K snittvisningar")
 
+    def test_pitch_table_rows_localize_english_without_changing_values(self) -> None:
+        import app
+
+        result = {"budget_breakdown": {"budget": 100000, "paid_media": 15000, "paid_media_included": True}}
+        selected_option = {
+            "fill_instructions": [
+                {"channel": "Instagram", "recommended_profile_size": 15000},
+                {"channel": "Instagram", "recommended_profile_size": 35000},
+                {"channel": "TikTok", "recommended_profile_size": 75000},
+            ],
+            "total_project_impressions": 1880,
+            "project_cpm": 53.2,
+        }
+
+        swedish_rows = app._build_pitch_table_rows(result, selected_option)
+        english_rows = app._build_pitch_table_rows(result, selected_option, "en")
+        english_by_post = {row["Post"]: row["Värde"] for row in english_rows}
+
+        self.assertEqual(
+            english_by_post["Influencer Marketing Instagram"],
+            "1x Profile with 10-20K followers / 10K avg. views\n"
+            "1x Profile with 20-50K followers / 25K avg. views",
+        )
+        self.assertEqual(
+            english_by_post["Influencer Marketing TikTok"],
+            "1x Profile with 50-100K followers / 60K avg. views",
+        )
+        self.assertEqual(english_by_post["Content rights"], "7-30 days")
+        self.assertEqual(english_by_post["Activations"], "1x Instagram Reel / TikTok video per profile")
+        self.assertEqual(english_by_post["Paid Amplification"], "15 000 SEK")
+        self.assertEqual(english_by_post["Impressions"], "1 880 000")
+        self.assertEqual(english_by_post["Total"], "100 000 SEK")
+        self.assertEqual(english_by_post["CPM"], "53 SEK")
+
+        self.assertEqual(swedish_rows[4]["Värde"], english_rows[4]["Värde"])
+        self.assertEqual(swedish_rows[5]["Värde"], english_rows[5]["Värde"])
+        self.assertEqual(swedish_rows[6]["Värde"], english_rows[6]["Värde"])
+        self.assertEqual(swedish_rows[7]["Värde"], english_rows[7]["Värde"])
+
     def test_pitch_table_rows_use_selected_option_and_full_budget_breakdown_values(self) -> None:
         import app
 
@@ -386,6 +425,32 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertTrue(rendered.startswith('<div class="pitch-table-toolbar">'))
         self.assertNotRegex(rendered, r"(?m)^[ \t]+<(?:div|table|thead|tbody|tr)")
 
+    def test_pitch_table_html_localizes_english_copy_and_aria_text(self) -> None:
+        import app
+
+        rendered = app._pitch_table_html(
+            [
+                {
+                    "Post": "Influencer Marketing Instagram",
+                    "Värde": "1x Profile with 10-20K followers / 10K avg. views\n"
+                    "2x Profile with 20-50K followers / 25K avg. views",
+                },
+                {"Post": "Content rights", "Värde": "7-30 days"},
+                {"Post": "Activations", "Värde": "1x Instagram Reel / TikTok video per profile"},
+                {"Post": "Paid Amplification", "Värde": "15 000 SEK"},
+                {"Post": "Impressions", "Värde": "1 880 000"},
+            ],
+            "en",
+        )
+
+        self.assertIn('aria-label="Copy table"', rendered)
+        self.assertIn('title="Copy table"', rendered)
+        self.assertIn("Copied!", rendered)
+        self.assertIn("Could not copy", rendered)
+        self.assertIn('<tr><th aria-label="Item"></th><th aria-label="Value"></th></tr>', rendered)
+        self.assertNotIn('aria-label="Post"', rendered)
+        self.assertIn("Profile with 10-20K followers / 10K avg. views<br>", rendered)
+
     def test_pitch_table_clipboard_text_uses_tabs_and_preserves_value_line_breaks(self) -> None:
         import app
 
@@ -402,17 +467,45 @@ class ManualCampaignAdapterTests(unittest.TestCase):
         self.assertIn("Influencer Marketing Instagram\t1x Profil á 10-20K följare\n2x Profil á 20-50K följare", copied)
         self.assertIn("\nCPM\t53 SEK", copied)
 
+    def test_pitch_table_clipboard_text_uses_current_english_table_language(self) -> None:
+        import app
+
+        rows = app._build_pitch_table_rows(
+            {"budget_breakdown": {"budget": 100000, "paid_media": 15000, "paid_media_included": True}},
+            {
+                "fill_instructions": [
+                    {"channel": "Instagram", "recommended_profile_size": 15000},
+                    {"channel": "Instagram", "recommended_profile_size": 35000},
+                ],
+                "total_project_impressions": 1880,
+                "project_cpm": 53.2,
+            },
+            "en",
+        )
+
+        copied = app._pitch_table_clipboard_text(rows)
+
+        self.assertIn(
+            "Influencer Marketing Instagram\t1x Profile with 10-20K followers / 10K avg. views\n"
+            "1x Profile with 20-50K followers / 25K avg. views",
+            copied,
+        )
+        self.assertIn("\nPaid Amplification\t15 000 SEK", copied)
+        self.assertIn("\nImpressions\t1 880 000", copied)
+
     def test_render_pitch_table_uses_html_component_for_clipboard_javascript(self) -> None:
         import app
 
         rows = [{"Post": "CPM", "Värde": "53 SEK"}]
 
         with mock.patch.object(app.components, "html") as component_html:
-            app._render_pitch_table(rows)
+            app._render_pitch_table(rows, "en")
 
         html_arg = component_html.call_args.args[0]
         self.assertIn("navigator.clipboard.writeText", html_arg)
         self.assertIn("pitch-output-table", html_arg)
+        self.assertIn('aria-label="Copy table"', html_arg)
+        self.assertIn('<tr><th aria-label="Item"></th><th aria-label="Value"></th></tr>', html_arg)
         self.assertIn("table-layout: fixed", html_arg)
         self.assertIn("border: 1px solid", html_arg)
         self.assertIn("td:first-child { width: 36%; }", html_arg)
